@@ -1,0 +1,268 @@
+/* =========================================================
+   ปุ่มสลับธีม (iOS Style)
+========================================================= */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 13px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(118, 118, 128, 0.12);
+  color: #1C1C1E;
+  font: 600 13px -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.14s ease;
+}
+.theme-toggle:hover { background: rgba(118, 118, 128, 0.22); box-shadow: none; }
+.theme-toggle:active { transform: scale(0.95); }
+.theme-toggle svg { width: 16px; height: 16px; flex-shrink: 0; }
+.theme-toggle.floating {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 9999;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+.theme-nav-wrap { display: flex; align-items: center; gap: 8px; }
+
+@media (max-width: 600px) {
+  .theme-toggle .tt-label { display: none; }
+  .theme-toggle { padding: 0 9px; }
+}
+
+/* เปลี่ยนสีอย่างนุ่มนวลตอนกดสลับ */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.32s ease, color 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease !important;
+}
+
+/* =========================================================
+   โหมดมืด: ตัวแปรสีหลัก (iOS Dark Palette)
+========================================================= */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --ios-bg: #000000;
+  --ios-card: #1C1C1E;
+  --ios-grouped: #2C2C2E;
+  --ios-glass: rgba(28, 28, 30, 0.78);
+  --ios-fill: rgba(118, 118, 128, 0.26);
+  --ios-separator: rgba(84, 84, 88, 0.6);
+  --ios-label: #FFFFFF;
+  --ios-secondary: #AEAEB2;
+  --ios-tertiary: #8E8E93;
+  --ios-blue: #0A84FF;
+  --ios-green: #30D158;
+  --ios-indigo: #5E5CE6;
+  --ios-orange: #FF9F0A;
+  --ios-red: #FF453A;
+  --ios-shadow-card: 0 10px 30px rgba(0, 0, 0, 0.55);
+  --ios-shadow-hover: 0 18px 40px rgba(10, 132, 255, 0.22);
+
+  /* code.html */
+  --bg-dark: #1C1C1E;
+  --bg-paper: #000000;
+  --bg-sidebar: #1C1C1E;
+  --bg-activity: #1C1C1E;
+  --bg-tabs: #1C1C1E;
+  --bg-tab-active: #2C2C2E;
+  --bg-header: rgba(28, 28, 30, 0.82);
+  --border-color: rgba(84, 84, 88, 0.6);
+  --text-main: #FFFFFF;
+  --text-muted: #8E8E93;
+  --accent: #0A84FF;
+  --accent-soft: rgba(10, 132, 255, 0.22);
+  --ios-green-code: #30D158;
+}
+
+html[data-theme="dark"] body {
+  background-color: #000000;
+  background-image:
+    radial-gradient(at 12% 8%, rgba(10, 132, 255, 0.14) 0px, transparent 50%),
+    radial-gradient(at 88% 12%, rgba(94, 92, 230, 0.14) 0px, transparent 50%);
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .theme-toggle { background: rgba(118, 118, 128, 0.3); color: #FFFFFF; }
+html[data-theme="dark"] .theme-toggle:hover { background: rgba(118, 118, 128, 0.42); }
+html[data-theme="dark"] .theme-toggle.floating { background: rgba(44, 44, 46, 0.92); }
+
+/* ===== หน้าแรก (index.html) ===== */
+html[data-theme="dark"] .menu-btn { border-color: rgba(255, 255, 255, 0.08); }
+html[data-theme="dark"] .menu-tag-pill.tag-code { background: rgba(48, 209, 88, 0.18); color: #30D158; }
+html[data-theme="dark"] .back-btn { background: #2C2C2E; border-color: rgba(255, 255, 255, 0.1); }
+
+/* ===== พื้นผิวยกระดับ (การ์ดซ้อนการ์ด) ในหน้าบทเรียน ===== */
+html[data-theme="dark"] :is(
+  .analogy-banner, .feature-item, .db-row, .pillar-card:hover,
+  .s6-solution-btn, .s6-timer-wrap, .s6-preset-btn.active, .s7-code-tab-btn.active,
+  .s6-tab-active, .s7-tab-active, .s6-browser-tab, .s7-browser-tab, .s7-browser-url,
+  .roadmap-card:hover, .b-chip, .s2-sim-row, .app-desc-tag, .vs-list li, .s4-quiz-btn,
+  .s5-flow-item, .s6-tech-card.active-stage-html, .s6-tech-card.active-stage-css, .s6-tech-card.active-stage-js,
+  .s6-analogy-badge, .sim-tab-btn.active-1, .sim-tab-btn.active-2, .sim-tab-btn.active-3,
+  .sim-status-caption, .s8-row, .s9-step-card:hover, .s9-step-card.active-save-step,
+  .s10-tool-card, .s10-mini-code, .mock-vscode-card, .mock-code-body
+) {
+  background-color: #3A3A3C !important;
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] :is(.slide-footer-strip, .cover-bottom-strip) {
+  background: #161618;
+  color: #8E8E93;
+}
+
+html[data-theme="dark"] :is(.mock-browser-window, .mock-browser-body) { background: #2C2C2E; }
+html[data-theme="dark"] :is(.mock-browser-top, .mock-bar, .s6-browser-header, .s7-browser-header,
+  .s6-code-topbar, .s7-code-topbar, .s9-card-banner, .s10-mini-code-bar) {
+  background: #2C2C2E;
+  border-color: rgba(84, 84, 88, 0.6);
+  color: #FFFFFF;
+}
+
+html[data-theme="dark"] .s2-sim-row.webapp-row { background: rgba(48, 209, 88, 0.14) !important; }
+html[data-theme="dark"] .s5-flow-item.active-s5-step { background: rgba(10, 132, 255, 0.2) !important; }
+html[data-theme="dark"] .s8-row:hover,
+html[data-theme="dark"] .s8-row.pair-active { background: rgba(10, 132, 255, 0.24) !important; }
+html[data-theme="dark"] .s8-inline-input { background: #1C1C1E; color: #FFFFFF; }
+html[data-theme="dark"] .gdoc-tool-btn { background: #3A3A3C; color: #FFFFFF; }
+
+/* สีตัวอักษรเน้นที่เข้มเกินไปบนพื้นมืด */
+html[data-theme="dark"] .tag-orange { background: rgba(255, 159, 10, 0.2); color: #FF9F0A; }
+html[data-theme="dark"] .tag-green { background: rgba(48, 209, 88, 0.2); color: #30D158; }
+html[data-theme="dark"] .vs-pill-right { color: #30D158; background: rgba(48, 209, 88, 0.18); }
+html[data-theme="dark"] .day1-badge { background: rgba(255, 159, 10, 0.2); color: #FF9F0A; }
+html[data-theme="dark"] .s10-why-alert { background: rgba(255, 159, 10, 0.18); color: #FFB340; }
+html[data-theme="dark"] .analogy-orange b { color: #FF9F0A; }
+html[data-theme="dark"] .analogy-green b { color: #30D158; }
+html[data-theme="dark"] .col-amber { color: #FF9F0A; }
+html[data-theme="dark"] .col-green { color: #30D158; }
+html[data-theme="dark"] .col-white { color: #FFFFFF; }
+html[data-theme="dark"] .col-purple { color: #BF5AF2; }
+html[data-theme="dark"] .s9-field-box.highlight-input { color: #30D158; background: rgba(48, 209, 88, 0.16); }
+
+/* หน้าต่างจำลอง Windows (สไลด์ Save ไฟล์) */
+html[data-theme="dark"] :is(.s9-win-mock, .s9-right-files) { background: #1C1C1E; color: #FFFFFF; }
+html[data-theme="dark"] :is(.s9-win-title, .s9-left-nav, .s9-bottom-fields, .s9-card-footer) {
+  background: #242426;
+  color: #AEAEB2;
+  border-color: rgba(84, 84, 88, 0.6);
+}
+html[data-theme="dark"] .s9-menu-item { color: #FFFFFF; }
+html[data-theme="dark"] .s9-path-bar,
+html[data-theme="dark"] .s9-field-box { background: #3A3A3C; color: #FFFFFF; border-color: rgba(84, 84, 88, 0.6); }
+html[data-theme="dark"] .s9-explorer-split { border-color: rgba(84, 84, 88, 0.6); }
+
+/* ===== หน้าต่างโค้ดในสไลด์ (Xcode Dark) ===== */
+html[data-theme="dark"] :is(.s6-code-window, .s7-code-window) {
+  background: #1F1F24;
+  border-color: rgba(84, 84, 88, 0.6);
+}
+html[data-theme="dark"] :is(.s6-code-content, .s7-code-content) {
+  background: #1F1F24;
+  color: #FFFFFF;
+}
+html[data-theme="dark"] .line-num { color: #6C6C70; }
+html[data-theme="dark"] .c-tag  { color: #5DD8FF; }
+html[data-theme="dark"] .c-attr { color: #9EF1DD; }
+html[data-theme="dark"] .c-str  { color: #FC6A5D; }
+html[data-theme="dark"] .c-sel  { color: #FC5FA3; }
+html[data-theme="dark"] .c-prop { color: #9EF1DD; }
+html[data-theme="dark"] .c-val  { color: #FC6A5D; }
+html[data-theme="dark"] .c-comm { color: #7F8C98; }
+html[data-theme="dark"] .code-line.glow-green,
+html[data-theme="dark"] .s7-line-hl-html { background: rgba(48, 209, 88, 0.18) !important; }
+html[data-theme="dark"] .code-line.glow-blue,
+html[data-theme="dark"] .s7-line-hl-css { background: rgba(10, 132, 255, 0.22) !important; }
+
+/* ===== แก้สีจาก inline style (ยกเว้นพื้นที่จำลองหน้าเว็บจริงที่ต้องเป็นสีขาว) ===== */
+html[data-theme="dark"] :is([style*="color:#141414" i], [style*="color: #141414" i],
+  [style*="color:#1C1C1E" i], [style*="color: #1C1C1E" i])
+  :not(:is(.s6-browser-canvas, .s7-browser-canvas, .app-screen-mock, .sim-browser-window, .s8-browser-mock, .s10-browser-card) *) {
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] :is([style*="color:#52524E" i], [style*="color:#6E6C65" i], [style*="color:#6C6C70" i], [style*="color:#3A3A3C" i])
+  :not(:is(.s6-browser-canvas, .s7-browser-canvas, .app-screen-mock, .sim-browser-window, .s8-browser-mock, .s10-browser-card) *) {
+  color: #AEAEB2 !important;
+}
+html[data-theme="dark"] :is([style*="color:#1F6E43" i], [style*="color:#248A3D" i])
+  :not(:is(.s6-browser-canvas, .s7-browser-canvas, .app-screen-mock, .sim-browser-window, .s8-browser-mock, .s10-browser-card) *) {
+  color: #30D158 !important;
+}
+html[data-theme="dark"] :is([style*="color:#0F52BA" i], [style*="color:#64748b" i])
+  :not(:is(.s6-browser-canvas, .s7-browser-canvas, .app-screen-mock, .sim-browser-window, .s8-browser-mock, .s10-browser-card) *) {
+  color: #64D2FF !important;
+}
+html[data-theme="dark"] :is([style*="color:#9A3B00" i], [style*="color:#C93400" i])
+  :not(:is(.s6-browser-canvas, .s7-browser-canvas, .app-screen-mock, .sim-browser-window, .s8-browser-mock, .s10-browser-card) *) {
+  color: #FF9F0A !important;
+}
+html[data-theme="dark"] :is([style*="color:#C81E1E" i], [style*="color:#D93800" i])
+  :not(:is(.s6-browser-canvas, .s7-browser-canvas, .app-screen-mock, .sim-browser-window, .s8-browser-mock, .s10-browser-card) *) {
+  color: #FF6961 !important;
+}
+html[data-theme="dark"] :is(
+  [style*="background:#FFFFFF" i], [style*="background: #FFFFFF" i],
+  [style*="background:#F7F6F2" i], [style*="background:#F2F2F7" i],
+  [style*="background:#EFECE6" i], [style*="background:#FFF0E8" i], [style*="background:#E5E5EA" i]
+):not(:is(.s6-browser-canvas, .s7-browser-canvas, .app-screen-mock, .sim-browser-window, .s8-browser-mock, .s10-browser-card) *):not(.s6-browser-canvas):not(.s7-browser-canvas):not(#s7CanvasQuote) {
+  background: #3A3A3C !important;
+  color: #FFFFFF;
+}
+
+/* ===== หน้าเขียนโค้ด (code.html) ===== */
+html[data-theme="dark"] .vscode-title-text,
+html[data-theme="dark"] .folder-header,
+html[data-theme="dark"] .emmet-match,
+html[data-theme="dark"] .emmet-item { color: #FFFFFF; }
+html[data-theme="dark"] .ctrl-label { color: #AEAEB2; }
+html[data-theme="dark"] .toolbar-controls button:not(.btn-save):not(.theme-toggle) { color: #FFFFFF; }
+html[data-theme="dark"] .toolbar-controls button:not(.btn-save):not(.theme-toggle):hover { background: rgba(255, 255, 255, 0.14); }
+html[data-theme="dark"] .font-size-badge { background: #3A3A3C; color: #64D2FF; }
+html[data-theme="dark"] .activity-bar { background: #1C1C1E; }
+html[data-theme="dark"] .activity-icon { color: #8E8E93; }
+html[data-theme="dark"] .file-item { color: #EBEBF5; }
+html[data-theme="dark"] .file-item:hover { background: rgba(255, 255, 255, 0.08); }
+html[data-theme="dark"] .new-file-input { background: #2C2C2E; color: #FFFFFF; }
+html[data-theme="dark"] .editor-pane,
+html[data-theme="dark"] .code-container { background: #1F1F24; }
+html[data-theme="dark"] .editor-tabs { background: #1C1C1E; }
+html[data-theme="dark"] .tab { color: #8E8E93; background: rgba(118, 118, 128, 0.16); }
+html[data-theme="dark"] .tab.active { background: #1F1F24; color: #FFFFFF; }
+html[data-theme="dark"] .breadcrumb-bar { background: #1F1F24; color: #8E8E93; }
+html[data-theme="dark"] .line-numbers { background: #1C1C20; color: #5A5A60; }
+html[data-theme="dark"] .highlight-layer { color: #FFFFFF; }
+html[data-theme="dark"] .code-editor { caret-color: #FFFFFF; }
+html[data-theme="dark"] .code-editor::selection { background-color: rgba(10, 132, 255, 0.4); }
+html[data-theme="dark"] .tok-punct { color: #8E8E93; }
+html[data-theme="dark"] .tok-tag { color: #5DD8FF; }
+html[data-theme="dark"] .tok-attr { color: #9EF1DD; }
+html[data-theme="dark"] .tok-string { color: #FC6A5D; }
+html[data-theme="dark"] .tok-comment { color: #7F8C98; }
+html[data-theme="dark"] .tok-keyword,
+html[data-theme="dark"] .tok-control { color: #FC5FA3; }
+html[data-theme="dark"] .tok-number { color: #D0BF69; }
+html[data-theme="dark"] .tok-selector { color: #FD8F3F; }
+html[data-theme="dark"] .tok-func { color: #67B7A4; }
+html[data-theme="dark"] .tok-color { background-color: rgba(255, 255, 255, 0.08); }
+html[data-theme="dark"] .color-picker-widget,
+html[data-theme="dark"] .emmet-popup { background: rgba(44, 44, 46, 0.96); border-color: rgba(255, 255, 255, 0.1); }
+html[data-theme="dark"] .cp-header { background: #3A3A3C; color: #FFFFFF; }
+html[data-theme="dark"] .cp-body { background: #2C2C2E; }
+html[data-theme="dark"] .empty-state { background: #1F1F24; }
+html[data-theme="dark"] .browser-bar { background: #2C2C2E; }
+html[data-theme="dark"] .address-bar { background: #1C1C1E; color: #FFFFFF; border-color: rgba(255, 255, 255, 0.1); }
+html[data-theme="dark"] .live-badge { background: rgba(48, 209, 88, 0.2); color: #30D158; }
+html[data-theme="dark"] .statusbar { background: rgba(28, 28, 30, 0.92); color: #8E8E93; }
+html[data-theme="dark"] .badge-html { color: #FF9F0A; }
+html[data-theme="dark"] .badge-css { color: #64D2FF; }
+html[data-theme="dark"] .badge-js { color: #FFD60A; }
+html[data-theme="dark"] .badge-txt { color: #AEAEB2; }

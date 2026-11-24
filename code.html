@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>VS Code Live Editor - เขียนโปรแกรม</title>
+    <style>
+    :root {
+      --bg-dark: #FFFFFF;
+      --bg-paper: #F2F2F7;
+      --bg-sidebar: #F2F2F7;
+      --bg-activity: #E5E5EA;
+      --bg-tabs: #F2F2F7;
+      --bg-tab-active: #FFFFFF;
+      --bg-status: #FFFFFF;
+      --bg-header: rgba(255, 255, 255, 0.82);
+      --border-color: rgba(60, 60, 67, 0.14);
+      --text-main: #1C1C1E;
+      --text-muted: #8E8E93;
+      --accent: #007AFF;
+      --accent-soft: rgba(0, 122, 255, 0.12);
+      --ios-green: #34C759;
+      --editor-font-size: 20px;
+      --editor-line-height: 34px;
+      --editor-font-family: 'Cascadia Mono', 'Consolas', 'Courier New', 'Leelawadee UI', 'Tahoma', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Tahoma, sans-serif;
+      background-color: var(--bg-paper);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* ===== iPadOS Frosted Top Bar ===== */
+    .titlebar {
+      height: 50px;
+      background-color: var(--bg-header);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      border-bottom: 0.5px solid var(--border-color);
+      font-size: 13.5px;
+      z-index: 30;
+    }
+
+    .titlebar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-home-btn {
+      text-decoration: none;
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.18s ease, transform 0.15s ease;
+    }
+
+    .back-home-btn:hover {
+      background: rgba(0, 122, 255, 0.18);
+    }
+
+    .back-home-btn:active {
+      transform: scale(0.96);
+    }
+
+    .vscode-logo {
+      background: linear-gradient(180deg, #389BFF 0%, #007AFF 100%);
+      color: #FFFFFF;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      box-shadow: 0 2px 6px rgba(0, 122, 255, 0.25);
+    }
+
+    .vscode-title-text {
+      font-weight: 700;
+      color: #1C1C1E;
+      letter-spacing: -0.01em;
+    }
+
+    .toolbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* iOS Segmented Control Group */
+    .ctrl-group {
+      display: flex;
+      align-items: center;
+      background: rgba(118, 118, 128, 0.12);
+      padding: 3px;
+      border-radius: 10px;
+      gap: 2px;
+    }
+
+    .ctrl-label {
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6C6C70;
+    }
+
+    button {
+      background: transparent;
+      color: #1C1C1E;
+      border: none;
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.16s ease, box-shadow 0.16s ease, transform 0.12s ease;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+    .btn-save {
+      background: var(--ios-green);
+      color: #FFFFFF;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(52, 199, 89, 0.28);
+    }
+
+    .btn-save:hover {
+      background: #2DB84E;
+      color: #FFFFFF;
+    }
+
+    .font-size-badge {
+      padding: 3px 10px;
+      font-family: 'SF Mono', 'Consolas', monospace;
+      font-weight: 700;
+      font-size: 12.5px;
+      color: var(--accent);
+      background: #FFFFFF;
+      border-radius: 7px;
+      min-width: 48px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    /* ===== Main Workspace ===== */
+    .workspace {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .activity-bar {
+      width: 46px;
+      background-color: #F2F2F7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 10px;
+      gap: 12px;
+      border-right: 0.5px solid var(--border-color);
+    }
+
+    .activity-icon {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9px;
+      cursor: pointer;
+      color: #6C6C70;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .activity-icon.active, .activity-icon:hover {
+      color: var(--accent);
+      background: rgba(0, 122, 255, 0.12);
+    }
+
+    /* iPadOS Sidebar */
+    .sidebar {
+      width: 220px;
+      background-color: var(--bg-sidebar);
+      border-right: 0.5px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      padding: 6px 8px;
+    }
+
+    .sidebar.collapsed {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+      border-right: none;
+    }
+
+    .sidebar-title {
+      padding: 8px 10px 4px;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #8E8E93;
+      font-weight: 700;
+    }
+
+    .folder-header {
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1C1C1E;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .new-file-btn {
+      background: rgba(0, 122, 255, 0.12);
+      color: var(--accent);
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 999px;
+    }
+
+    .new-file-btn:hover {
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+
+    .new-file-input-wrap {
+      padding: 6px 8px;
+    }
+
+    .new-file-input {
+      width: 100%;
+      background: #FFFFFF;
+      color: #1C1C1E;
+      border: 1.5px solid var(--accent);
+      border-radius: 9px;
+      padding: 6px 10px;
+      font-size: 13px;
+      outline: none;
+      font-family: inherit;
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.14);
+    }
+
+    .file-list {
+      list-style: none;
+      padding-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .file-item {
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      color: #3A3A3C;
+      transition: background 0.14s ease;
+    }
+
+    .file-item-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-item:hover {
+      background-color: rgba(118, 118, 128, 0.08);
+    }
+
+    .file-item.active {
+      background-color: var(--accent);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .file-item.active .file-badge {
+      background: rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+    }
+
+    .file-item.active .delete-file-btn {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .delete-file-btn {
+      opacity: 0;
+      background: transparent;
+      color: #8E8E93;
+      padding: 2px 6px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    .file-item:hover .delete-file-btn {
+      opacity: 1;
+    }
+
+    .delete-file-btn:hover {
+      color: #FF3B30 !important;
+      background: rgba(255, 59, 48, 0.14);
+    }
+
+    .file-badge {
+      font-family: 'Consolas', monospace;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 2px 5px;
+      border-radius: 5px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .badge-html { background: rgba(255, 149, 0, 0.16); color: #C93400; }
+    .badge-css { background: rgba(0, 122, 255, 0.14); color: #007AFF; }
+    .badge-js { background: rgba(255, 204, 0, 0.24); color: #946800; }
+    .badge-txt { background: rgba(118, 118, 128, 0.14); color: #6C6C70; }
+
+    /* ===== Split Container ===== */
+    .split-container {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .editor-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 250px;
+      border-right: 0.5px solid var(--border-color);
+      position: relative;
+      background: #FFFFFF;
+    }
+
+    .editor-tabs {
+      height: 38px;
+      background-color: #F2F2F7;
+      border-bottom: 0.5px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      padding: 4px 8px 0;
+      gap: 4px;
+      overflow-x: auto;
+    }
+
+    .tab {
+      height: 100%;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #6C6C70;
+      background: rgba(118, 118, 128, 0.08);
+      border-radius: 10px 10px 0 0;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: #FFFFFF;
+      color: #1C1C1E;
+      font-weight: 700;
+      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .unsaved-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      display: inline-block;
+      margin-left: 2px;
+    }
+
+    .breadcrumb-bar {
+      height: 26px;
+      background-color: #FAFAFC;
+      border-bottom: 0.5px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      font-size: 12px;
+      color: #8E8E93;
+      gap: 6px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .bc-sep { color: #C7C7CC; }
+    .bc-tag-icon { color: var(--accent); font-weight: 700; font-size: 11px; }
+
+    .code-container {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+      background-color: #FFFFFF;
+    }
+
+    .line-numbers {
+      width: 50px;
+      background-color: #FAFAFC;
+      color: #AEAEB2;
+      overflow: hidden;
+      border-right: 0.5px solid var(--border-color);
+      flex-shrink: 0;
+      position: relative;
+      user-select: none;
+    }
+
+    .line-numbers-inner {
+      padding: 14px 10px 14px 0;
+      text-align: right;
+      font-family: var(--editor-font-family);
+      font-size: var(--editor-font-size);
+      line-height: var(--editor-line-height);
+      font-weight: 400;
+      font-style: normal;
+      letter-spacing: 0px;
+      word-spacing: 0px;
+      white-space: pre;
+      will-change: transform;
+    }
+
+    .ln-strut {
+      display: inline-block;
+      width: 0;
+      overflow: visible;
+      color: transparent;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .editor-stack {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .highlight-layer,
+    .code-editor {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-family: var(--editor-font-family);
+      font-size: var(--editor-font-size);
+      line-height: var(--editor-line-height);
+      font-weight: 400;
+      font-style: normal;
+      font-kerning: none;
+      padding: 14px 16px;
+      margin: 0;
+      border: none;
+      white-space: pre;
+      word-wrap: normal;
+      overflow-wrap: normal;
+      tab-size: 2;
+      -moz-tab-size: 2;
+      letter-spacing: 0px;
+      word-spacing: 0px;
+      text-indent: 0;
+      text-rendering: auto;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    .highlight-layer {
+      z-index: 1;
+      min-width: 100%;
+      width: max-content;
+      min-height: 100%;
+      height: max-content;
+      color: #1C1C1E;
+      pointer-events: none;
+      overflow: visible;
+      will-change: transform;
+    }
+
+    .highlight-layer span {
+      font-family: inherit !important;
+      font-size: inherit !important;
+      line-height: inherit !important;
+      font-weight: 400 !important;
+      font-style: normal !important;
+      letter-spacing: 0px !important;
+      word-spacing: 0px !important;
+      font-kerning: none !important;
+      vertical-align: baseline;
+    }
+
+    .code-editor {
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      caret-color: var(--accent);
+      outline: none;
+      resize: none;
+      overflow: auto;
+    }
+
+    .code-editor::selection {
+      background-color: rgba(0, 122, 255, 0.2);
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ===== Xcode Light Syntax Highlighting (ไม่ใช้ italic เพื่อล็อกความกว้างภาษาไทยให้ตรงเป๊ะ 100%) ===== */
+    .tok-punct { color: #8E8E93; }
+    .tok-tag { color: #0B4F79; }
+    .tok-attr { color: #326D74; }
+    .tok-string { color: #C41A16; }
+    .tok-comment { color: #5D6C79; font-style: normal; }
+    .tok-keyword { color: #9B2393; }
+    .tok-control { color: #9B2393; }
+    .tok-number { color: #1C00CF; }
+    .tok-selector { color: #0B4F79; }
+    .tok-func { color: #326D74; }
+
+    .tok-color {
+      position: relative;
+      background-color: rgba(0, 0, 0, 0.04);
+      box-shadow: inset 0 -2px 0 var(--swatch-color);
+      border-radius: 3px;
+    }
+
+    .tok-color::before {
+      content: '';
+      position: absolute;
+      left: -0.75em;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0.58em;
+      height: 0.58em;
+      background-color: var(--swatch-color);
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      border-radius: 3px;
+    }
+
+    /* ===== iOS Popover Color Picker ===== */
+    .color-picker-widget {
+      position: absolute;
+      z-index: 120;
+      width: 280px;
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: saturate(180%) blur(20px);
+      border: 0.5px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+      border-radius: 16px;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .cp-header {
+      height: 32px;
+      background-color: #F2F2F7;
+      color: #1C1C1E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: 'Consolas', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      border-bottom: 0.5px solid var(--border-color);
+      position: relative;
+    }
+
+    .cp-close-btn {
+      position: absolute;
+      right: 6px;
+      top: 4px;
+      background: rgba(118, 118, 128, 0.14);
+      color: #6C6C70;
+      border-radius: 999px;
+      padding: 2px 7px;
+      font-size: 11px;
+    }
+
+    .cp-body {
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      height: 165px;
+      background-color: #FFFFFF;
+    }
+
+    .cp-sat-val {
+      flex: 1;
+      position: relative;
+      background-color: #ff0000;
+      background-image:
+        linear-gradient(to top, #000000, transparent),
+        linear-gradient(to right, #ffffff, transparent);
+      cursor: crosshair;
+      border-radius: 8px;
+      border: 0.5px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .cp-cursor {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 2.5px solid #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .cp-alpha-bar, .cp-hue-bar {
+      width: 18px;
+      position: relative;
+      border-radius: 999px;
+      border: 0.5px solid rgba(0, 0, 0, 0.12);
+      cursor: ns-resize;
+    }
+
+    .cp-alpha-bar {
+      background: linear-gradient(to bottom, #ffffff, #000000);
+    }
+
+    .cp-hue-bar {
+      width: 20px;
+      background: linear-gradient(
+        to bottom,
+        #ff0000 0%,
+        #ffff00 17%,
+        #00ff00 33%,
+        #00ffff 50%,
+        #0000ff 67%,
+        #ff00ff 83%,
+        #ff0000 100%
+      );
+    }
+
+    .cp-slider-thumb {
+      position: absolute;
+      left: -2px;
+      right: -2px;
+      height: 7px;
+      border-radius: 999px;
+      border: 2px solid #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.25);
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    /* ===== iOS Emmet Popover ===== */
+    .emmet-popup {
+      position: absolute;
+      z-index: 100;
+      background-color: rgba(255, 255, 255, 0.94);
+      backdrop-filter: saturate(180%) blur(20px);
+      border: 0.5px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+      min-width: 310px;
+      max-width: 440px;
+      border-radius: 14px;
+      padding: 4px;
+      font-family: 'Consolas', 'Segoe UI', monospace;
+      font-size: 14px;
+      overflow: hidden;
+    }
+
+    .emmet-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      border-radius: 9px;
+      cursor: pointer;
+      color: #1C1C1E;
+    }
+
+    .emmet-item.selected, .emmet-item:hover {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .emmet-item.selected .emmet-match,
+    .emmet-item:hover .emmet-match,
+    .emmet-item.selected .emmet-right,
+    .emmet-item:hover .emmet-right,
+    .emmet-item.selected .emmet-icon,
+    .emmet-item:hover .emmet-icon {
+      color: #ffffff;
+    }
+
+    .emmet-left { display: flex; align-items: center; gap: 8px; }
+    .emmet-icon { font-size: 12px; color: var(--accent); font-weight: 800; }
+    .emmet-match { color: #1C1C1E; font-weight: 700; }
+    .emmet-right { display: flex; align-items: center; gap: 8px; color: #8E8E93; font-size: 12px; font-family: -apple-system, 'Segoe UI', sans-serif; }
+    .emmet-enter-icon { border: 0.5px solid rgba(0,0,0,0.2); border-radius: 5px; padding: 0 5px; font-size: 11px; background: rgba(0,0,0,0.05); }
+
+    /* Dynamic Island / iOS Capsule Toast */
+    .save-toast {
+      position: fixed;
+      bottom: 40px;
+      right: 20px;
+      background: rgba(28, 28, 30, 0.9);
+      backdrop-filter: saturate(180%) blur(18px);
+      color: #FFFFFF;
+      padding: 10px 18px;
+      border-radius: 999px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #8E8E93;
+      gap: 14px;
+      text-align: center;
+      padding: 24px;
+      background: #FAFAFC;
+    }
+
+    .empty-state-btn {
+      background: var(--accent);
+      color: #FFFFFF;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(0, 122, 255, 0.28);
+    }
+
+    .empty-state-btn:hover {
+      background: #0066D6;
+      color: #FFFFFF;
+    }
+
+    /* ===== iPadOS Safari Preview Pane ===== */
+    .preview-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 250px;
+      background: #ffffff;
+    }
+
+    .browser-bar {
+      height: 38px;
+      background: #F2F2F7;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 10px;
+      border-bottom: 0.5px solid var(--border-color);
+    }
+
+    .browser-dots { display: flex; gap: 6px; }
+    .dot { width: 11px; height: 11px; border-radius: 50%; }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+
+    .address-bar {
+      flex: 1;
+      background: #FFFFFF;
+      color: #1C1C1E;
+      padding: 4px 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      border: 0.5px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .live-badge {
+      background: rgba(52, 199, 89, 0.15);
+      color: #248A3D;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .preview-frame {
+      flex: 1;
+      width: 100%;
+      border: none;
+      background: #ffffff;
+    }
+
+    /* ===== Bottom Status Bar ===== */
+    .statusbar {
+      height: 26px;
+      background-color: rgba(242, 242, 247, 0.9);
+      backdrop-filter: blur(12px);
+      color: #6C6C70;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      font-size: 12px;
+      font-weight: 500;
+      border-top: 0.5px solid var(--border-color);
+    }
+
+    .status-left, .status-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sidebar-backdrop { display: none; }
+    .pane-full { flex: 1 1 100% !important; height: 100% !important; width: 100% !important; }
+
+    @media (max-width: 1024px) {
+      .sidebar { width: 195px; }
+      .titlebar { padding: 0 8px; }
+      .toolbar-controls { gap: 6px; }
+      .ctrl-label { padding: 4px 6px; font-size: 12px; }
+      button { padding: 5px 9px; font-size: 12px; }
+      .font-size-badge { min-width: 40px; font-size: 12px; }
+    }
+
+    @media (max-width: 768px) {
+      body { height: 100dvh; }
+      .titlebar { height: auto; min-height: 44px; padding: 6px 8px; flex-wrap: wrap; gap: 6px; }
+      .vscode-title-text { display: none; }
+      .toolbar-controls { width: 100%; overflow-x: auto; padding-bottom: 2px; gap: 6px; scrollbar-width: none; }
+      .toolbar-controls::-webkit-scrollbar { display: none; }
+      .workspace { position: relative; overflow: hidden; }
+      .activity-bar { width: 42px; padding-top: 6px; }
+      .sidebar {
+        position: absolute;
+        left: 42px;
+        top: 0;
+        bottom: 0;
+        width: min(250px, calc(100vw - 46px));
+        z-index: 90;
+        box-shadow: 8px 0 28px rgba(0, 0, 0, 0.14);
+        transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+        transform: translateX(0);
+      }
+      .sidebar.collapsed { transform: translateX(-120%); pointer-events: none; box-shadow: none; }
+      .sidebar-backdrop.active { display: block; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(2px); z-index: 85; }
+      .split-container { flex-direction: column; }
+      .editor-pane { min-width: 0; width: 100%; height: 50%; min-height: 140px; border-right: none; border-bottom: 0.5px solid var(--border-color); }
+      .preview-pane { min-width: 0; width: 100%; height: 50%; min-height: 140px; }
+      .line-numbers { width: 38px; }
+      .line-numbers-inner { padding: 10px 4px 10px 0; }
+      .highlight-layer, .code-editor { padding: 10px 10px; }
+      #saveStatusText { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .ctrl-label, .home-text, .download-text, #cursorPos { display: none; }
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <header class="titlebar">
+    <div class="titlebar-left">
+      <a href="index.html" class="back-home-btn" title="กลับไปยังหน้าแรก">🏠 <span class="home-text">หน้าแรก</span></a>
+      <span class="vscode-logo">VS Code</span>
+      <span class="vscode-title-text">Live Web Editor</span>
+    </div>
+
+    <div class="toolbar-controls">
+      <div class="ctrl-group">
+        <button class="btn-save" onclick="saveProject(false)" title="บันทึกโค้ดไว้ในระบบ (Ctrl+S)">💾 <span>Save</span></button>
+        <button onclick="saveProject(true)" title="ดาวน์โหลดไฟล์ที่กำลังเปิดอยู่ลงคอมพิวเตอร์">⬇️ <span class="download-text">ดาวน์โหลด</span></button>
+      </div>
+
+      <div class="ctrl-group font-ctrl-group">
+        <span class="ctrl-label">ขนาดตัวอักษร</span>
+        <button onclick="changeFontSize(-2)" title="ลดขนาดตัวอักษร">A-</button>
+        <span id="fontSizeDisplay" class="font-size-badge">20px</span>
+        <button onclick="changeFontSize(2)" title="เพิ่มขนาดตัวอักษร">A+</button>
+      </div>
+
+      <div class="ctrl-group layout-ctrl-group">
+        <button onclick="setLayout('split')" title="แบ่งหน้าจอแสดงทั้งโค้ดและผลลัพธ์">◫ แบ่งจอ</button>
+        <button onclick="setLayout('code')" title="แสดงเฉพาะหน้าจอพิมพ์โค้ด">💻 โค้ด</button>
+        <button onclick="setLayout('preview')" title="แสดงเฉพาะหน้าจอผลลัพธ์">👁️ ผลลัพธ์</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="workspace">
+    <div id="sidebarBackdrop" class="sidebar-backdrop" onclick="toggleSidebar()"></div>
+    <aside class="activity-bar">
+      <div class="activity-icon active" onclick="toggleSidebar()" title="เปิด/ปิด แถบไฟล์">📁</div>
+    </aside>
+
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-title">EXPLORER</div>
+      <div class="folder-header">
+        <span>▼ 📁 PROJECT</span>
+        <button class="new-file-btn" onclick="showNewFileInput()" title="สร้างไฟล์ใหม่ (New File)">+ ไฟล์ใหม่</button>
+      </div>
+
+      <div id="newFileInputWrap" class="new-file-input-wrap hidden">
+        <input
+          type="text"
+          id="newFileInput"
+          class="new-file-input"
+          placeholder="เช่น index.html"
+          autocomplete="off"
+        />
+      </div>
+
+      <ul id="fileList" class="file-list"></ul>
+    </aside>
+
+    <div class="split-container">
+      <!-- ฝั่งซ้าย: พิมพ์โค้ด -->
+      <section id="editorPane" class="editor-pane">
+        <div id="editorTabs" class="editor-tabs"></div>
+        <div id="breadcrumbBar" class="breadcrumb-bar hidden"></div>
+
+        <!-- แสดงเมื่อยังไม่มีไฟล์ใดถูกสร้าง -->
+        <div id="emptyState" class="empty-state">
+          <div style="font-size: 42px;">📄</div>
+          <div>ยังไม่มีไฟล์ในโปรเจกต์</div>
+          <button class="empty-state-btn" onclick="showNewFileInput()">+ กดเพื่อสร้างไฟล์ใหม่ (เช่น index.html)</button>
+        </div>
+
+        <!-- พื้นที่พิมพ์โค้ด -->
+        <div id="codeContainer" class="code-container hidden">
+          <div id="lineNumbers" class="line-numbers"><div id="lineNumbersInner" class="line-numbers-inner">1</div></div>
+          <div class="editor-stack">
+            <pre id="highlightLayer" class="highlight-layer" aria-hidden="true"></pre>
+            <textarea
+              id="codeEditor"
+              class="code-editor"
+              wrap="off"
+              spellcheck="false"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              placeholder="พิมพ์โค้ดที่นี่... (คลิกที่โค้ดสี เช่น #007acc เพื่อเปิดถาดเลือกสี)"
+            ></textarea>
+          </div>
+
+          <!-- กล่อง Emmet Abbreviation Popup -->
+          <div id="emmetPopup" class="emmet-popup hidden"></div>
+
+          <!-- กล่อง VS Code Color Picker Popup -->
+          <div id="colorPickerWidget" class="color-picker-widget hidden">
+            <div class="cp-header">
+              <span>◐</span>
+              <span id="cpHexText">#007acc</span>
+              <button class="cp-close-btn" onclick="hideColorPicker()" title="ปิด">✕</button>
+            </div>
+            <div class="cp-body">
+              <div id="cpSatVal" class="cp-sat-val">
+                <div id="cpCursor" class="cp-cursor" style="left: 100%; top: 0%;"></div>
+              </div>
+              <div id="cpAlphaBar" class="cp-alpha-bar">
+                <div id="cpAlphaThumb" class="cp-slider-thumb" style="top: 0%;"></div>
+              </div>
+              <div id="cpHueBar" class="cp-hue-bar">
+                <div id="cpHueThumb" class="cp-slider-thumb" style="top: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ฝั่งขวา: แสดงผลลัพธ์ -->
+      <section id="previewPane" class="preview-pane">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <div class="address-bar">
+            <span id="addressUrl">http://localhost:5500/</span>
+            <span class="live-badge">Live</span>
+          </div>
+        </div>
+        <iframe id="previewFrame" class="preview-frame" title="Live Preview"></iframe>
+      </section>
+    </div>
+  </div>
+
+  <!-- แจ้งเตือน Save -->
+  <div id="saveToast" class="save-toast hidden">
+    <span>✅</span>
+    <span id="saveToastText">บันทึกโค้ดเรียบร้อยแล้ว!</span>
+  </div>
+
+  <footer class="statusbar">
+    <div class="status-left">
+      <span>🟢 Live Preview</span>
+      <span id="cursorPos">บรรทัด 1, คอลัมน์ 1</span>
+      <span id="saveStatusText">พร้อมใช้งาน</span>
+    </div>
+    <div class="status-right">
+      <span>Color Picker &amp; Emmet: Enabled</span>
+      <span>UTF-8</span>
+      <span id="langMode">-</span>
+    </div>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'vscode_classroom_saved_files_v1';
+    const closeHead = '<' + '/head>';
+    const closeBody = '<' + '/body>';
+    const closeHtml = '<' + '/html>';
+    const closeStyle = '<' + '/style>';
+    const closeScript = '<' + '/script>';
+    const closeTitle = '<' + '/title>';
+
+    const html5Template =
+      '<!DOCTYPE html>\n' +
+      '<html lang="en">\n' +
+      '<head>\n' +
+      '  <meta charset="UTF-8">\n' +
+      '  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">\n' +
+      '  <title>Document' + closeTitle + '\n' +
+      closeHead + '\n' +
+      '<body>\n' +
+      '  |CURSOR|\n' +
+      closeBody + '\n' +
+      closeHtml;
+
+    const emmetSnippets = [
+      { key: 'html:5', label: 'html:5', desc: 'Emmet Abbreviation', snippet: html5Template },
+      { key: '!', label: '!', desc: 'Emmet Abbreviation', snippet: html5Template },
+      { key: 'html', label: 'html', desc: 'Emmet Abbreviation', snippet: '<html>\n  |CURSOR|\n' + closeHtml },
+      { key: 'head', label: 'head', desc: 'Emmet Abbreviation', snippet: '<head>\n  |CURSOR|\n' + closeHead },
+      { key: 'body', label: 'body', desc: 'Emmet Abbreviation', snippet: '<body>\n  |CURSOR|\n' + closeBody },
+      { key: 'title', label: 'title', desc: 'Emmet Abbreviation', snippet: '<title>|CURSOR|' + closeTitle },
+      { key: 'h1', label: 'h1', desc: 'Emmet Abbreviation', snippet: '<h1>|CURSOR|<' + '/h1>' },
+      { key: 'h2', label: 'h2', desc: 'Emmet Abbreviation', snippet: '<h2>|CURSOR|<' + '/h2>' },
+      { key: 'h3', label: 'h3', desc: 'Emmet Abbreviation', snippet: '<h3>|CURSOR|<' + '/h3>' },
+      { key: 'p', label: 'p', desc: 'Emmet Abbreviation', snippet: '<p>|CURSOR|<' + '/p>' },
+      { key: 'button', label: 'button', desc: 'Emmet Abbreviation', snippet: '<button>|CURSOR|<' + '/button>' },
+      { key: 'div', label: 'div', desc: 'Emmet Abbreviation', snippet: '<div>|CURSOR|<' + '/div>' },
+      { key: 'span', label: 'span', desc: 'Emmet Abbreviation', snippet: '<span>|CURSOR|<' + '/span>' },
+      { key: 'a', label: 'a', desc: 'Emmet Abbreviation', snippet: '<a href="|CURSOR|"><' + '/a>' },
+      { key: 'img', label: 'img', desc: 'Emmet Abbreviation', snippet: '<img src="|CURSOR|" alt="">' },
+      { key: 'input', label: 'input', desc: 'Emmet Abbreviation', snippet: '<input type="text" placeholder="|CURSOR|">' },
+      { key: 'ul', label: 'ul', desc: 'Emmet Abbreviation', snippet: '<ul>\n  <li>|CURSOR|<' + '/li>\n<' + '/ul>' },
+      { key: 'li', label: 'li', desc: 'Emmet Abbreviation', snippet: '<li>|CURSOR|<' + '/li>' },
+      { key: 'br', label: 'br', desc: 'Emmet Abbreviation', snippet: '<br>|CURSOR|' },
+      { key: 'hr', label: 'hr', desc: 'Emmet Abbreviation', snippet: '<hr>|CURSOR|' },
+      { key: 'link:css', label: 'link:css', desc: 'Emmet Abbreviation', snippet: '<link rel="stylesheet" href="styles.css">|CURSOR|' },
+      { key: 'link', label: 'link', desc: 'Emmet Abbreviation', snippet: '<link rel="stylesheet" href="|CURSOR|">' },
+      { key: 'style', label: 'style', desc: 'Emmet Abbreviation', snippet: '<style>\n  |CURSOR|\n' + closeStyle },
+      { key: 'script', label: 'script', desc: 'Emmet Abbreviation', snippet: '<script>\n  |CURSOR|\n' + closeScript },
+      { key: 'script:src', label: 'script:src', desc: 'Emmet Abbreviation', snippet: '<script src="script.js">' + closeScript + '|CURSOR|' }
+    ];
+
+    let files = {};
+    let unsavedFiles = {};
+    let currentFile = null;
+    let currentFontSize = 20;
+    let currentLineHeight = 34;
+
+    let activeMatches = [];
+    let selectedMatchIndex = 0;
+    let currentWordInfo = null;
+
+    let activeColorToken = null;
+    let cpHue = 204;
+    let cpSat = 100;
+    let cpVal = 80;
+
+    const codeEditor = document.getElementById('codeEditor');
+    const highlightLayer = document.getElementById('highlightLayer');
+    const lineNumbers = document.getElementById('lineNumbers');
+    const lineNumbersInner = document.getElementById('lineNumbersInner');
+    const __measureCanvas = document.createElement('canvas');
+    const __measureCtx = __measureCanvas.getContext('2d');
+
+    function measureEditorTextWidth(text) {
+      if (!__measureCtx || !text) return 0;
+      const computed = window.getComputedStyle(codeEditor);
+      __measureCtx.font = `${computed.fontWeight} ${computed.fontSize} ${computed.fontFamily}`;
+      return __measureCtx.measureText(text.replace(/\t/g, '  ')).width;
+    }
+
+    function syncEditorScroll() {
+      const st = codeEditor.scrollTop;
+      const sl = codeEditor.scrollLeft;
+      highlightLayer.style.transform = `translate3d(${-sl}px, ${-st}px, 0)`;
+      if (lineNumbersInner) {
+        lineNumbersInner.style.transform = `translate3d(0, ${-st}px, 0)`;
+      }
+    }
+    const previewFrame = document.getElementById('previewFrame');
+    const fileListEl = document.getElementById('fileList');
+    const editorTabsEl = document.getElementById('editorTabs');
+    const breadcrumbBar = document.getElementById('breadcrumbBar');
+    const emptyStateEl = document.getElementById('emptyState');
+    const codeContainerEl = document.getElementById('codeContainer');
+    const newFileInputWrap = document.getElementById('newFileInputWrap');
+    const newFileInput = document.getElementById('newFileInput');
+    const emmetPopup = document.getElementById('emmetPopup');
+
+    const colorPickerWidget = document.getElementById('colorPickerWidget');
+    const cpHexText = document.getElementById('cpHexText');
+    const cpSatVal = document.getElementById('cpSatVal');
+    const cpCursor = document.getElementById('cpCursor');
+    const cpHueBar = document.getElementById('cpHueBar');
+    const cpHueThumb = document.getElementById('cpHueThumb');
+    const cpAlphaBar = document.getElementById('cpAlphaBar');
+    const cpAlphaThumb = document.getElementById('cpAlphaThumb');
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function decorateHexColors(htmlStr) {
+      return htmlStr.replace(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g, (fullHex) => {
+        return '<span class="tok-color" style="--swatch-color:' + fullHex + '">' + fullHex + '<' + '/span>';
+      });
+    }
+
+    function highlightHTMLAttributes(attrStr) {
+      return attrStr.replace(
+        /([a-zA-Z_:][-a-zA-Z0-9_:.]*)|(=)|("[^"]*"|'[^']*')/g,
+        (match, attrName, eq, strVal) => {
+          if (attrName) return '<span class="tok-attr">' + attrName + '<' + '/span>';
+          if (eq) return eq;
+          if (strVal) return '<span class="tok-string">' + decorateHexColors(strVal) + '<' + '/span>';
+          return match;
+        }
+      );
+    }
+
+    function highlightHTMLMarkup(code) {
+      const escaped = escapeHtml(code);
+      return escaped.replace(
+        /(&lt;!--[\s\S]*?--&gt;)|(&lt;!DOCTYPE)(\s+)([a-zA-Z0-9]+)(&gt;)|(&lt;\/?)([a-zA-Z][a-zA-Z0-9:-]*)([\s\S]*?)(\/?&gt;)/gi,
+        (
+          match,
+          comment,
+          docOpen, docSpace, docType, docClose,
+          tagOpen, tagName, attrs, tagClose
+        ) => {
+          if (comment) {
+            return '<span class="tok-comment">' + comment + '<' + '/span>';
+          }
+          if (docOpen) {
+            return (
+              '<span class="tok-punct">' + docOpen + '<' + '/span>' +
+              docSpace +
+              '<span class="tok-tag">' + docType + '<' + '/span>' +
+              '<span class="tok-punct">' + docClose + '<' + '/span>'
+            );
+          }
+          if (tagOpen) {
+            return (
+              '<span class="tok-punct">' + tagOpen + '<' + '/span>' +
+              '<span class="tok-tag">' + tagName + '<' + '/span>' +
+              highlightHTMLAttributes(attrs) +
+              '<span class="tok-punct">' + tagClose + '<' + '/span>'
+            );
+          }
+          return match;
+        }
+      );
+    }
+
+    function highlightHTML(code) {
+      const blockRegex = new RegExp(
+        '(<style\\b[^>]*>)([\\s\\S]*?)(<' + '/style>)|(<script\\b[^>]*>)([\\s\\S]*?)(<' + '/script>)',
+        'gi'
+      );
+      let result = '';
+      let lastIndex = 0;
+      let m;
+      while ((m = blockRegex.exec(code)) !== null) {
+        if (m.index > lastIndex) {
+          result += highlightHTMLMarkup(code.slice(lastIndex, m.index));
+        }
+        if (m[1] !== undefined) {
+          result += highlightHTMLMarkup(m[1]) + highlightCSS(m[2]) + highlightHTMLMarkup(m[3]);
+        } else {
+          result += highlightHTMLMarkup(m[4]) + highlightJS(m[5]) + highlightHTMLMarkup(m[6]);
+        }
+        lastIndex = blockRegex.lastIndex;
+      }
+      if (lastIndex < code.length) {
+        result += highlightHTMLMarkup(code.slice(lastIndex));
+      }
+      return result;
+    }
+
+    function highlightCSS(code) {
+      const escaped = escapeHtml(code);
+      return escaped.replace(
+        /(\/\*[\s\S]*?\*\/)|([a-zA-Z-]+)(\s*:\s*)([^;}\n]+)|([.#]?[a-zA-Z0-9_-]+)(?=\s*\{)/g,
+        (match, comment, prop, colon, val, selector) => {
+          if (comment) return '<span class="tok-comment">' + comment + '<' + '/span>';
+          if (prop) {
+            return (
+              '<span class="tok-attr">' + prop + '<' + '/span>' +
+              colon +
+              '<span class="tok-string">' + decorateHexColors(val) + '<' + '/span>'
+            );
+          }
+          if (selector) return '<span class="tok-selector">' + selector + '<' + '/span>';
+          return match;
+        }
+      );
+    }
+
+    function highlightJS(code) {
+      const escaped = escapeHtml(code);
+      return escaped.replace(
+        /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("[^"]*"|'[^']*'|`[^`]*`)|\b(let|const|var|function|true|false|null|undefined|new|this)\b|\b(if|else|for|while|return|try|catch)\b|\b(\d+)\b|\b([a-zA-Z_$][a-zA-Z0-9_$]*)(?=\s*\()/g,
+        (match, comment, str, kw, ctrl, num, fn) => {
+          if (comment) return '<span class="tok-comment">' + comment + '<' + '/span>';
+          if (str) return '<span class="tok-string">' + decorateHexColors(str) + '<' + '/span>';
+          if (kw) return '<span class="tok-keyword">' + kw + '<' + '/span>';
+          if (ctrl) return '<span class="tok-control">' + ctrl + '<' + '/span>';
+          if (num) return '<span class="tok-number">' + num + '<' + '/span>';
+          if (fn) return '<span class="tok-func">' + fn + '<' + '/span>';
+          return match;
+        }
+      );
+    }
+
+    function updateHighlighting() {
+      const code = codeEditor.value;
+      const lang = getLangMode(currentFile);
+      let html = '';
+
+      if (lang === 'HTML') {
+        html = highlightHTML(code);
+      } else if (lang === 'CSS') {
+        html = highlightCSS(code);
+      } else if (lang === 'JavaScript') {
+        html = highlightJS(code);
+      } else {
+        html = decorateHexColors(escapeHtml(code));
+      }
+
+      if (code.endsWith('\n')) {
+        html += ' ';
+      }
+      highlightLayer.innerHTML = html;
+    }
+
+    function hexToRgb(hex) {
+      let clean = hex.replace('#', '');
+      if (clean.length === 3) {
+        clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2];
+      }
+      const num = parseInt(clean, 16);
+      return {
+        r: (num >> 16) & 255,
+        g: (num >> 8) & 255,
+        b: num & 255
+      };
+    }
+
+    function rgbToHsv(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      const d = max - min;
+      let h = 0;
+      const s = max === 0 ? 0 : d / max;
+      const v = max;
+
+      if (max !== min) {
+        switch (max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+      }
+      return { h: h * 360, s: s * 100, v: v * 100 };
+    }
+
+    function hsvToHex(h, s, v) {
+      h = Math.max(0, Math.min(360, h)) / 360;
+      s = Math.max(0, Math.min(100, s)) / 100;
+      v = Math.max(0, Math.min(100, v)) / 100;
+
+      let r, g, b;
+      const i = Math.floor(h * 6);
+      const f = h * 6 - i;
+      const p = v * (1 - s);
+      const q = v * (1 - f * s);
+      const t = v * (1 - (1 - f) * s);
+
+      switch (i % 6) {
+        case 0: r = v; g = t; b = p; break;
+        case 1: r = q; g = v; b = p; break;
+        case 2: r = p; g = v; b = t; break;
+        case 3: r = p; g = q; b = v; break;
+        case 4: r = t; g = p; b = v; break;
+        case 5: r = v; g = p; b = q; break;
+      }
+
+      const toHex = (n) => Math.round(n * 255).toString(16).padStart(2, '0');
+      return '#' + toHex(r) + toHex(g) + toHex(b);
+    }
+
+    function findHexAtCursor() {
+      const pos = codeEditor.selectionStart;
+      const text = codeEditor.value;
+      const regex = /#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g;
+      let m;
+      while ((m = regex.exec(text)) !== null) {
+        const start = m.index;
+        const end = start + m[0].length;
+        if (pos >= start && pos <= end) {
+          return { start, end, hex: m[0] };
+        }
+      }
+      return null;
+    }
+
+    function checkAndShowColorPicker() {
+      const token = findHexAtCursor();
+      if (!token) {
+        hideColorPicker();
+        return;
+      }
+
+      activeColorToken = token;
+      const rgb = hexToRgb(token.hex);
+      const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
+      cpHue = hsv.h;
+      cpSat = hsv.s;
+      cpVal = hsv.v;
+
+      updateColorPickerUI(token.hex);
+      positionColorPicker(token.start);
+      colorPickerWidget.classList.remove('hidden');
+    }
+
+    function updateColorPickerUI(hexStr) {
+      cpHexText.innerText = hexStr.toLowerCase();
+      const pureHueHex = hsvToHex(cpHue, 100, 100);
+      cpSatVal.style.backgroundColor = pureHueHex;
+
+      cpCursor.style.left = cpSat + '%';
+      cpCursor.style.top = (100 - cpVal) + '%';
+
+      cpHueThumb.style.top = ((cpHue / 360) * 100) + '%';
+      cpAlphaThumb.style.top = (100 - cpVal) + '%';
+      cpAlphaBar.style.background = `linear-gradient(to bottom, ${hsvToHex(cpHue, cpSat, 100)}, #000000)`;
+    }
+
+    function positionColorPicker(charIndex) {
+      const textUpToToken = codeEditor.value.substring(0, charIndex);
+      const lines = textUpToToken.split('\n');
+      const row = lines.length;
+      const linePrefix = lines[lines.length - 1];
+
+      const lineHeight = currentLineHeight;
+      const padTop = window.innerWidth <= 768 ? 10 : 14;
+      const padLeft = window.innerWidth <= 768 ? 10 : 16;
+      const gutterWidth = lineNumbers.offsetWidth || 50;
+
+      let topPx = padTop + (row * lineHeight) - codeEditor.scrollTop + 6;
+      let leftPx = gutterWidth + padLeft + measureEditorTextWidth(linePrefix) - codeEditor.scrollLeft;
+
+      if (topPx + 205 > codeContainerEl.clientHeight) {
+        topPx = Math.max(8, topPx - lineHeight - 205);
+      }
+      leftPx = Math.min(codeContainerEl.clientWidth - 295, Math.max(55, leftPx));
+
+      colorPickerWidget.style.top = topPx + 'px';
+      colorPickerWidget.style.left = leftPx + 'px';
+    }
+
+    function hideColorPicker() {
+      activeColorToken = null;
+      colorPickerWidget.classList.add('hidden');
+    }
+
+    function applyPickedColor() {
+      if (!activeColorToken) return;
+      const newHex = hsvToHex(cpHue, cpSat, cpVal);
+      updateColorPickerUI(newHex);
+
+      const text = codeEditor.value;
+      codeEditor.value = text.substring(0, activeColorToken.start) + newHex + text.substring(activeColorToken.end);
+      activeColorToken.end = activeColorToken.start + newHex.length;
+      activeColorToken.hex = newHex;
+
+      if (currentFile) {
+        files[currentFile] = codeEditor.value;
+        unsavedFiles[currentFile] = true;
+      }
+      renderFilesAndTabs();
+      updateHighlighting();
+      updatePreview();
+    }
+
+    function bindDrag(element, onMoveCallback) {
+      let isDragging = false;
+      element.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        isDragging = true;
+        onMoveCallback(e, element.getBoundingClientRect());
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        onMoveCallback(e, element.getBoundingClientRect());
+      });
+      window.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+    }
+
+    bindDrag(cpSatVal, (e, rect) => {
+      const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+      const y = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+      cpSat = (x / rect.width) * 100;
+      cpVal = 100 - (y / rect.height) * 100;
+      applyPickedColor();
+    });
+
+    bindDrag(cpHueBar, (e, rect) => {
+      const y = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+      cpHue = (y / rect.height) * 360;
+      applyPickedColor();
+    });
+
+    bindDrag(cpAlphaBar, (e, rect) => {
+      const y = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+      cpVal = 100 - (y / rect.height) * 100;
+      applyPickedColor();
+    });
+
+    function showToast(msg) {
+      const toast = document.getElementById('saveToast');
+      document.getElementById('saveToastText').innerText = msg;
+      toast.classList.remove('hidden');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2600);
+    }
+
+    function saveProject(downloadCurrentFile = false) {
+      if (currentFile && files[currentFile] !== undefined) {
+        files[currentFile] = codeEditor.value;
+      }
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          files: files,
+          currentFile: currentFile
+        }));
+      } catch (err) {}
+
+      unsavedFiles = {};
+      renderFilesAndTabs();
+      document.getElementById('saveStatusText').innerText = '💾 บันทึกแล้ว';
+
+      if (downloadCurrentFile) {
+        if (!currentFile) {
+          showToast('กรุณาสร้างไฟล์ก่อนดาวน์โหลดครับ');
+          return;
+        }
+        const blob = new Blob([files[currentFile]], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = currentFile;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showToast('บันทึกและดาวน์โหลดไฟล์ ' + currentFile + ' เรียบร้อยแล้ว!');
+      } else {
+        showToast('บันทึกโปรเจกต์เรียบร้อยแล้ว! (รีเฟรชหน้าเว็บโค้ดไม่หาย)');
+      }
+    }
+
+    function loadSavedProject() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.files && typeof parsed.files === 'object') {
+          files = parsed.files;
+          const names = Object.keys(files);
+          currentFile = (parsed.currentFile && files[parsed.currentFile] !== undefined)
+            ? parsed.currentFile
+            : (names.length > 0 ? names[0] : null);
+        }
+      } catch (err) {}
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        saveProject(false);
+      }
+    });
+
+    function updateBreadcrumb() {
+      if (!currentFile) {
+        breadcrumbBar.classList.add('hidden');
+        return;
+      }
+      breadcrumbBar.classList.remove('hidden');
+
+      let parts = [`<span>${currentFile}<` + `/span>`];
+
+      if (getLangMode(currentFile) === 'HTML') {
+        const textBefore = codeEditor.value.substring(0, codeEditor.selectionStart);
+        const tagRegex = /<\/?([a-zA-Z][a-zA-Z0-9:-]*)[^>]*>/g;
+        const voidTags = new Set(['meta', 'link', 'img', 'input', 'br', 'hr', '!doctype']);
+        const stack = [];
+        let m;
+        while ((m = tagRegex.exec(textBefore)) !== null) {
+          const full = m[0];
+          const tName = m[1].toLowerCase();
+          if (full.startsWith('</')) {
+            const idx = stack.lastIndexOf(tName);
+            if (idx !== -1) stack.splice(idx, 1);
+          } else if (!full.endsWith('/>') && !voidTags.has(tName)) {
+            stack.push(tName);
+          }
+        }
+        const currentLineStart = textBefore.lastIndexOf('\n') + 1;
+        const currentLineEnd = codeEditor.value.indexOf('\n', codeEditor.selectionStart);
+        const currentLine = codeEditor.value.substring(
+          currentLineStart,
+          currentLineEnd === -1 ? codeEditor.value.length : currentLineEnd
+        );
+        const lineTagMatch = currentLine.match(/<([a-zA-Z][a-zA-Z0-9:-]*)/);
+        if (lineTagMatch) {
+          const lt = lineTagMatch[1].toLowerCase();
+          if (stack[stack.length - 1] !== lt) {
+            stack.push(lt);
+          }
+        }
+
+        stack.forEach(tag => {
+          parts.push(`<span class="bc-sep">&gt;<` + `/span> <span class="bc-tag-icon">🧊<` + `/span> <span>${tag}<` + `/span>`);
+        });
+      }
+
+      breadcrumbBar.innerHTML = parts.join(' ');
+    }
+
+    function showNewFileInput() {
+      document.getElementById('sidebar').classList.remove('collapsed');
+      newFileInputWrap.classList.remove('hidden');
+      newFileInput.value = '';
+      newFileInput.focus();
+    }
+
+    function hideNewFileInput() {
+      newFileInputWrap.classList.add('hidden');
+      newFileInput.value = '';
+    }
+
+    newFileInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        createNewFile(newFileInput.value.trim());
+      } else if (e.key === 'Escape') {
+        hideNewFileInput();
+      }
+    });
+
+    newFileInput.addEventListener('blur', () => {
+      const name = newFileInput.value.trim();
+      if (name) {
+        createNewFile(name);
+      } else {
+        hideNewFileInput();
+      }
+    });
+
+    function createNewFile(fileName) {
+      if (!fileName) {
+        hideNewFileInput();
+        return;
+      }
+      if (!fileName.includes('.')) {
+        fileName += '.html';
+      }
+      if (files[fileName] === undefined) {
+        files[fileName] = '';
+        unsavedFiles[fileName] = true;
+      }
+      hideNewFileInput();
+      switchFile(fileName, true);
+    }
+
+    function deleteFile(fileName, event) {
+      event.stopPropagation();
+      delete files[fileName];
+      delete unsavedFiles[fileName];
+      const remainingFiles = Object.keys(files);
+      if (currentFile === fileName) {
+        currentFile = remainingFiles.length > 0 ? remainingFiles[0] : null;
+      }
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ files, currentFile }));
+      } catch (err) {}
+      renderFilesAndTabs();
+      if (currentFile) {
+        codeEditor.value = files[currentFile];
+        updateLineNumbers();
+        updateHighlighting();
+        updateBreadcrumb();
+      }
+      updatePreview();
+    }
+
+    function getFileBadge(fileName) {
+      const lower = fileName.toLowerCase();
+      if (lower.endsWith('.html') || lower.endsWith('.htm')) {
+        return '<span class="file-badge badge-html">&lt;/&gt;</span>';
+      } else if (lower.endsWith('.css')) {
+        return '<span class="file-badge badge-css">#</span>';
+      } else if (lower.endsWith('.js')) {
+        return '<span class="file-badge badge-js">JS</span>';
+      }
+      return '<span class="file-badge badge-txt">📄</span>';
+    }
+
+    function getLangMode(fileName) {
+      if (!fileName) return '-';
+      const lower = fileName.toLowerCase();
+      if (lower.endsWith('.html') || lower.endsWith('.htm')) return 'HTML';
+      if (lower.endsWith('.css')) return 'CSS';
+      if (lower.endsWith('.js')) return 'JavaScript';
+      return 'Plain Text';
+    }
+
+    function renderFilesAndTabs() {
+      const fileNames = Object.keys(files);
+      fileListEl.innerHTML = '';
+      editorTabsEl.innerHTML = '';
+
+      if (fileNames.length === 0) {
+        emptyStateEl.classList.remove('hidden');
+        codeContainerEl.classList.add('hidden');
+        breadcrumbBar.classList.add('hidden');
+        document.getElementById('langMode').innerText = '-';
+        document.getElementById('addressUrl').innerText = 'http://localhost:5500/';
+        return;
+      }
+
+      emptyStateEl.classList.add('hidden');
+      codeContainerEl.classList.remove('hidden');
+
+      fileNames.forEach(name => {
+        const isActive = name === currentFile;
+        const isUnsaved = !!unsavedFiles[name];
+
+        const li = document.createElement('li');
+        li.className = 'file-item' + (isActive ? ' active' : '');
+        li.onclick = () => switchFile(name);
+        li.innerHTML = `
+          <div class="file-item-left">
+            ${getFileBadge(name)}
+            <span>${name}</span>
+          </div>
+          <button class="delete-file-btn" title="ลบไฟล์" onclick="deleteFile('${name}', event)">✕</button>
+        `;
+        fileListEl.appendChild(li);
+
+        const tab = document.createElement('div');
+        tab.className = 'tab' + (isActive ? ' active' : '');
+        tab.onclick = () => switchFile(name);
+        tab.innerHTML = `${getFileBadge(name)} <span>${name}</span> ${isUnsaved ? '<span class="unsaved-dot" title="ยังไม่ได้กด Save"></span>' : ''}`;
+        editorTabsEl.appendChild(tab);
+      });
+
+      document.getElementById('langMode').innerText = getLangMode(currentFile);
+      const htmlFile = fileNames.find(f => f.toLowerCase().endsWith('.html')) || currentFile;
+      document.getElementById('addressUrl').innerText = 'http://localhost:5500/' + (htmlFile || '');
+    }
+
+    function switchFile(fileName, saveCurrent = true) {
+      if (saveCurrent && currentFile && files[currentFile] !== undefined) {
+        files[currentFile] = codeEditor.value;
+      }
+      currentFile = fileName;
+      hideEmmetPopup();
+      hideColorPicker();
+      renderFilesAndTabs();
+
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.add('collapsed');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        if (backdrop) backdrop.classList.remove('active');
+      }
+
+      if (currentFile !== null) {
+        codeEditor.value = files[currentFile];
+        updateLineNumbers();
+        updateHighlighting();
+        updateBreadcrumb();
+        syncEditorScroll();
+        codeEditor.focus();
+      }
+      updatePreview();
+    }
+
+    function updateLineNumbers() {
+      const codeLines = codeEditor.value.split('\n');
+      let html = '';
+      for (let i = 0; i < codeLines.length; i++) {
+        const hasNonAscii = /[^\x00-\x7F]/.test(codeLines[i]);
+        const strut = hasNonAscii ? '<span class="ln-strut">\u0E01<' + '/span>' : '';
+        html += (i + 1) + strut + (i < codeLines.length - 1 ? '\n' : '');
+      }
+      if (lineNumbersInner) {
+        lineNumbersInner.innerHTML = html;
+      }
+    }
+
+    codeEditor.addEventListener('scroll', () => {
+      syncEditorScroll();
+      hideEmmetPopup();
+      hideColorPicker();
+    });
+
+    function updateCursorPos() {
+      const textUpToCursor = codeEditor.value.substring(0, codeEditor.selectionStart);
+      const lines = textUpToCursor.split('\n');
+      const row = lines.length;
+      const col = lines[lines.length - 1].length + 1;
+      document.getElementById('cursorPos').innerText = 'บรรทัด ' + row + ', คอลัมน์ ' + col;
+      updateBreadcrumb();
+    }
+
+    function getWordBeforeCursor() {
+      const cursorPos = codeEditor.selectionStart;
+      const textBefore = codeEditor.value.substring(0, cursorPos);
+      const match = textBefore.match(/(?:^|[\s>])([a-zA-Z0-9:!]+)$/);
+      if (!match) return null;
+
+      const word = match[1];
+      const startIdx = cursorPos - word.length;
+      return {
+        word: word,
+        start: startIdx,
+        end: cursorPos
+      };
+    }
+
+    function updateEmmetPopup() {
+      if (!currentFile || !currentFile.toLowerCase().endsWith('.html')) {
+        hideEmmetPopup();
+        return;
+      }
+
+      const info = getWordBeforeCursor();
+      if (!info || !info.word) {
+        hideEmmetPopup();
+        return;
+      }
+
+      const typed = info.word.toLowerCase();
+      const matches = emmetSnippets.filter(item => item.key.startsWith(typed));
+      matches.sort((a, b) => {
+        if (a.key === 'html:5' && typed.startsWith('html')) return -1;
+        if (b.key === 'html:5' && typed.startsWith('html')) return 1;
+        if (a.key === typed) return -1;
+        if (b.key === typed) return 1;
+        return a.key.localeCompare(b.key);
+      });
+
+      if (matches.length === 0) {
+        hideEmmetPopup();
+        return;
+      }
+
+      currentWordInfo = info;
+      activeMatches = matches.slice(0, 6);
+      selectedMatchIndex = 0;
+
+      renderEmmetPopup();
+      positionEmmetPopup();
+    }
+
+    function renderEmmetPopup() {
+      emmetPopup.innerHTML = '';
+      activeMatches.forEach((item, idx) => {
+        const row = document.createElement('div');
+        row.className = 'emmet-item' + (idx === selectedMatchIndex ? ' selected' : '');
+        row.onmousedown = (e) => {
+          e.preventDefault();
+          applyEmmetSnippet(item);
+        };
+        row.innerHTML = `
+          <div class="emmet-left">
+            <span class="emmet-icon">🔧</span>
+            <span class="emmet-match">${item.label}</span>
+          </div>
+          <div class="emmet-right">
+            <span class="emmet-enter-icon">↵</span>
+            <span>${item.desc}</span>
+          </div>
+        `;
+        emmetPopup.appendChild(row);
+      });
+      emmetPopup.classList.remove('hidden');
+    }
+
+    function positionEmmetPopup() {
+      const textUpToCursor = codeEditor.value.substring(0, codeEditor.selectionStart);
+      const lines = textUpToCursor.split('\n');
+      const row = lines.length;
+      const lastLine = lines[lines.length - 1];
+      const prefixBeforeWord = currentWordInfo
+        ? lastLine.substring(0, Math.max(0, lastLine.length - currentWordInfo.word.length))
+        : lastLine;
+
+      const lineHeight = currentLineHeight;
+      const padTop = window.innerWidth <= 768 ? 10 : 14;
+      const padLeft = window.innerWidth <= 768 ? 10 : 16;
+      const gutterWidth = lineNumbers.offsetWidth || 50;
+
+      const topPx = padTop + (row * lineHeight) - codeEditor.scrollTop + 4;
+      const leftPx = gutterWidth + padLeft + measureEditorTextWidth(prefixBeforeWord) - codeEditor.scrollLeft;
+
+      emmetPopup.style.top = Math.min(codeContainerEl.clientHeight - 120, Math.max(10, topPx)) + 'px';
+      emmetPopup.style.left = Math.min(codeContainerEl.clientWidth - 330, Math.max(55, leftPx)) + 'px';
+    }
+
+    function hideEmmetPopup() {
+      activeMatches = [];
+      currentWordInfo = null;
+      emmetPopup.classList.add('hidden');
+    }
+
+    function applyEmmetSnippet(item) {
+      if (!currentWordInfo) return;
+
+      const before = codeEditor.value.substring(0, currentWordInfo.start);
+      const after = codeEditor.value.substring(currentWordInfo.end);
+
+      const lineStart = before.lastIndexOf('\n') + 1;
+      const currentIndentMatch = before.substring(lineStart).match(/^\s*/);
+      const indent = currentIndentMatch ? currentIndentMatch[0] : '';
+
+      const lines = item.snippet.split('\n');
+      const indentedSnippet = lines.map((line, i) => (i === 0 ? line : indent + line)).join('\n');
+
+      const cursorMarker = '|CURSOR|';
+      const markerOffset = indentedSnippet.indexOf(cursorMarker);
+      const cleanSnippet = indentedSnippet.replace(cursorMarker, '');
+
+      codeEditor.value = before + cleanSnippet + after;
+
+      const newCursorPos = before.length + (markerOffset !== -1 ? markerOffset : cleanSnippet.length);
+      codeEditor.selectionStart = codeEditor.selectionEnd = newCursorPos;
+
+      hideEmmetPopup();
+      if (currentFile) {
+        files[currentFile] = codeEditor.value;
+        unsavedFiles[currentFile] = true;
+      }
+      renderFilesAndTabs();
+      updateLineNumbers();
+      updateHighlighting();
+      updateCursorPos();
+      updatePreview();
+      codeEditor.focus();
+    }
+
+    codeEditor.addEventListener('input', () => {
+      if (currentFile) {
+        files[currentFile] = codeEditor.value;
+        unsavedFiles[currentFile] = true;
+        document.getElementById('saveStatusText').innerText = '● มีการแก้ไข (ยังไม่ Save)';
+      }
+      renderFilesAndTabs();
+      updateLineNumbers();
+      updateHighlighting();
+      syncEditorScroll();
+      updateCursorPos();
+      updateEmmetPopup();
+      hideColorPicker();
+      updatePreview();
+    });
+
+    codeEditor.addEventListener('click', () => {
+      updateCursorPos();
+      hideEmmetPopup();
+      checkAndShowColorPicker();
+    });
+
+    codeEditor.addEventListener('keyup', (e) => {
+      if (['ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown'].includes(e.key)) {
+        updateCursorPos();
+        checkAndShowColorPicker();
+      }
+    });
+
+    codeEditor.addEventListener('keydown', (e) => {
+      if (activeMatches.length > 0) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          selectedMatchIndex = (selectedMatchIndex + 1) % activeMatches.length;
+          renderEmmetPopup();
+          return;
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          selectedMatchIndex = (selectedMatchIndex - 1 + activeMatches.length) % activeMatches.length;
+          renderEmmetPopup();
+          return;
+        } else if (e.key === 'Enter' || e.key === 'Tab') {
+          e.preventDefault();
+          applyEmmetSnippet(activeMatches[selectedMatchIndex]);
+          return;
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          hideEmmetPopup();
+          return;
+        }
+      }
+
+      if (e.key === 'Escape') {
+        hideColorPicker();
+      }
+
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const start = codeEditor.selectionStart;
+        const end = codeEditor.selectionEnd;
+        codeEditor.value = codeEditor.value.substring(0, start) + '  ' + codeEditor.value.substring(end);
+        codeEditor.selectionStart = codeEditor.selectionEnd = start + 2;
+        if (currentFile) {
+          files[currentFile] = codeEditor.value;
+          unsavedFiles[currentFile] = true;
+        }
+        renderFilesAndTabs();
+        updateHighlighting();
+        updatePreview();
+      }
+    });
+
+    function updatePreview() {
+      const fileNames = Object.keys(files);
+      if (fileNames.length === 0) {
+        previewFrame.srcdoc = '';
+        return;
+      }
+
+      let targetHtmlFile = null;
+      if (currentFile && currentFile.toLowerCase().endsWith('.html')) {
+        targetHtmlFile = currentFile;
+      } else {
+        targetHtmlFile = fileNames.find(f => f.toLowerCase().endsWith('.html'));
+      }
+
+      let combinedHTML = targetHtmlFile ? files[targetHtmlFile] : '';
+
+      const customAlertScript =
+        '<script>\n' +
+        '(function() {\n' +
+        '  window.alert = function(msg) {\n' +
+        '    var old = document.getElementById("__custom_alert_overlay");\n' +
+        '    if (old) old.remove();\n' +
+        '    var overlay = document.createElement("div");\n' +
+        '    overlay.id = "__custom_alert_overlay";\n' +
+        '    overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.32);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;animation:__fadeIn 0.18s ease";\n' +
+        '    var box = document.createElement("div");\n' +
+        '    box.style.cssText = "background:rgba(255,255,255,0.94);backdrop-filter:saturate(180%) blur(20px);color:#1C1C1E;width:290px;max-width:86%;border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,0.18);text-align:center;overflow:hidden;animation:__popIn 0.22s cubic-bezier(0.25,1,0.5,1)";\n' +
+        '    var body = document.createElement("div");\n' +
+        '    body.style.cssText = "padding:20px 18px 16px;";\n' +
+        '    var title = document.createElement("div");\n' +
+        '    title.style.cssText = "font-size:17px;font-weight:700;margin-bottom:6px;color:#1C1C1E;";\n' +
+        '    title.innerText = "แจ้งเตือน";\n' +
+        '    var text = document.createElement("div");\n' +
+        '    text.style.cssText = "font-size:13.5px;color:#3A3A3C;line-height:1.45;word-break:break-word;white-space:pre-line;";\n' +
+        '    text.innerText = String(msg !== undefined ? msg : "");\n' +
+        '    body.appendChild(title);\n' +
+        '    body.appendChild(text);\n' +
+        '    var btn = document.createElement("button");\n' +
+        '    btn.innerText = "ตกลง";\n' +
+        '    btn.style.cssText = "width:100%;background:transparent;color:#007AFF;border:none;border-top:0.5px solid rgba(60,60,67,0.22);padding:12px;font-size:17px;font-weight:600;cursor:pointer;font-family:inherit;";\n' +
+        '    btn.onclick = function() { overlay.remove(); };\n' +
+        '    overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };\n' +
+        '    box.appendChild(body);\n' +
+        '    box.appendChild(btn);\n' +
+        '    overlay.appendChild(box);\n' +
+        '    document.body.appendChild(overlay);\n' +
+        '    btn.focus();\n' +
+        '  };\n' +
+        '})();\n' +
+        closeScript +
+        '<style>@keyframes __popIn{0%{opacity:0;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}@keyframes __fadeIn{0%{opacity:0}100%{opacity:1}}' + closeStyle;
+
+      const extScriptRegex = new RegExp('<script[^>]*src=["\'][^"\']*\\.js["\'][^>]*>\\s*<' + '/script>', 'gi');
+      combinedHTML = combinedHTML
+        .replace(/<link[^>]*href=["'][^"']*\.css["'][^>]*>/gi, '')
+        .replace(extScriptRegex, '');
+
+      const cssFiles = fileNames.filter(f => f.toLowerCase().endsWith('.css'));
+      if (cssFiles.length > 0) {
+        const allCss = cssFiles.map(f => files[f]).join('\n');
+        const styleTag = '<style>\n' + allCss + '\n' + closeStyle;
+        if (combinedHTML.includes(closeHead)) {
+          combinedHTML = combinedHTML.replace(closeHead, styleTag + '\n' + closeHead);
+        } else {
+          combinedHTML = styleTag + '\n' + combinedHTML;
+        }
+      }
+
+      const jsFiles = fileNames.filter(f => f.toLowerCase().endsWith('.js'));
+      const userJs = jsFiles.map(f => files[f]).join('\n');
+      const scriptTag = customAlertScript + '\n<script>\n' + userJs + '\n' + closeScript;
+
+      if (combinedHTML.includes(closeBody)) {
+        combinedHTML = combinedHTML.replace(closeBody, scriptTag + '\n' + closeBody);
+      } else {
+        combinedHTML = combinedHTML + '\n' + scriptTag;
+      }
+
+      previewFrame.srcdoc = combinedHTML;
+    }
+
+    function applyEditorMetrics(fontSize) {
+      currentFontSize = Math.min(36, Math.max(12, fontSize));
+      currentLineHeight = Math.round(currentFontSize * 1.72);
+      document.documentElement.style.setProperty('--editor-font-size', currentFontSize + 'px');
+      document.documentElement.style.setProperty('--editor-line-height', currentLineHeight + 'px');
+      const fsd = document.getElementById('fontSizeDisplay');
+      if (fsd) fsd.innerText = currentFontSize + 'px';
+      syncEditorScroll();
+    }
+
+    function changeFontSize(delta) {
+      applyEditorMetrics(currentFontSize + delta);
+    }
+
+    window.addEventListener('resize', () => {
+      syncEditorScroll();
+    });
+
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      sb.classList.toggle('collapsed');
+      if (backdrop) {
+        if (window.innerWidth <= 768 && !sb.classList.contains('collapsed')) {
+          backdrop.classList.add('active');
+        } else {
+          backdrop.classList.remove('active');
+        }
+      }
+    }
+
+    function setLayout(mode) {
+      const editorPane = document.getElementById('editorPane');
+      const previewPane = document.getElementById('previewPane');
+      editorPane.classList.remove('hidden', 'pane-full');
+      previewPane.classList.remove('hidden', 'pane-full');
+
+      if (mode === 'code') {
+        previewPane.classList.add('hidden');
+        editorPane.classList.add('pane-full');
+      } else if (mode === 'preview') {
+        editorPane.classList.add('hidden');
+        previewPane.classList.add('pane-full');
+      }
+      syncEditorScroll();
+    }
+
+    // กำหนดขนาดตัวอักษรเริ่มต้นและสถานะ Sidebar ตามขนาดหน้าจออุปกรณ์
+    if (window.innerWidth <= 600) {
+      currentFontSize = 15;
+    } else if (window.innerWidth <= 1024) {
+      currentFontSize = 17;
+    } else if (window.innerWidth >= 1920) {
+      currentFontSize = 21;
+    }
+    applyEditorMetrics(currentFontSize);
+
+    if (window.innerWidth <= 768) {
+      const sb = document.getElementById('sidebar');
+      if (sb) sb.classList.add('collapsed');
+    }
+
+    loadSavedProject();
+    if (currentFile) {
+      switchFile(currentFile, false);
+    } else {
+      renderFilesAndTabs();
+    }
+  </script>
+</body>
+</html>

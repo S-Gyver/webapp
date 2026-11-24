@@ -1,0 +1,2642 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>สัปดาห์ที่ 2: เริ่มต้น Full Stack Junior (HTML + CSS) - ชุมนุม Web Application</title>
+      <style>
+    :root {
+      --ios-bg: #F2F2F7;
+      --ios-card: #FFFFFF;
+      --ios-grouped: #F5F5FA;
+      --ios-glass: rgba(255, 255, 255, 0.8);
+      --ios-fill: rgba(118, 118, 128, 0.12);
+      --ios-separator: rgba(60, 60, 67, 0.13);
+      --ios-label: #1C1C1E;
+      --ios-secondary: #6C6C70;
+      --ios-tertiary: #8E8E93;
+      --ios-blue: #007AFF;
+      --ios-green: #34C759;
+      --ios-indigo: #5856D6;
+      --ios-orange: #FF9500;
+      --ios-red: #FF3B30;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Tahoma, sans-serif;
+      background-color: var(--ios-bg);
+      background-image:
+        radial-gradient(at 10% 10%, rgba(0, 122, 255, 0.07) 0px, transparent 50%),
+        radial-gradient(at 90% 15%, rgba(88, 86, 214, 0.07) 0px, transparent 50%);
+      color: var(--ios-label);
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: text;
+    }
+
+    .line-code, .s6-code-content, .s7-code-content, code, pre, .s6-mission-list, p, h1, h2, h3, span {
+      user-select: text;
+    }
+
+    .glow-orb-1, .glow-orb-2 { display: none !important; }
+
+    /* ===== iOS Frosted Top Bar ===== */
+    .topbar {
+      height: 52px;
+      background: var(--ios-glass);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 0.5px solid var(--ios-separator);
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .topbar-left, .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top-btn {
+      text-decoration: none;
+      background: var(--ios-fill);
+      color: var(--ios-blue);
+      border: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.18s ease, transform 0.14s ease;
+    }
+
+    .top-btn:hover {
+      background: rgba(0, 122, 255, 0.16);
+    }
+
+    .top-btn:active {
+      transform: scale(0.96);
+    }
+
+    .top-btn-green {
+      background: var(--ios-green);
+      color: #FFFFFF;
+      font-weight: 700;
+      box-shadow: 0 3px 10px rgba(52, 199, 89, 0.28);
+    }
+
+    .top-btn-green:hover {
+      background: #2DB84E;
+      color: #FFFFFF;
+    }
+
+    .top-btn-blue {
+      background: rgba(88, 86, 214, 0.12);
+      color: var(--ios-indigo);
+    }
+
+    .slide-title-indicator {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ios-secondary);
+      background: var(--ios-fill);
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+
+    /* ===== Slide Stage ===== */
+    .slide-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(10px, 1.8vh, 18px) clamp(12px, 2.4vw, 32px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1260px;
+      height: 100%;
+      max-height: min(700px, calc(100vh - 124px));
+      background: var(--ios-card);
+      color: var(--ios-label);
+      border: 0.5px solid rgba(0, 0, 0, 0.07);
+      border-radius: 26px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: iosSlideIn 0.36s cubic-bezier(0.25, 1, 0.5, 1);
+      scrollbar-width: thin;
+      scrollbar-color: #C7C7CC transparent;
+    }
+
+    .slide::-webkit-scrollbar { width: 6px; }
+    .slide::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 999px; }
+
+    .slide.active { display: flex; }
+
+    @keyframes iosSlideIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.992); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .slide-footer-strip {
+      min-height: 40px;
+      background: #FAFAFC;
+      border-top: 0.5px solid var(--ios-separator);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 28px;
+      font-size: 12.5px;
+      color: var(--ios-tertiary);
+      flex-shrink: 0;
+      gap: 12px;
+    }
+
+    .shimmer-text {
+      color: var(--ios-label);
+      background: none;
+      -webkit-text-fill-color: initial;
+    }
+
+    /* ===== SLIDE 1: Cover ===== */
+    .cover-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 28px 44px 18px;
+      gap: 14px;
+    }
+
+    .badge-club {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--ios-blue);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+
+    .cover-title {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      color: var(--ios-label);
+    }
+
+    .cover-sub {
+      font-size: clamp(15px, 2vw, 19px);
+      color: var(--ios-secondary);
+      max-width: 780px;
+      line-height: 1.5;
+    }
+
+    .cover-sub b { color: var(--ios-blue); }
+
+    .four-pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .pillar-card {
+      background: var(--ios-grouped);
+      border: 0.5px solid rgba(0, 0, 0, 0.05);
+      border-radius: 20px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      gap: 8px;
+      transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .pillar-card:hover {
+      transform: translateY(-4px);
+      background: #FFFFFF;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    }
+
+    .pillar-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .p-frontend .pillar-icon { background: linear-gradient(180deg, #389BFF, #007AFF); box-shadow: 0 6px 14px rgba(0, 122, 255, 0.25); }
+    .p-backend  .pillar-icon { background: linear-gradient(180deg, #FFB340, #FF9500); box-shadow: 0 6px 14px rgba(255, 149, 0, 0.25); }
+    .p-db       .pillar-icon { background: linear-gradient(180deg, #7D7AFF, #5856D6); box-shadow: 0 6px 14px rgba(88, 86, 214, 0.25); }
+    .p-deploy   .pillar-icon { background: linear-gradient(180deg, #4CD964, #34C759); box-shadow: 0 6px 14px rgba(52, 199, 89, 0.25); }
+
+    .pillar-num { font-size: 12px; font-weight: 700; color: var(--ios-tertiary); }
+    .pillar-name { font-size: 19px; font-weight: 800; color: var(--ios-label); letter-spacing: -0.01em; }
+    .pillar-desc { font-size: 13.5px; color: var(--ios-secondary); line-height: 1.48; }
+
+    /* ===== SLIDE 2 - 9: Concept & Coding Layout ===== */
+    .concept-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 36px 14px;
+      gap: 14px;
+    }
+
+    .concept-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .concept-tag {
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--ios-blue);
+    }
+
+    .tag-orange { background: rgba(255, 149, 0, 0.14); color: #C93400; }
+    .tag-purple { background: rgba(88, 86, 214, 0.12); color: var(--ios-indigo); }
+    .tag-green  { background: rgba(52, 199, 89, 0.14); color: #248A3D; }
+
+    .concept-title {
+      font-size: clamp(22px, 3.2vw, 32px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ios-label);
+    }
+
+    .concept-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      align-items: stretch;
+      flex: 1;
+    }
+
+    .concept-info-card {
+      background: var(--ios-grouped);
+      border-radius: 20px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .analogy-banner {
+      background: #FFFFFF;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ios-label);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .analogy-banner b { color: var(--ios-blue); }
+    .analogy-orange b { color: #C93400; }
+    .analogy-purple b { color: var(--ios-indigo); }
+    .analogy-green  b { color: #248A3D; }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #FFFFFF;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14.5px;
+      color: var(--ios-label);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.025);
+    }
+
+    .feature-item .f-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--ios-blue);
+      font-size: 12px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .concept-visual-card {
+      background: var(--ios-grouped);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      text-align: center;
+    }
+
+    .mock-browser-window {
+      width: 100%;
+      background: #FFFFFF;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 0.5px solid var(--ios-separator);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .mock-browser-top {
+      background: #F2F2F7;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 0.5px solid var(--ios-separator);
+    }
+
+    .m-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .m-red { background: #FF5F56; }
+    .m-yellow { background: #FFBD2E; }
+    .m-green { background: #27C93F; }
+
+    .mock-browser-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: #FFFFFF;
+    }
+
+    .interactive-pulse-btn {
+      background: var(--ios-blue);
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25);
+      transition: transform 0.16s ease, opacity 0.16s ease;
+    }
+
+    .interactive-pulse-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .interactive-pulse-btn:active { transform: scale(0.96); }
+
+    .db-anim-box { width: 100%; display: flex; flex-direction: column; gap: 7px; }
+    .db-row {
+      background: #FFFFFF;
+      border-radius: 11px;
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Consolas', monospace;
+      font-size: 12.5px;
+      color: var(--ios-label);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+    .db-row.active {
+      background: rgba(88, 86, 214, 0.1);
+      border: 1px solid rgba(88, 86, 214, 0.3);
+    }
+
+    /* ===== SLIDE 6 - 9: iPadOS Code Window & Browser Preview ===== */
+    .s6-step-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      gap: 12px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .s6-interactive-grid,
+    .s7-layout-grid {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 18px;
+      flex: 1;
+      align-items: stretch;
+      min-height: 0;
+      width: 100%;
+    }
+
+    .s6-code-window,
+    .s7-code-window {
+      background: #FFFFFF;
+      border: 0.5px solid var(--ios-separator);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.06);
+      min-height: 0;
+      flex: 1;
+    }
+
+    .s6-code-topbar,
+    .s7-code-topbar {
+      background: #F2F2F7;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 0.5px solid var(--ios-separator);
+      font-size: 12px;
+      color: var(--ios-label);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .s6-tab-active,
+    .s7-tab-active {
+      background: #FFFFFF;
+      color: var(--ios-label);
+      padding: 4px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Consolas', monospace;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .s7-code-tabs {
+      display: flex;
+      align-items: center;
+      background: rgba(118, 118, 128, 0.12);
+      padding: 2.5px;
+      border-radius: 9px;
+      gap: 2px;
+      flex-wrap: wrap;
+    }
+
+    .s6-shortcut-btn,
+    .s7-code-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--ios-secondary);
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: inherit;
+      padding: 4px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.16s ease;
+    }
+
+    .s6-shortcut-btn {
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--ios-blue);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-weight: 700;
+    }
+
+    .s6-shortcut-btn:hover { background: rgba(0, 122, 255, 0.18); }
+
+    .s6-shortcut-btn.revealed {
+      background: var(--ios-green);
+      color: #FFFFFF;
+    }
+
+    .s7-code-tab-btn:hover { color: var(--ios-label); }
+
+    .s7-code-tab-btn.active {
+      background: #FFFFFF;
+      color: var(--ios-label);
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .s6-code-content {
+      padding: 12px 14px;
+      font-family: 'Cascadia Mono', 'Consolas', 'Leelawadee UI', monospace;
+      font-size: 14.5px;
+      line-height: 1.62;
+      color: #1C1C1E;
+      background: #FFFFFF;
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .s7-code-content {
+      flex: 1;
+      padding: 8px 12px;
+      font-family: 'Cascadia Mono', 'Consolas', 'Leelawadee UI', monospace;
+      font-size: 12px;
+      line-height: 1.46;
+      color: #1C1C1E;
+      background: #FFFFFF;
+      overflow-y: auto;
+      max-height: 445px;
+    }
+
+    .code-line {
+      display: flex;
+      align-items: center;
+      border-radius: 6px;
+      padding: 1px 6px;
+    }
+
+    .line-num {
+      width: 26px;
+      text-align: right;
+      color: #AEAEB2;
+      user-select: none;
+      margin-right: 12px;
+      font-size: 11.5px;
+      flex-shrink: 0;
+    }
+
+    .line-code {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    /* Xcode Light Syntax Colors */
+    .c-tag  { color: #0B4F79; font-weight: 700; }
+    .c-attr { color: #326D74; }
+    .c-str  { color: #C41A16; }
+    .c-sel  { color: #9B2393; font-weight: 700; }
+    .c-prop { color: #326D74; }
+    .c-val  { color: #C41A16; }
+    .c-comm { color: #5D6C79; }
+
+    .code-line.glow-green {
+      background: rgba(52, 199, 89, 0.14);
+      border-left: 3px solid var(--ios-green);
+    }
+
+    .code-line.glow-blue {
+      background: rgba(0, 122, 255, 0.12);
+      border-left: 3px solid var(--ios-blue);
+    }
+
+    .s7-line-hl-css {
+      background: rgba(0, 122, 255, 0.12) !important;
+      border-left: 3px solid var(--ios-blue) !important;
+      padding-left: 4px;
+    }
+
+    .s7-line-hl-html {
+      background: rgba(52, 199, 89, 0.14) !important;
+      border-left: 3px solid var(--ios-green) !important;
+      padding-left: 4px;
+    }
+
+    .s6-preview-panel,
+    .s7-preview-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .s6-browser-box,
+    .s7-browser-box {
+      background: #ffffff;
+      border-radius: 18px;
+      border: 0.5px solid var(--ios-separator);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      flex: 1;
+      min-height: 120px;
+    }
+
+    .s6-browser-header,
+    .s7-browser-header {
+      background: #F2F2F7;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 0.5px solid var(--ios-separator);
+    }
+
+    .s6-browser-tab,
+    .s7-browser-tab {
+      background: #FFFFFF;
+      color: var(--ios-label);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .s7-browser-url {
+      background: #FFFFFF;
+      color: var(--ios-secondary);
+      font-size: 11.5px;
+      font-family: 'Consolas', monospace;
+      padding: 4px 10px;
+      border-radius: 8px;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border: 0.5px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .s6-browser-canvas,
+    .s7-browser-canvas {
+      flex: 1;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      overflow: hidden;
+    }
+
+    /* iOS Mission Widget Card */
+    .s6-mission-card {
+      background: var(--ios-grouped);
+      border: 0.5px solid rgba(0, 0, 0, 0.06);
+      border-radius: 18px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .s6-mission-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .s6-mission-badge {
+      background: rgba(0, 122, 255, 0.12) !important;
+      color: var(--ios-blue);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .s6-solution-btn {
+      background: #FFFFFF;
+      border: 0.5px solid var(--ios-separator);
+      color: var(--ios-blue);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: all 0.16s ease;
+    }
+
+    .s6-solution-btn:hover { background: rgba(0, 122, 255, 0.08); }
+
+    .s6-solution-btn.active-sol {
+      background: var(--ios-orange);
+      color: #FFFFFF;
+      border-color: transparent;
+    }
+
+    .s6-mission-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13.5px;
+      color: var(--ios-label) !important;
+      line-height: 1.5;
+    }
+
+    .s6-timer-wrap {
+      background: #FFFFFF;
+      border-radius: 14px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .s6-timer-display {
+      font-family: 'SF Mono', 'Cascadia Mono', 'Consolas', monospace;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--ios-label);
+      letter-spacing: 1px;
+      min-width: 78px;
+    }
+
+    .s6-timer-display.running { color: var(--ios-green); }
+    .s6-timer-display.ended { color: var(--ios-red); }
+
+    .s6-timer-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .s6-preset-group {
+      display: flex;
+      gap: 2px;
+      background: rgba(118, 118, 128, 0.12);
+      padding: 2.5px;
+      border-radius: 9px;
+    }
+
+    .s6-preset-btn {
+      background: transparent;
+      border: none;
+      color: var(--ios-secondary);
+      padding: 4px 9px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .s6-preset-btn.active {
+      background: #FFFFFF;
+      color: var(--ios-label);
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .s6-action-group { display: flex; gap: 6px; }
+
+    .s6-timer-btn {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .s6-timer-btn.primary { background: var(--ios-blue); color: #FFFFFF; }
+    .s6-timer-btn.paused { background: var(--ios-orange); color: #FFFFFF; }
+    .s6-timer-btn.reset { background: var(--ios-fill); color: var(--ios-secondary); }
+
+    .s6-timer-alert {
+      background: rgba(255, 59, 48, 0.1);
+      color: var(--ios-red);
+      padding: 7px 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* ===== BottomFrosted Bar ===== */
+    .bottombar {
+      height: 58px;
+      background: var(--ios-glass);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-top: 0.5px solid var(--ios-separator);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .slide-nav-btn {
+      background: var(--ios-blue);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 14.5px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0, 122, 255, 0.24);
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .slide-nav-btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+    .slide-nav-btn:active:not(:disabled) { transform: scale(0.96); }
+    .slide-nav-btn:disabled { background: var(--ios-fill); color: var(--ios-tertiary); box-shadow: none; cursor: not-allowed; }
+
+    .slide-dots { display: flex; align-items: center; gap: 6px; }
+
+    .dot-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--ios-fill);
+      color: var(--ios-secondary);
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .dot-btn:hover { background: rgba(0, 122, 255, 0.14); color: var(--ios-blue); }
+    .dot-btn.active { background: var(--ios-blue); color: #FFFFFF; box-shadow: 0 3px 8px rgba(0, 122, 255, 0.28); }
+
+    @media (max-width: 1024px) {
+      .four-pillars-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 850px) {
+      .concept-layout, .s6-interactive-grid, .s7-layout-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .topbar { height: 48px; padding: 0 12px; }
+      .top-btn { padding: 5px 10px; font-size: 12px; }
+      .slide-stage { padding: 8px 10px; overflow-y: auto; align-items: flex-start; }
+      .slide { height: auto; min-height: 100%; max-height: none; overflow-y: visible; border-radius: 22px; }
+      .cover-container, .concept-container { padding: 18px 16px 12px; }
+      .four-pillars-grid { grid-template-columns: 1fr; }
+      .bottombar { height: 52px; padding: 0 10px; }
+      .slide-nav-btn { padding: 6px 12px; font-size: 13px; }
+      .slide-dots { overflow-x: auto; max-width: calc(100vw - 170px); scrollbar-width: none; }
+      .slide-dots::-webkit-scrollbar { display: none; }
+      .dot-btn { width: 28px; height: 28px; font-size: 12px; flex-shrink: 0; }
+    }
+    @media (max-width: 480px) {
+      .topbar-right .btn-text-hide { display: none; }
+    }
+    @media (min-width: 1600px) {
+      .slide { max-width: 1440px; max-height: min(840px, calc(100vh - 150px)); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- แถบเมนูด้านบน -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="top-btn" title="กลับหน้าแรก">← <span class="btn-text-hide">หน้าแรก</span></a>
+      <span class="slide-title-indicator" id="slideCounterText">สไลด์ 1 / 9</span>
+    </div>
+    <div class="topbar-right">
+      <a href="week1.html" class="top-btn top-btn-blue" title="ดูบทเรียนสัปดาห์ที่ 1">W01 <span class="btn-text-hide">Week 1</span></a>
+      <button class="top-btn" onclick="toggleFullscreen()" title="ขยายเต็มจอ">[ ] <span class="btn-text-hide">เต็มจอ</span></button>
+      <a href="code.html" class="top-btn top-btn-green" title="เปิดหน้าจำลอง VS Code">&lt;/&gt; <span class="btn-text-hide">เขียนโค้ด</span></a>
+    </div>
+  </header>
+
+  <!-- พื้นที่สไลด์ (Stage) -->
+  <main class="slide-stage">
+
+    <!-- ==========================================
+         สไลด์ที่ 1: หน้าปก - FULL STACK JUNIOR (4 เสาหลัก)
+    ========================================== -->
+    <section class="slide active">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="cover-container">
+        <div class="badge-club">WEEK 02 // ชุมนุม Web Application (ม.1 - ม.3)</div>
+        <h1 class="cover-title shimmer-text">ก้าวสู่ FULL STACK JUNIOR</h1>
+        <p class="cover-sub">
+          ในชุมนุมนี้เราจะเรียนรู้ <b>4 ส่วนประกอบหลัก</b> ในการสร้างเว็บแอปพลิเคชันจริงตั้งแต่หน้าบ้านจนถึงออนไลน์สู่ชาวโลก!
+        </p>
+
+        <div class="four-pillars-grid">
+          <!-- เสาหลัก 1: Frontend -->
+          <div class="pillar-card p-frontend">
+            <div class="pillar-icon">01</div>
+            <div class="pillar-num">ส่วนที่ 1</div>
+            <div class="pillar-name">Frontend</div>
+            <div class="pillar-desc">หน้าบ้านใน RoV: สกินฮีโร่, หลอดเลือด, ปุ่มกดสกิล 1-2-3 ที่ตาเห็น</div>
+          </div>
+
+          <!-- เสาหลัก 2: Backend -->
+          <div class="pillar-card p-backend">
+            <div class="pillar-icon">02</div>
+            <div class="pillar-num">ส่วนที่ 2</div>
+            <div class="pillar-name">Backend</div>
+            <div class="pillar-desc">หลังบ้านใน RoV: สมองกลคำนวณดาเมจ, คูลดาวน์, คิดคะแนนเบื้องหลัง</div>
+          </div>
+
+          <!-- เสาหลัก 3: Database -->
+          <div class="pillar-card p-db">
+            <div class="pillar-icon">03</div>
+            <div class="pillar-num">ส่วนที่ 3</div>
+            <div class="pillar-name">Database</div>
+            <div class="pillar-desc">ฐานข้อมูล RoV: ตู้เซฟเก็บสกิน, รูน, แรงก์ Conqueror, ประวัติการเล่น</div>
+          </div>
+
+          <!-- เสาหลัก 4: Deployment -->
+          <div class="pillar-card p-deploy">
+            <div class="pillar-icon">04</div>
+            <div class="pillar-num">ส่วนที่ 4</div>
+            <div class="pillar-name">Deployment</div>
+            <div class="pillar-desc">ออนไลน์ RoV: ปล่อยเกมขึ้นสโตร์ เปิดเซิร์ฟเวอร์ให้ทุกคนกดจับคู่ 5v5</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer-strip">
+        <span>01—04 // 4 เสาหลักของการเป็น Full Stack Developer (เปรียบเทียบกับโลกของ RoV)</span>
+        <span>กดปุ่ม <b>← ก่อนหน้า / ถัดไป →</b> หรือปัดหน้าจอเพื่อเปลี่ยนสไลด์</span>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         สไลด์ที่ 2: หน้าที่ 1 - FRONTEND คืออะไร?
+    ========================================== -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+
+      <div class="concept-container">
+        <div class="concept-header-bar">
+          <span class="concept-tag tag-blue">เสาหลักที่ 1 / 4</span>
+          <h2 class="concept-title">01 — Frontend (หน้าบ้าน) คืออะไร?</h2>
+        </div>
+
+        <div class="concept-layout">
+          <!-- ฝั่งซ้าย: ข้อมูล -->
+          <div class="concept-info-card">
+            <div class="analogy-banner"><span style="width:8px;height:8px;border-radius:50%;background:#007AFF;display:inline-block;margin-top:7px;flex-shrink:0;"></span>
+              <div><b>เปรียบเทียบในเกม RoV :</b> เหมือน <b>โมเดลตัวละคร 3D, สกินสุดเท่, เอฟเฟกต์แสงสกิล, หลอดเลือด HP และปุ่มกดสกิล 1-2-3 บนหน้าจอมือถือ</b> ที่ตาเรามองเห็นและนิ้วสัมผัสกดปล่อยสกิลได้!</div>
+            </div>
+
+            <ul class="feature-list">
+              <li class="feature-item">
+                <span class="f-icon">01</span>
+                <span><b>สิ่งที่ตาเห็นในเกม :</b> สกินตัวละคร Valhein, แสงเอฟเฟกต์อัลติเมต, ตัวเลขดาเมจ, มินิแมพ</span>
+              </li>
+              <li class="feature-item">
+                <span class="f-icon">02</span>
+                <span><b>สิ่งที่นิ้วกดสั่งการ :</b> ปุ่มเดินจอยสติ๊ก, ปุ่มกดใช้สกิล 1-2-3, ปุ่มซื้อไอเทมด่วน</span>
+              </li>
+              <li class="feature-item">
+                <span class="f-icon">03</span>
+                <span><b>เครื่องมือสร้าง Frontend :</b> <b>HTML</b> (วางโครงสร้างปุ่ม/รูป) + <b>CSS</b> (แต่งสกินสีสัน) + <b>JS</b> (แอนิเมชันขยับได้)</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- ฝั่งขวา: Visual จำลอง -->
+          <div class="concept-visual-card">
+            <div class="mock-browser-window">
+              <div class="mock-browser-top">
+                <span class="m-dot m-red"></span>
+                <span class="m-dot m-yellow"></span>
+                <span class="m-dot m-green"></span>
+                <span style="font-size:11px; color:#52524E; font-family:Consolas,monospace; font-weight:700; margin-left:8px;">rov-battle-ui.html</span>
+              </div>
+              <div class="mock-browser-body">
+                <div style="font-size:20px; font-weight:900; color:#141414;">RoV Battle UI — Valhein</div>
+                <!-- หลอดเลือด HP -->
+                <div style="width:100%; max-width:280px; background:#E5E5EA; border-radius:999px; height:12px; overflow:hidden; position:relative;">
+                  <div style="width:100%; height:100%; background:#34C759; border-radius:999px;"></div>
+                </div>
+                <div style="font-size:12px; color:#1F6E43; font-weight:800;">HP 5,200 / 5,200 (หลอดเลือดหน้าบ้าน)</div>
+                <!-- ปุ่มสกิล 3 ปุ่ม -->
+                <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-start; margin-top:4px;">
+                  <button class="interactive-pulse-btn" style="background:#FF9500; color:#FFFFFF; padding:7px 14px; font-size:13px;" onclick="fireRovSkill(1)">สกิล 1</button>
+                  <button class="interactive-pulse-btn" style="background:#007AFF; color:#FFFFFF; padding:7px 14px; font-size:13px;" onclick="fireRovSkill(2)">สกิล 2</button>
+                  <button class="interactive-pulse-btn" style="background:#FF3B30; color:#FFFFFF; padding:7px 14px; font-size:13px;" onclick="fireRovSkill(3)">อัลติเมต</button>
+                </div>
+                <div id="frontendSkillMsg" style="font-size:12.5px; color:#52524E; font-weight:700; min-height:18px;">ลองกดปุ่มสกิลด้านบน เพื่อสั่งการหน้า Frontend!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer-strip">
+        <span>01 // Frontend = หน้าจอการเล่นของ RoV ที่ผู้เล่นมองเห็นและกดสัมผัสได้จริง</span>
+        <span>สไลด์ 2 / 9</span>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         สไลด์ที่ 3: หน้าที่ 2 - BACKEND คืออะไร?
+    ========================================== -->
+    <section class="slide">
+      <div class="glow-orb-1" style="background: radial-gradient(circle, rgba(245,158,11,0.16) 0%, transparent 70%);"></div>
+
+      <div class="concept-container">
+        <div class="concept-header-bar">
+          <span class="concept-tag tag-orange">เสาหลักที่ 2 / 4</span>
+          <h2 class="concept-title">02 — Backend (หลังบ้าน) คืออะไร?</h2>
+        </div>
+
+        <div class="concept-layout">
+          <!-- ฝั่งซ้าย: ข้อมูล -->
+          <div class="concept-info-card">
+            <div class="analogy-banner analogy-orange"><span style="width:8px;height:8px;border-radius:50%;background:#007AFF;display:inline-block;margin-top:7px;flex-shrink:0;"></span>
+              <div><b>เปรียบเทียบในเกม RoV :</b> เหมือน <b>ระบบคำนวณดาเมจ, ระบบคูลดาวน์สกิล, กฎการแพ้-ชนะ และเซิร์ฟเวอร์เกม</b> ที่คิดคำนวณอยู่เบื้องหลังตลอดเวลา!</div>
+            </div>
+
+            <ul class="feature-list">
+              <li class="feature-item">
+                <span class="f-icon">01</span>
+                <span><b>สมองกลคำนวณสด :</b> พอยิงสกิล -> <i>ติดคริติคอลไหม? โดนหักเกราะเท่าไหร่? เลือดศัตรูต้องลดกี่หน่วย? ติดสตั๊นกี่วินาที?</i></span>
+              </li>
+              <li class="feature-item">
+                <span class="f-icon">02</span>
+                <span><b>ระบบป้องกันคนโกง :</b> ป้องกันไม่ให้แฮกเกอร์แอบแก้เลือด แก้เงิน หรือเดินทะลุกำแพง</span>
+              </li>
+              <li class="feature-item">
+                <span class="f-icon">03</span>
+                <span><b>ภาษาที่ใช้ทำ :</b> Node.js (JavaScript หลังบ้าน), Python, C++, Go (รันบน Game Server)</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- ฝั่งขวา: Visual จำลอง -->
+          <div class="concept-visual-card">
+            <div style="font-family:Consolas,monospace; font-size:12.5px; font-weight:800; color:#007AFF; margin-bottom:8px; letter-spacing:0.04em;">ENGINE // ROV BATTLE ENGINE (BACKEND)</div>
+            <div style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.14); border-radius:14px; padding:12px 16px; width:100%; text-align:left; font-family:Consolas,monospace; font-size:12.5px; line-height:1.65; color:#1C1C1E; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+              <div><b>Target :</b> ศัตรู Zuka (HP: 6,000)</div>
+              <div id="backendLogText" style="color:#1F6E43; font-weight:700;">[READY] รอคำสั่งยิงสกิลจากผู้เล่น...</div>
+            </div>
+            <button class="interactive-pulse-btn" style="margin-top:12px; font-size:13.5px;" onclick="calcRovDamage()">สั่งยิงสกิล (ทดสอบคำนวณหลังบ้าน) →</button>
+            <div style="font-size:12px; color:#52524E; margin-top:8px;">Backend จะคิดเลขคำนวณดาเมจให้ทันทีในเสี้ยววินาที!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer-strip">
+        <span>02 // Backend = สมองกลคำนวณดาเมจและกฎของเกม RoV ที่ซ่อนอยู่หลังบ้าน</span>
+        <span>สไลด์ 3 / 9</span>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         สไลด์ที่ 4: หน้าที่ 3 - DATABASE คืออะไร?
+    ========================================== -->
+    <section class="slide">
+      <div class="glow-orb-1" style="background: radial-gradient(circle, rgba(168,85,247,0.16) 0%, transparent 70%);"></div>
+
+      <div class="concept-container">
+        <div class="concept-header-bar">
+          <span class="concept-tag tag-purple">เสาหลักที่ 3 / 4</span>
+          <h2 class="concept-title">03 — Database (ฐานข้อมูล) คืออะไร?</h2>
+        </div>
+
+        <div class="concept-layout">
+          <!-- ฝั่งซ้าย: ข้อมูล -->
+          <div class="concept-info-card">
+            <div class="analogy-banner analogy-purple"><span style="width:8px;height:8px;border-radius:50%;background:#007AFF;display:inline-block;margin-top:7px;flex-shrink:0;"></span>
+              <div><b>เปรียบเทียบในเกม RoV :</b> เหมือน <b>คลังเซฟไอดีผู้เล่น: สกินที่มี, รูนที่จัดไว้, แรงก์ (Conqueror), เหรียญทอง และประวัติการแข่ง</b> ปิดเกมไปของก็ไม่หาย!</div>
+            </div>
+
+            <ul class="feature-list">
+              <li class="feature-item">
+                <span class="f-icon">01</span>
+                <span><b>เก็บข้อมูลไอดีถาวร :</b> ต่อให้เปลี่ยนมือถือใหม่ ล็อกอินปุ๊บ สกินและแรงก์เดิมก็ยังอยู่ครบ 100%</span>
+              </li>
+              <li class="feature-item">
+                <span class="f-icon">02</span>
+                <span><b>ค้นหาได้ทันที :</b> ดึงประวัติการแข่งย้อนหลัง (Match History) และสถิติ Win Rate</span>
+              </li>
+              <li class="feature-item">
+                <span class="f-icon">03</span>
+                <span><b>ระบบฐานข้อมูลยอดนิยม :</b> PostgreSQL, MySQL, Supabase, SQLite, Redis</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- ฝั่งขวา: Visual จำลอง -->
+          <div class="concept-visual-card">
+            <div style="font-family:Consolas,monospace; font-size:12.5px; font-weight:800; color:#007AFF; margin-bottom:8px; letter-spacing:0.04em;">STORAGE // ROV PLAYER DATABASE (คลังไอดี)</div>
+            <div class="db-anim-box" id="rovDbBox">
+              <div class="db-row active">
+                <span>Player: "ProGamer_ม.3"</span>
+                <span style="color:#007AFF; font-weight:800;">RANK: Conqueror</span>
+              </div>
+              <div class="db-row">
+                <span>Skin: "Valhein - เทพยมทูต"</span>
+                <span style="color:#1F6E43; font-weight:700;">ถาวร</span>
+              </div>
+              <div class="db-row">
+                <span>Skin: "Raz - มวยไทย"</span>
+                <span style="color:#1F6E43; font-weight:700;">ถาวร</span>
+              </div>
+              <div class="db-row" id="rovCoinRow">
+                <span>Gold Coins: 35,400</span>
+                <span style="color:#0F52BA; font-weight:700;">คูปอง: 850</span>
+              </div>
+            </div>
+            <button class="interactive-pulse-btn" style="margin-top:12px; font-size:13px;" onclick="addRovSkin()">+ สุ่มสกินใหม่บันทึกเข้า Database!</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer-strip">
+        <span>03 // Database = ตู้เซฟบันทึกสกิน แรงก์ และข้อมูลผู้เล่น RoV ไว้อย่างปลอดภัย</span>
+        <span>สไลด์ 4 / 9</span>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         สไลด์ที่ 5: หน้าที่ 4 - DEPLOYMENT คืออะไร?
+    ========================================== -->
+    <section class="slide">
+      <div class="glow-orb-1" style="background: radial-gradient(circle, rgba(34,197,94,0.16) 0%, transparent 70%);"></div>
+
+      <div class="concept-container">
+        <div class="concept-header-bar">
+          <span class="concept-tag tag-green">เสาหลักที่ 4 / 4</span>
+          <h2 class="concept-title">04 — Deployment (ออนไลน์สู่โลก) คืออะไร?</h2>
+        </div>
+
+        <div class="concept-layout">
+          <!-- ฝั่งซ้าย: ข้อมูล -->
+          <div class="concept-info-card">
+            <div class="analogy-banner analogy-green"><span style="width:8px;height:8px;border-radius:50%;background:#007AFF;display:inline-block;margin-top:7px;flex-shrink:0;"></span>
+              <div><b>เปรียบเทียบในเกม RoV :</b> เหมือน <b>การปล่อยเกมลง App Store / Play Store และเปิด Server ให้ออนไลน์ทั่วประเทศ ให้ทุกคนกด "จับคู่ 5v5" เล่นด้วยกันได้!</b></div>
+            </div>
+
+            <ul class="feature-list">
+              <li class="feature-item">
+                <span class="f-icon">01</span>
+                <span><b>ถ้ายังไม่ Deploy :</b> เหมือนผู้พัฒนาสร้างเกมเสร็จแต่นั่งเล่นคนเดียวในคอมฯ ตัวเอง เพื่อนโหลดไม่ได้ ชวนเล่น 5v5 ไม่ได้</span>
+              </li>
+              <li class="feature-item">
+                <span class="f-icon">02</span>
+                <span><b>หลัง Deploy สำเร็จ :</b> ตัวเว็บ/เกมจะขึ้นไปอยู่บน Cloud เซิร์ฟเวอร์ออนไลน์ 24 ชั่วโมง</span>
+              </li>
+              <li class="feature-item">
+                <span class="f-icon">03</span>
+                <span><b>ได้ลิงก์ให้ทุกคนเข้าถึง :</b> ส่งลิงก์ URL ให้เพื่อนทุกคนเปิดดูหน้าฮีโร่ของเราได้จากมือถือทันที</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- ฝั่งขวา: Visual จำลอง -->
+          <div class="concept-visual-card">
+            <div style="font-family:Consolas,monospace; font-size:12.5px; font-weight:800; color:#007AFF; margin-bottom:8px; letter-spacing:0.04em;">LIVE // GARENA ROV SERVER (DEPLOYMENT)</div>
+            <div style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.14); border-radius:14px; padding:14px 16px; width:100%; text-align:left; font-family:Consolas,monospace; font-size:12.5px; color:#1C1C1E; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+              <div style="color:#1F6E43; font-weight:800; margin-bottom:4px;">[ONLINE] Server Status: ONLINE (Ping 12ms)</div>
+              <div style="color:#141414;">พบห้องแข่งขัน 5v5 แล้ว! (10/10 ผู้เล่นพร้อม)</div>
+              <div style="margin-top:10px; background:#F2F2F7; padding:7px 12px; border-radius:10px; color:#007AFF; font-weight:700;">
+                https://user.github.io/rov
+              </div>
+            </div>
+            <button class="interactive-pulse-btn" style="margin-top:12px; font-size:13.5px;" onclick="shareRovLink()">ทดสอบแชร์ลิงก์ให้เพื่อน →</button>
+            <div style="font-size:12px; color:#52524E; margin-top:6px;">Deploy แล้วใครๆ ก็เปิดเว็บเราได้จากทั่วโลก!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer-strip">
+        <span>04 // Deployment = การเปิดเซิร์ฟเวอร์ออนไลน์ให้ทุกคนเชื่อมต่อเข้ามาเล่นด้วยกัน</span>
+        <span>สไลด์ 5 / 9</span>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         สไลด์ที่ 6: เรามาเริ่มใช้ HTML และ CSS กันเถอะ
+    ========================================== -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="concept-container">
+        <div class="concept-header-bar">
+          <span class="concept-tag tag-blue">STEP 01 // HTML STRUCTURE</span>
+          <h2 class="concept-title">เรามาเริ่มใช้ HTML และ CSS กันเถอะ</h2>
+        </div>
+
+        <div class="s6-step-container">
+          <!-- กริด 2 คอลัมน์: ซ้ายโค้ด VS Code | ขวาผลลัพธ์เบราว์เซอร์ -->
+          <div class="s6-interactive-grid">
+            <!-- ฝั่งซ้าย: โค้ด VS Code หน้าตาเหมือนโปรแกรมจริง -->
+            <div class="s6-code-window">
+              <div class="s6-code-topbar">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="m-dot m-red"></span>
+                  <span class="m-dot m-yellow"></span>
+                  <span class="m-dot m-green"></span>
+                  <span class="s6-tab-active">&lt;/&gt; index.html</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <button class="s6-shortcut-btn" onclick="copySlideCode('s6CodeContent', this)">คัดลอกโค้ด</button>
+                  <button id="s6ShortcutBtn" class="s6-shortcut-btn" onclick="toggleS6Shortcut()">กดดูทางลัดใน VS Code</button>
+                </div>
+              </div>
+              <div class="s6-code-content" id="s6CodeContent">
+                <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+                <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"en"</span>&gt;</span></span></div>
+                <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+                <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:18px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+                <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:18px;"><span class="c-tag">&lt;meta <span class="c-attr">name</span>=<span class="c-str">"viewport"</span> <span class="c-attr">content</span>=<span class="c-str">"width=device-width, initial-scale=1.0"</span>&gt;</span></span></div>
+                <div class="code-line"><span class="line-num">6</span><span class="line-code" style="padding-left:18px;"><span class="c-tag">&lt;title&gt;</span>Document<span class="c-tag">&lt;/title&gt;</span></span></div>
+                <div class="code-line"><span class="line-num">7</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+                <div class="code-line"><span class="line-num">8</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+                <div class="code-line"><span class="line-num">9</span><span class="line-code" style="padding-left:18px;">&nbsp;</span></div>
+                <div class="code-line"><span class="line-num">10</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
+                <div class="code-line"><span class="line-num">11</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+              </div>
+            </div>
+
+            <!-- ฝั่งขวา: พรีวิวบนเบราว์เซอร์ โชว์คำว่า Valhein -->
+            <div class="s6-preview-panel">
+              <!-- กล่องเบราว์เซอร์เหมือนเปิด Chrome จริง -->
+              <div class="s6-browser-box">
+                <div class="s6-browser-header">
+                  <span class="m-dot m-red"></span>
+                  <span class="m-dot m-yellow"></span>
+                  <span class="m-dot m-green"></span>
+                  <div class="s6-browser-tab active-tab">
+                    <span style="width:7px;height:7px;background:#007AFF;display:inline-block;"></span>
+                    <span>Valhein</span>
+                  </div>
+                  <div style="background:#ffffff; color:#64748b; font-size:11px; font-family:Consolas, monospace; padding:3px 10px; border-radius:6px; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; border:1px solid #cbd5e1;">https://user.github.io/rov</div>
+                </div>
+                <div class="s6-browser-canvas" style="padding: 30px 24px; display: flex; align-items: flex-start; justify-content: flex-start; background: #ffffff;">
+                  <div style="font-size: 36px; font-weight: bold; color: #000000; margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif;">Valhein</div>
+                </div>
+              </div>
+
+              <!-- การ์ดภารกิจท้าประลอง & นาฬิกาจับเวลา 1, 2, 3 นาที -->
+              <div class="s6-mission-card">
+                <div class="s6-mission-header">
+                  <span class="s6-mission-badge">CHALLENGE // ภารกิจท้าประลอง (Mini Challenge)</span>
+                  <button id="s6SolutionBtn" class="s6-solution-btn" onclick="toggleS6Solution()">ดูเฉลย</button>
+                </div>
+
+                <div style="text-align: left; font-size: 17.5px; font-weight: 900; color: #141414; margin: 2px 0 4px 0;">
+                  เสกหน้าเว็บฮีโร่ RoV ตัวแรก!
+                </div>
+
+                <div class="s6-mission-list" style="padding-left: 14px; font-size: 14.5px; color: #141414; line-height: 1.6;">
+                  <div>1. &nbsp;ชื่อตัว ละคร ROV ในดวงใจ 1 ตัว</div>
+                  <div>2. &nbsp;title bar เป็นชื่อตัวละคร นั้นๆ</div>
+                </div>
+
+                <!-- นาฬิกาจับเวลา 1, 2, 3 นาที -->
+                <div class="s6-timer-wrap">
+                  <div class="s6-timer-display" id="s6TimerDisplay">02:00</div>
+                  <div class="s6-timer-controls">
+                    <div class="s6-preset-group">
+                      <button class="s6-preset-btn" onclick="setS6TimerPreset(1)">1 นาที</button>
+                      <button class="s6-preset-btn active" onclick="setS6TimerPreset(2)">2 นาที</button>
+                      <button class="s6-preset-btn" onclick="setS6TimerPreset(3)">3 นาที</button>
+                    </div>
+                    <div class="s6-action-group">
+                      <button id="s6TimerToggleBtn" class="s6-timer-btn primary" onclick="toggleS6Timer()">▶ เริ่มจับเวลา</button>
+                      <button class="s6-timer-btn reset" onclick="resetS6Timer()">↺ รีเซ็ต</button>
+                    </div>
+                  </div>
+                </div>
+                <div id="s6TimerAlert" class="s6-timer-alert" style="display:none;">[TIME UP] หมดเวลาแล้วครับทุกคน! ใครเสกฮีโร่สำเร็จแล้วยกมือเลย! </div>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer-strip">
+        <span>NOTE // ในสัปดาห์นี้ เราจะเริ่มเขียนโครงสร้าง HTML ก่อน แล้วค่อยตามด้วย CSS แต่งสีในสไลด์ถัดไป</span>
+        <span>สไลด์ 6 / 9</span>
+      </div>
+    </section>
+
+        <!-- ==========================================
+         สไลด์ที่ 7: ROV HERO PREVIEW & HTML + CSS CODE
+    ========================================== -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+
+      <div class="concept-container">
+        <div class="concept-header-bar">
+          <span class="concept-tag tag-purple">STEP 02 // CSS STYLING</span>
+          <h2 class="concept-title">เสกชื่อฮีโร่สีแดง &amp; จัดกึ่งกลางหน้าจอด้วย CSS</h2>
+        </div>
+
+        <div class="s7-layout-grid">
+          <!-- ฝั่งซ้าย: หน้าต่าง VS Code แสดงโค้ด HTML + CSS -->
+          <div class="s7-code-window">
+            <div class="s7-code-topbar">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="m-dot m-red"></span>
+                <span class="m-dot m-yellow"></span>
+                <span class="m-dot m-green"></span>
+                <span class="s7-tab-active">&lt;/&gt; hero.html</span>
+              </div>
+              <div class="s7-code-tabs">
+                <button class="s7-code-tab-btn" onclick="copySlideCode('s7CodeContent', this)">คัดลอกโค้ด</button>
+                <button id="s7TabAll" class="s7-code-tab-btn active" onclick="setS7CodeFilter('all')">01 ดูทั้งหมด</button>
+                <button id="s7TabCss" class="s7-code-tab-btn" onclick="setS7CodeFilter('css')">02 ไฮไลต์ CSS (&lt;style&gt;)</button>
+                <button id="s7TabHtml" class="s7-code-tab-btn" onclick="setS7CodeFilter('html')">03 ไฮไลต์ HTML (&lt;body&gt;)</button>
+              </div>
+            </div>
+
+            <div class="s7-code-content" id="s7CodeContent">
+              <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
+              <div class="code-line s7-part-css"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
+              <div class="code-line s7-part-css"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
+              <div class="code-line s7-part-css"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
+              <div class="code-line s7-part-css glow-blue" style="font-weight:bold;"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 1. จัดให้อยู่กึ่งกลางหน้าจอ */</span></span></div>
+              <div class="code-line s7-part-css"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s7-part-css"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
+              <div class="code-line s7-part-css glow-green" style="font-weight:bold;"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 2. สั่งให้ชื่อตัวละครเป็นสีแดง */</span></span></div>
+              <div class="code-line s7-part-css"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">48px</span>;</span></div>
+              <div class="code-line s7-part-css"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s7-part-css"><span class="line-num">15</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">16</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+              <div class="code-line s7-part-html"><span class="line-num">17</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+              <div class="code-line s7-part-html glow-green" style="font-weight:bold;"><span class="line-num">18</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span> <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 ใส่หัวข้อตัวละคร */</span></span></div>
+              <div class="code-line s7-part-html"><span class="line-num">19</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">20</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+            </div>
+          </div>
+
+          <!-- ฝั่งขวา: ผลลัพธ์หน้าเว็บ + ภารกิจท้าประลอง -->
+          <div class="s7-preview-panel">
+            <div class="s7-browser-box">
+              <div class="s7-browser-header">
+                <span class="m-dot m-red"></span>
+                <span class="m-dot m-yellow"></span>
+                <span class="m-dot m-green"></span>
+                <div class="s7-browser-tab">
+                  <span style="width:7px;height:7px;background:#007AFF;display:inline-block;"></span>
+                  <span>Valhein</span>
+                </div>
+                <div class="s7-browser-url">https://user.github.io/rov</div>
+              </div>
+              <div class="s7-browser-canvas" id="s7BrowserCanvas" style="background:#ffffff; padding: 22px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 130px;">
+                <h1 style="color: red; font-size: 50px; font-weight: 900; margin: 0; font-family: Tahoma, 'Segoe UI', Arial, sans-serif; letter-spacing: -0.5px; text-align: center;">valhein</h1>
+                <p id="s7CanvasQuote" style="color: #4b0082; font-size: 16px; margin: 10px 0 0 0; text-align: center; font-family: Tahoma, sans-serif; max-width: 420px; line-height: 1.5;">ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ</p>
+              </div>
+            </div>
+
+            <!-- CHALLENGE // ภารกิจท้าประลอง (Mini Challenge) & นาฬิกาจับเวลา 1, 2, 3 นาที -->
+            <div class="s6-mission-card">
+              <div class="s6-mission-header">
+                <span class="s6-mission-badge">CHALLENGE // ภารกิจท้าประลอง (Mini Challenge)</span>
+                <button id="s7SolutionBtn" class="s6-solution-btn" onclick="toggleS7Solution()">ดูโค้ดเฉลย</button>
+              </div>
+
+              <div class="s6-mission-list" style="padding-left: 6px; font-size: 14.5px; color: #141414; line-height: 1.6; margin: 2px 0;">
+                <div>1. &nbsp;เพิ่ม <b>วลีประจำตัว / คำคมตัวละคร</b> ของตัวละครนั้นๆ</div>
+                <div>2. &nbsp;เปลี่ยน <b>สี</b> และ <b>ขนาด</b> ที่แตกต่างออกไป</div>
+              </div>
+
+              <!-- นาฬิกาจับเวลา 1, 2, 3 นาที -->
+              <div class="s6-timer-wrap">
+                <div class="s6-timer-display" id="s7TimerDisplay">02:00</div>
+                <div class="s6-timer-controls">
+                  <div class="s6-preset-group" id="s7TimerPresets">
+                    <button class="s6-preset-btn" onclick="setS7TimerPreset(1)">1 นาที</button>
+                    <button class="s6-preset-btn active" onclick="setS7TimerPreset(2)">2 นาที</button>
+                    <button class="s6-preset-btn" onclick="setS7TimerPreset(3)">3 นาที</button>
+                  </div>
+                  <div class="s6-action-group">
+                    <button id="s7TimerToggleBtn" class="s6-timer-btn primary" onclick="toggleS7Timer()">▶ เริ่มจับเวลา</button>
+                    <button class="s6-timer-btn reset" onclick="resetS7Timer()">↺ รีเซ็ต</button>
+                  </div>
+                </div>
+              </div>
+              <div id="s7TimerAlert" class="s6-timer-alert" style="display:none;">[TIME UP] หมดเวลาแล้วครับทุกคน! ใครแต่งคำคมสำเร็จแล้วยกมือเลย! </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer-strip">
+        <span>NOTE // ฝั่งซ้ายคือโค้ด CSS &amp; HTML ที่ใช้สั่งการ | ฝั่งขวาคือผลลัพธ์หน้าเว็บ &amp; ภารกิจท้าประลอง</span>
+        <span>สไลด์ 7 / 9</span>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         สไลด์ที่ 8: แทรกรูปภาพจากโฟลเดอร์ IMAGES
+    ========================================== -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="concept-container">
+        <div class="concept-header-bar">
+          <span class="concept-tag tag-green">STEP 03 // LOCAL IMAGE</span>
+          <h2 class="concept-title">แทรกรูปภาพฮีโร่จากโฟลเดอร์ images ด้วยแท็ก &lt;img&gt;</h2>
+        </div>
+
+        <div class="s7-layout-grid">
+          <!-- ฝั่งซ้าย: หน้าต่าง VS Code แสดงโค้ด HTML + CSS -->
+          <div class="s7-code-window">
+            <div class="s7-code-topbar">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="m-dot m-red"></span>
+                <span class="m-dot m-yellow"></span>
+                <span class="m-dot m-green"></span>
+                <span class="s7-tab-active">&lt;/&gt; hero.html</span>
+              </div>
+              <div class="s7-code-tabs">
+                <button class="s7-code-tab-btn" onclick="copySlideCode('s8CodeContent', this)">คัดลอกโค้ด</button>
+                <button id="s8TabAll" class="s7-code-tab-btn active" onclick="setS8CodeFilter('all')">01 ดูทั้งหมด</button>
+                <button id="s8TabCss" class="s7-code-tab-btn" onclick="setS8CodeFilter('css')">02 ไฮไลต์ CSS (&lt;style&gt;)</button>
+                <button id="s8TabHtml" class="s7-code-tab-btn" onclick="setS8CodeFilter('html')">03 ไฮไลต์ HTML (&lt;body&gt;)</button>
+              </div>
+            </div>
+
+            <div class="s7-code-content" id="s8CodeContent">
+              <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
+              <div class="code-line s8-part-css"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
+              <div class="code-line s8-part-css"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
+              <div class="code-line s8-part-css"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
+              <div class="code-line s8-part-css"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 จัดให้อยู่กึ่งกลาง */</span></span></div>
+              <div class="code-line s8-part-css"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s8-part-css"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
+              <div class="code-line s8-part-css"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 ชื่อตัวละครสีแดง */</span></span></div>
+              <div class="code-line s8-part-css"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">44px</span>;</span></div>
+              <div class="code-line s8-part-css"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s8-part-css glow-green" style="font-weight:bold;"><span class="line-num">15</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">img</span> {</span></div>
+              <div class="code-line s8-part-css glow-green" style="font-weight:bold;"><span class="line-num">16</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">width</span>: <span class="c-val">220px</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 ปรับขนาดความกว้างรูป */</span></span></div>
+              <div class="code-line s8-part-css glow-green" style="font-weight:bold;"><span class="line-num">17</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s8-part-css"><span class="line-num">18</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">p</span> {</span></div>
+              <div class="code-line s8-part-css"><span class="line-num">19</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">#4b0082</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🟣 สีคำคม */</span></span></div>
+              <div class="code-line s8-part-css"><span class="line-num">20</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">16px</span>;</span></div>
+              <div class="code-line s8-part-css"><span class="line-num">21</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s8-part-css"><span class="line-num">22</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">23</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+              <div class="code-line s8-part-html"><span class="line-num">24</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+              <div class="code-line s8-part-html"><span class="line-num">25</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span></span></div>
+              <div class="code-line s8-part-html glow-green" style="font-weight:bold;"><span class="line-num">26</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;img <span class="c-attr">src</span>=<span class="c-str">"images/valhein.png"</span> <span class="c-attr">alt</span>=<span class="c-str">"Valhein"</span>&gt;</span> <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 แทรกรูปจากโฟลเดอร์ images */</span></span></div>
+              <div class="code-line s8-part-html"><span class="line-num">27</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;p&gt;</span>ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ<span class="c-tag">&lt;/p&gt;</span></span></div>
+              <div class="code-line s8-part-html"><span class="line-num">28</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">29</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+            </div>
+          </div>
+
+          <!-- ฝั่งขวา: ผลลัพธ์หน้าเว็บ + ภารกิจท้าประลอง -->
+          <div class="s7-preview-panel">
+            <div class="s7-browser-box">
+              <div class="s7-browser-header">
+                <span class="m-dot m-red"></span>
+                <span class="m-dot m-yellow"></span>
+                <span class="m-dot m-green"></span>
+                <div class="s7-browser-tab">
+                  <span style="width:7px;height:7px;background:#007AFF;display:inline-block;"></span>
+                  <span>Valhein</span>
+                </div>
+                <div class="s7-browser-url">https://user.github.io/rov</div>
+              </div>
+              <div class="s7-browser-canvas" id="s8BrowserCanvas" style="background:#ffffff; padding: 14px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 190px;">
+                <h1 style="color: red; font-size: 38px; font-weight: 900; margin: 0; font-family: Tahoma, 'Segoe UI', Arial, sans-serif; letter-spacing: -0.5px; text-align: center;">valhein</h1>
+                <img id="s8HeroImg" src="images/valhein.png" alt="Valhein" style="width: 175px; max-height: 140px; object-fit: contain; margin: 6px 0; ">
+                <p style="color: #4b0082; font-size: 13.5px; margin: 2px 0 0 0; text-align: center; font-family: Tahoma, sans-serif;">ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ</p>
+              </div>
+            </div>
+
+            <!-- CHALLENGE // ภารกิจท้าประลอง (Mini Challenge) & นาฬิกาจับเวลา 1, 2, 3 นาที -->
+            <div class="s6-mission-card">
+              <div class="s6-mission-header">
+                <span class="s6-mission-badge" style="background: linear-gradient(135deg, #10b981, #059669);">CHALLENGE // ภารกิจแทรกรูปภาพ (Mini Challenge)</span>
+                <button id="s8SolutionBtn" class="s6-solution-btn" onclick="toggleS8Solution()">ดูโค้ดตัวอย่าง</button>
+              </div>
+
+              <div class="s6-mission-list" style="padding-left: 6px; font-size: 14px; color: #141414; line-height: 1.55; margin: 2px 0;">
+                <div>1. &nbsp;สร้างโฟลเดอร์ชื่อ <b>images</b> แล้วนำรูปฮีโร่ไปวางไว้ข้างใน</div>
+                <div>2. &nbsp;ใช้แท็ก <b>&lt;img src="images/ชื่อรูป.png"&gt;</b> แทรกรูปลงหน้าเว็บ</div>
+                <div>3. &nbsp;ใช้ CSS ปรับขนาดรูปด้วย <b>img { width: 220px; }</b> ให้สวยงาม</div>
+              </div>
+
+              <!-- นาฬิกาจับเวลา 1, 2, 3 นาที -->
+              <div class="s6-timer-wrap">
+                <div class="s6-timer-display" id="s8TimerDisplay">02:00</div>
+                <div class="s6-timer-controls">
+                  <div class="s6-preset-group" id="s8TimerPresets">
+                    <button class="s6-preset-btn" onclick="setS8TimerPreset(1)">1 นาที</button>
+                    <button class="s6-preset-btn active" onclick="setS8TimerPreset(2)">2 นาที</button>
+                    <button class="s6-preset-btn" onclick="setS8TimerPreset(3)">3 นาที</button>
+                  </div>
+                  <div class="s6-action-group">
+                    <button id="s8TimerToggleBtn" class="s6-timer-btn primary" onclick="toggleS8Timer()">▶ เริ่มจับเวลา</button>
+                    <button class="s6-timer-btn reset" onclick="resetS8Timer()">↺ รีเซ็ต</button>
+                  </div>
+                </div>
+              </div>
+              <div id="s8TimerAlert" class="s6-timer-alert" style="display:none;">[TIME UP] หมดเวลาแล้วครับทุกคน! ใครแทรกรูปภาพสำเร็จแล้วยกมือเลย! </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer-strip">
+        <span>NOTE // แทรกรูปภาพด้วยแท็ก &lt;img src="images/..."&gt; และปรับขนาดความกว้างด้วย CSS img { width: ...; }</span>
+        <span>สไลด์ 8 / 9</span>
+      </div>
+    </section>
+
+  
+    <!-- ==========================================
+         สไลด์ที่ 9: แทรกรูปภาพด้วยลิงก์ URL จากเว็บ
+    ========================================== -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="concept-container">
+        <div class="concept-header-bar">
+          <span class="concept-tag tag-blue">STEP 04 // EXTERNAL URL</span>
+          <h2 class="concept-title">ดึงรูปภาพจากอินเทอร์เน็ตด้วยลิงก์ URL วางไว้ใต้คำคม</h2>
+        </div>
+
+        <div class="s7-layout-grid">
+          <!-- ฝั่งซ้าย: หน้าต่าง VS Code แสดงโค้ด HTML + CSS -->
+          <div class="s7-code-window">
+            <div class="s7-code-topbar">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="m-dot m-red"></span>
+                <span class="m-dot m-yellow"></span>
+                <span class="m-dot m-green"></span>
+                <span class="s7-tab-active">&lt;/&gt; hero.html</span>
+              </div>
+              <div class="s7-code-tabs">
+                <button class="s7-code-tab-btn" onclick="copySlideCode('s9CodeContent', this)">คัดลอกโค้ด</button>
+                <button id="s9TabAll" class="s7-code-tab-btn active" onclick="setS9CodeFilter('all')">01 ดูทั้งหมด</button>
+                <button id="s9TabCss" class="s7-code-tab-btn" onclick="setS9CodeFilter('css')">02 ไฮไลต์ CSS (&lt;style&gt;)</button>
+                <button id="s9TabHtml" class="s7-code-tab-btn" onclick="setS9CodeFilter('html')">03 ไฮไลต์ HTML (&lt;body&gt;)</button>
+              </div>
+            </div>
+
+            <div class="s7-code-content" id="s9CodeContent">
+              <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
+              <div class="code-line s9-part-css"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
+              <div class="code-line s9-part-css"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 จัดกึ่งกลาง */</span></span></div>
+              <div class="code-line s9-part-css"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 สีชื่อตัวละคร */</span></span></div>
+              <div class="code-line s9-part-css"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">42px</span>;</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">15</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">.hero-img</span> {</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">16</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">width</span>: <span class="c-val">200px</span>; <span style="color:#5C6B57; font-size:11.5px; font-weight:normal;">/* รูปฮีโร่ */</span></span></div>
+              <div class="code-line s9-part-css"><span class="line-num">17</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">18</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">p</span> {</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">19</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">#4b0082</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🟣 สีคำคม */</span></span></div>
+              <div class="code-line s9-part-css"><span class="line-num">20</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">15px</span>;</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">21</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s9-part-css glow-green" style="font-weight:bold;"><span class="line-num">22</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">.logo-img</span> {</span></div>
+              <div class="code-line s9-part-css glow-green" style="font-weight:bold;"><span class="line-num">23</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">width</span>: <span class="c-val">120px</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 ปรับขนาดโลโก้ RoV */</span></span></div>
+              <div class="code-line s9-part-css glow-green" style="font-weight:bold;"><span class="line-num">24</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">margin-top</span>: <span class="c-val">6px</span>;</span></div>
+              <div class="code-line s9-part-css glow-green" style="font-weight:bold;"><span class="line-num">25</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s9-part-css"><span class="line-num">26</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">27</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+              <div class="code-line s9-part-html"><span class="line-num">28</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+              <div class="code-line s9-part-html"><span class="line-num">29</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span></span></div>
+              <div class="code-line s9-part-html"><span class="line-num">30</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;img <span class="c-attr">class</span>=<span class="c-str">"hero-img"</span> <span class="c-attr">src</span>=<span class="c-str">"images/valhein.png"</span> <span class="c-attr">alt</span>=<span class="c-str">"Valhein"</span>&gt;</span></span></div>
+              <div class="code-line s9-part-html"><span class="line-num">31</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;p&gt;</span>ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ<span class="c-tag">&lt;/p&gt;</span></span></div>
+              <div class="code-line s9-part-html glow-green" style="font-weight:bold;"><span class="line-num">32</span><span class="line-code" style="padding-left:14px;"><span class="c-comm">&lt;!-- 🌐 แทรกรูปโลโก้จากลิงก์เว็บ URL --&gt;</span></span></div>
+              <div class="code-line s9-part-html glow-green" style="font-weight:bold;"><span class="line-num">33</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;img <span class="c-attr">class</span>=<span class="c-str">"logo-img"</span> <span class="c-attr">src</span>=<span class="c-str">"https://static.wikia.nocookie.net/.../RoV_โลโก้ใหม่.png"</span> <span class="c-attr">alt</span>=<span class="c-str">"RoV Logo"</span>&gt;</span></span></div>
+              <div class="code-line s9-part-html"><span class="line-num">34</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/body&gt;</span></span></div>
+              <div class="code-line"><span class="line-num">35</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+            </div>
+          </div>
+
+          <!-- ฝั่งขวา: ผลลัพธ์หน้าเว็บ + ภารกิจท้าประลอง -->
+          <div class="s7-preview-panel">
+            <div class="s7-browser-box">
+              <div class="s7-browser-header">
+                <span class="m-dot m-red"></span>
+                <span class="m-dot m-yellow"></span>
+                <span class="m-dot m-green"></span>
+                <div class="s7-browser-tab">
+                  <span style="width:7px;height:7px;background:#007AFF;display:inline-block;"></span>
+                  <span>Valhein</span>
+                </div>
+                <div class="s7-browser-url">https://user.github.io/rov</div>
+              </div>
+              <div class="s7-browser-canvas" id="s9BrowserCanvas" style="background:#ffffff; padding: 12px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 220px;">
+                <h1 style="color: red; font-size: 34px; font-weight: 900; margin: 0; font-family: Tahoma, 'Segoe UI', Arial, sans-serif; letter-spacing: -0.5px; text-align: center;">valhein</h1>
+                <img src="images/valhein.png" alt="Valhein" style="width: 155px; max-height: 110px; object-fit: contain; margin: 4px 0; ">
+                <p style="color: #4b0082; font-size: 13px; margin: 2px 0 4px 0; text-align: center; font-family: Tahoma, sans-serif;">ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ</p>
+                <img src="https://static.wikia.nocookie.net/arena-of-valor/images/2/29/RoV_%E0%B9%82%E0%B8%A5%E0%B9%82%E0%B8%81%E0%B9%89%E0%B9%83%E0%B8%AB%E0%B8%A1%E0%B9%88.png/revision/latest?cb=20220921035536&path-prefix=th" onerror="this.onerror=null; this.src='images/rov-logo.png';" alt="RoV Logo" style="width: 115px; height: auto; max-height: 48px; object-fit: contain; margin-top: 4px;">
+              </div>
+            </div>
+
+            <!-- CHALLENGE // ภารกิจท้าประลอง (Mini Challenge) & นาฬิกาจับเวลา 1, 2, 3 นาที -->
+            <div class="s6-mission-card">
+              <div class="s6-mission-header">
+                <span class="s6-mission-badge" style="background: linear-gradient(135deg, #0284c7, #0369a1);">CHALLENGE // ภารกิจดึงรูปภาพจากเว็บ URL</span>
+                <button id="s9SolutionBtn" class="s6-solution-btn" onclick="toggleS9Solution()">ดูโค้ดตัวอย่าง</button>
+              </div>
+
+              <div class="s6-mission-list" style="padding-left: 6px; font-size: 13.5px; color: #141414; line-height: 1.5; margin: 2px 0;">
+                <div>1. &nbsp;ค้นหารูปภาพบนเว็บ ➡️ <b>คลิกขวาที่รูป</b> ➡️ เลือก <b>"คัดลอกที่อยู่รูปภาพ (Copy image address)"</b></div>
+                <div>2. &nbsp;นำลิงก์ URL มาวางในแท็ก <b>&lt;img src="https://..."&gt;</b> ไว้ใต้แท็ก &lt;p&gt; คำคม</div>
+                <div>3. &nbsp;กำหนดคลาส <b>.logo-img { width: 120px; }</b> เพื่อปรับขนาดโลโก้ให้พอดี</div>
+              </div>
+
+              <!-- นาฬิกาจับเวลา 1, 2, 3 นาที -->
+              <div class="s6-timer-wrap">
+                <div class="s6-timer-display" id="s9TimerDisplay">02:00</div>
+                <div class="s6-timer-controls">
+                  <div class="s6-preset-group" id="s9TimerPresets">
+                    <button class="s6-preset-btn" onclick="setS9TimerPreset(1)">1 นาที</button>
+                    <button class="s6-preset-btn active" onclick="setS9TimerPreset(2)">2 นาที</button>
+                    <button class="s6-preset-btn" onclick="setS9TimerPreset(3)">3 นาที</button>
+                  </div>
+                  <div class="s6-action-group">
+                    <button id="s9TimerToggleBtn" class="s6-timer-btn primary" onclick="toggleS9Timer()">▶ เริ่มจับเวลา</button>
+                    <button class="s6-timer-btn reset" onclick="resetS9Timer()">↺ รีเซ็ต</button>
+                  </div>
+                </div>
+              </div>
+              <div id="s9TimerAlert" class="s6-timer-alert" style="display:none;">[TIME UP] หมดเวลาแล้วครับทุกคน! ใครดึงโลโก้จากเว็บสำเร็จแล้วยกมือเลย! </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer-strip">
+        <span>NOTE // ดึงรูปภาพจากอินเทอร์เน็ตได้ทันทีโดยไม่ต้องโหลดลงเครื่อง ด้วยการใส่ลิงก์ URL ในแท็ก &lt;img src="https://..."&gt;</span>
+        <span>สไลด์ 9 / 9</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- แถบควบคุมสไลด์ด้านล่างสุด -->
+  <footer class="bottombar">
+    <button id="prevBtn" class="slide-nav-btn" onclick="changeSlide(-1)">← ก่อนหน้า</button>
+    <div id="slideDots" class="slide-dots"></div>
+    <button id="nextBtn" class="slide-nav-btn" onclick="changeSlide(1)">ถัดไป →</button>
+  </footer>
+
+  <script>
+    // ===== ระบบจัดการสไลด์ =====
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.getElementById('slideDots');
+    const counterText = document.getElementById('slideCounterText');
+    let currentSlide = 0;
+
+    function initSlides() {
+      dotsContainer.innerHTML = '';
+      slides.forEach((_, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'dot-btn' + (idx === currentSlide ? ' active' : '');
+        btn.innerText = idx + 1;
+        btn.title = `ไปสไลด์ที่ ${idx + 1}`;
+        btn.onclick = () => goToSlide(idx);
+        dotsContainer.appendChild(btn);
+      });
+      updateSlideUI();
+    }
+
+    function goToSlide(index) {
+      currentSlide = Math.max(0, Math.min(slides.length - 1, index));
+      updateSlideUI();
+    }
+
+    function changeSlide(step) {
+      goToSlide(currentSlide + step);
+    }
+
+    function updateSlideUI() {
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentSlide);
+      });
+      const dotBtns = dotsContainer.querySelectorAll('.dot-btn');
+      dotBtns.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentSlide);
+      });
+      document.getElementById('prevBtn').disabled = currentSlide === 0;
+      document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+      counterText.innerText = `สไลด์ ${currentSlide + 1} / ${slides.length}`;
+
+      const activeDot = dotsContainer.querySelector('.dot-btn.active');
+      if (activeDot) {
+        activeDot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+
+      if (window.innerWidth <= 768) {
+        const activeSlide = slides[currentSlide];
+        if (activeSlide) activeSlide.scrollTop = 0;
+        const stage = document.querySelector('.slide-stage');
+        if (stage) stage.scrollTop = 0;
+      }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // รองรับปุ่มลูกศรคีย์บอร์ด
+    window.addEventListener('keydown', (e) => {
+      const active = document.activeElement;
+      if (active && (active.isContentEditable || active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+        return;
+      }
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') changeSlide(1);
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') changeSlide(-1);
+    });
+
+    // รองรับการปัดหน้าจอ (Touch Swipe) บนมือถือและ iPad
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const stageEl = document.querySelector('.slide-stage');
+    if (stageEl) {
+      stageEl.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+      stageEl.addEventListener('touchend', (e) => {
+        const diffX = e.changedTouches[0].screenX - touchStartX;
+        const diffY = e.changedTouches[0].screenY - touchStartY;
+        if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY) * 1.3) {
+          if (diffX < 0) changeSlide(1);
+          else changeSlide(-1);
+        }
+      }, { passive: true });
+    }
+
+    // ===== ฟังก์ชันควบคุมโค้ดในสไลด์ที่ 7 =====
+    function setS7CodeFilter(filter) {
+      const btnAll = document.getElementById('s7TabAll');
+      const btnCss = document.getElementById('s7TabCss');
+      const btnHtml = document.getElementById('s7TabHtml');
+      const cssLines = document.querySelectorAll('.s7-part-css');
+      const htmlLines = document.querySelectorAll('.s7-part-html');
+
+      if (btnAll) btnAll.classList.toggle('active', filter === 'all');
+      if (btnCss) btnCss.classList.toggle('active', filter === 'css');
+      if (btnHtml) btnHtml.classList.toggle('active', filter === 'html');
+
+      cssLines.forEach(el => {
+        el.classList.toggle('s7-line-hl-css', filter === 'css');
+      });
+      htmlLines.forEach(el => {
+        el.classList.toggle('s7-line-hl-html', filter === 'html');
+      });
+
+      const container = document.getElementById('s7CodeContent');
+      if (container) {
+        if (filter === 'css' && cssLines[0]) {
+          cssLines[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else if (filter === 'html' && htmlLines[0]) {
+          htmlLines[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
+
+    function updateHeroPlayground() {
+      // safe guard
+      const heroNameInput = document.getElementById('heroNameInput');
+      if (!heroNameInput) return;
+    }
+
+
+    // ===== ระบบจำลอง RoV บนสไลด์ที่ 2 - 5 =====
+    function fireRovSkill(skillNum) {
+      const msg = document.getElementById('frontendSkillMsg');
+      if (!msg) return;
+      if (skillNum === 1) {
+        msg.innerHTML = '<span style="color:#9A3B00; font-weight:800;">[SKILL 01] ปาดาวแดง! สกิลทำงาน -> สร้างดาเมจกายภาพใส่ศัตรู!</span>';
+      } else if (skillNum === 2) {
+        msg.innerHTML = '<span style="color:#0F52BA; font-weight:800;">[SKILL 02] ปาดาวฟ้าสตั๊น! ศัตรูติดสตั๊นขยับไม่ได้ 1 วินาที!</span>';
+      } else {
+        msg.innerHTML = '<span style="color:#007AFF; font-weight:800;">[ULTIMATE] Bullet Storm! สาดกระสุนปืนกลอัลติเมต 6 นัดรวด!</span>';
+      }
+    }
+
+    let zukaHp = 6000;
+    function calcRovDamage() {
+      const log = document.getElementById('backendLogText');
+      if (!log) return;
+      const isCrit = Math.random() > 0.4;
+      const baseDmg = isCrit ? 1650 : 850;
+      zukaHp = Math.max(0, zukaHp - baseDmg);
+      
+      log.innerHTML = `
+        <span style="color:#007AFF; font-weight:800;">[Backend คำนวณเบื้องหลัง]:</span><br>
+        • สุ่มติดคริติคอล: <b>${isCrit ? 'ติดคริติคอล x2!' : 'ดาเมจปกติ'}</b><br>
+        • ดาเมจสุทธิ: <b style="color:#C81E1E;">-${baseDmg} DMG</b><br>
+        • เลือด Zuka เหลือ: <b>${zukaHp} / 6,000 HP</b><br>
+        • นับคูลดาวน์สกิล: <b style="color:#0F52BA;">5.0 วินาที...</b>
+      `;
+      if (zukaHp === 0) {
+        log.innerHTML += '<br><b style="color:#1F6E43;">[VICTORY] ศัตรูถูกกำจัดแล้ว! (YOU HAVE SLAIN AN ENEMY!)</b>';
+        zukaHp = 6000;
+      }
+    }
+
+    const bonusSkins = [
+      'Airi - ซากุระสวรรค์ 🌸',
+      'Nakroth - ดาบเพลิงอเวจี 🔥',
+      'Tulen - มังกรสายฟ้า ⚡',
+      'Florentino - คาสโนว่า 🌹',
+      'Lauriel - นางฟ้าศักดิ์สิทธิ์ 🪽'
+    ];
+    let skinIdx = 0;
+    function addRovSkin() {
+      const box = document.getElementById('rovDbBox');
+      if (!box) return;
+      const pick = bonusSkins[skinIdx % bonusSkins.length];
+      skinIdx++;
+      const newRow = document.createElement('div');
+      newRow.className = 'db-row active';
+      newRow.innerHTML = `<span>Skin: "${pick}"</span><span style="color:#007AFF; font-weight:800;">บันทึกแล้ว</span>`;
+      box.insertBefore(newRow, document.getElementById('rovCoinRow'));
+    }
+
+    function showEditorialAlert(msg) {
+      const old = document.getElementById('__editorial_modal');
+      if (old) old.remove();
+      const overlay = document.createElement('div');
+      overlay.id = '__editorial_modal';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.32);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px;';
+      const box = document.createElement('div');
+      box.style.cssText = 'background:rgba(255,255,255,0.94);backdrop-filter:saturate(180%) blur(20px);color:#1C1C1E;max-width:310px;width:100%;border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,0.18);text-align:center;overflow:hidden;';
+      box.innerHTML = `
+        <div style="padding:20px 18px 16px;">
+          <div style="font-size:17px;font-weight:700;margin-bottom:6px;">คัดลอกลิงก์สำเร็จ!</div>
+          <div style="font-size:13.5px;color:#3A3A3C;line-height:1.45;white-space:pre-line;">${msg}</div>
+        </div>
+        <button id="__editorial_modal_close" style="width:100%;background:transparent;color:#007AFF;border:none;border-top:0.5px solid rgba(60,60,67,0.22);padding:12px;font-size:17px;font-weight:600;cursor:pointer;font-family:inherit;">ตกลง</button>
+      `;
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+      overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+      document.getElementById('__editorial_modal_close').onclick = () => overlay.remove();
+    }
+
+    function shareRovLink() {
+      showEditorialAlert('https://user.github.io/rov\n\nเพื่อนๆ ในมือถือสามารถกดเปิดดูหน้าฮีโร่ RoV ของเราได้จากทุกที่ทั่วโลกแล้ว!');
+    }
+
+    // ===== ระบบนาฬิกาจับเวลาภารกิจ สไลด์ที่ 6 =====
+    let s6TimerInterval = null;
+    let s6TimerSeconds = 120; // ค่าเริ่มต้น 2 นาที
+    let s6TimerPresetSec = 120;
+    let s6TimerRunning = false;
+
+    function formatS6Time(sec) {
+      const m = Math.floor(sec / 60).toString().padStart(2, '0');
+      const s = (sec % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateS6TimerDisplay() {
+      const display = document.getElementById('s6TimerDisplay');
+      if (display) {
+        display.innerText = formatS6Time(s6TimerSeconds);
+        if (s6TimerSeconds === 0) {
+          display.className = 's6-timer-display ended';
+        } else if (s6TimerRunning) {
+          display.className = 's6-timer-display running';
+        } else {
+          display.className = 's6-timer-display';
+        }
+      }
+    }
+
+    function setS6TimerPreset(mins) {
+      clearInterval(s6TimerInterval);
+      s6TimerRunning = false;
+      s6TimerPresetSec = mins * 60;
+      s6TimerSeconds = s6TimerPresetSec;
+      
+      const alertBox = document.getElementById('s6TimerAlert');
+      if (alertBox) alertBox.style.display = 'none';
+
+      const toggleBtn = document.getElementById('s6TimerToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '▶ เริ่มจับเวลา';
+        toggleBtn.className = 's6-timer-btn primary';
+      }
+
+      const presetBtns = document.querySelectorAll('.s6-preset-btn');
+      presetBtns.forEach((btn, idx) => {
+        btn.classList.toggle('active', (idx + 1) === mins);
+      });
+
+      updateS6TimerDisplay();
+    }
+
+    function toggleS6Timer() {
+      const toggleBtn = document.getElementById('s6TimerToggleBtn');
+      const alertBox = document.getElementById('s6TimerAlert');
+
+      if (s6TimerRunning) {
+        // พักชั่วคราว
+        clearInterval(s6TimerInterval);
+        s6TimerRunning = false;
+        if (toggleBtn) {
+          toggleBtn.innerHTML = '▶ จับเวลาต่อ';
+          toggleBtn.className = 's6-timer-btn primary';
+        }
+        updateS6TimerDisplay();
+      } else {
+        // เริ่มเดิน
+        if (s6TimerSeconds === 0) {
+          s6TimerSeconds = s6TimerPresetSec;
+        }
+        if (alertBox) alertBox.style.display = 'none';
+        s6TimerRunning = true;
+        if (toggleBtn) {
+          toggleBtn.innerHTML = '❚❚ พักชั่วคราว';
+          toggleBtn.className = 's6-timer-btn paused';
+        }
+        updateS6TimerDisplay();
+
+        s6TimerInterval = setInterval(() => {
+          if (s6TimerSeconds > 0) {
+            s6TimerSeconds--;
+            updateS6TimerDisplay();
+            if (s6TimerSeconds === 0) {
+              clearInterval(s6TimerInterval);
+              s6TimerRunning = false;
+              if (toggleBtn) {
+                toggleBtn.innerHTML = '↺ เริ่มใหม่';
+                toggleBtn.className = 's6-timer-btn primary';
+              }
+              if (alertBox) alertBox.style.display = 'block';
+            }
+          }
+        }, 1000);
+      }
+    }
+
+    function resetS6Timer() {
+      clearInterval(s6TimerInterval);
+      s6TimerRunning = false;
+      s6TimerSeconds = s6TimerPresetSec;
+      const toggleBtn = document.getElementById('s6TimerToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '▶ เริ่มจับเวลา';
+        toggleBtn.className = 's6-timer-btn primary';
+      }
+      const alertBox = document.getElementById('s6TimerAlert');
+      if (alertBox) alertBox.style.display = 'none';
+      updateS6TimerDisplay();
+    }
+
+    function toggleS6Shortcut() {
+      const btn = document.getElementById('s6ShortcutBtn');
+      if (!btn) return;
+      if (btn.classList.contains('revealed')) {
+        btn.classList.remove('revealed');
+        btn.innerHTML = 'กดดูทางลัดใน VS Code';
+      } else {
+        btn.classList.add('revealed');
+        btn.innerHTML = 'ทางลัดใน VS Code: พิมพ์ ! หรือ html:5 แล้วกด Enter';
+      }
+    }
+
+    let s6ShowingSolution = false;
+    function toggleS6Solution() {
+      const btn = document.getElementById('s6SolutionBtn');
+      const codeContent = document.getElementById('s6CodeContent');
+      if (!btn || !codeContent) return;
+
+      s6ShowingSolution = !s6ShowingSolution;
+
+      if (s6ShowingSolution) {
+        btn.classList.add('active-sol');
+        btn.innerHTML = 'ซ่อนเฉลย';
+        codeContent.innerHTML = `
+          <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"en"</span>&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:18px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:18px;"><span class="c-tag">&lt;meta <span class="c-attr">name</span>=<span class="c-str">"viewport"</span> <span class="c-attr">content</span>=<span class="c-str">"width=device-width, initial-scale=1.0"</span>&gt;</span></span></div>
+          <div class="code-line glow-green" style="font-weight:bold;"><span class="line-num">6</span><span class="line-code" style="padding-left:18px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span> <span style="color:#1F6E43; font-size:12px; font-weight:normal;">👈 1. เปลี่ยนชื่อบนแท็บ</span></span></div>
+          <div class="code-line"><span class="line-num">7</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">8</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+          <div class="code-line glow-green" style="font-weight:bold;"><span class="line-num">9</span><span class="line-code" style="padding-left:18px;">Valhein <span style="color:#1F6E43; font-size:12px; font-weight:normal;">👈 2. พิมพ์ชื่อใส่ใน body</span></span></div>
+          <div class="code-line"><span class="line-num">10</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">11</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+        `;
+      } else {
+        btn.classList.remove('active-sol');
+        btn.innerHTML = 'ดูเฉลย';
+        codeContent.innerHTML = `
+          <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"en"</span>&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:18px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:18px;"><span class="c-tag">&lt;meta <span class="c-attr">name</span>=<span class="c-str">"viewport"</span> <span class="c-attr">content</span>=<span class="c-str">"width=device-width, initial-scale=1.0"</span>&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">6</span><span class="line-code" style="padding-left:18px;"><span class="c-tag">&lt;title&gt;</span>Document<span class="c-tag">&lt;/title&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">7</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">8</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">9</span><span class="line-code" style="padding-left:18px;">&nbsp;</span></div>
+          <div class="code-line"><span class="line-num">10</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">11</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+        `;
+      }
+    }
+
+    
+    // ===== ระบบนาฬิกาจับเวลา & เฉลยภารกิจ สไลด์ที่ 7 =====
+    let s7TimerInterval = null;
+    let s7TimerSeconds = 120;
+    let s7TimerPresetSec = 120;
+    let s7TimerRunning = false;
+
+    function formatS7Time(sec) {
+      const m = Math.floor(sec / 60).toString().padStart(2, '0');
+      const s = (sec % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateS7TimerDisplay() {
+      const display = document.getElementById('s7TimerDisplay');
+      if (display) {
+        display.innerText = formatS7Time(s7TimerSeconds);
+        if (s7TimerSeconds === 0) {
+          display.className = 's6-timer-display ended';
+        } else if (s7TimerRunning) {
+          display.className = 's6-timer-display running';
+        } else {
+          display.className = 's6-timer-display';
+        }
+      }
+    }
+
+    function setS7TimerPreset(mins) {
+      clearInterval(s7TimerInterval);
+      s7TimerRunning = false;
+      s7TimerPresetSec = mins * 60;
+      s7TimerSeconds = s7TimerPresetSec;
+      
+      const alertBox = document.getElementById('s7TimerAlert');
+      if (alertBox) alertBox.style.display = 'none';
+
+      const toggleBtn = document.getElementById('s7TimerToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '▶ เริ่มจับเวลา';
+        toggleBtn.className = 's6-timer-btn primary';
+      }
+
+      const presetBtns = document.querySelectorAll('#s7TimerPresets .s6-preset-btn');
+      presetBtns.forEach((btn, idx) => {
+        btn.classList.toggle('active', (idx + 1) === mins);
+      });
+
+      updateS7TimerDisplay();
+    }
+
+    function toggleS7Timer() {
+      const toggleBtn = document.getElementById('s7TimerToggleBtn');
+      const alertBox = document.getElementById('s7TimerAlert');
+
+      if (s7TimerRunning) {
+        clearInterval(s7TimerInterval);
+        s7TimerRunning = false;
+        if (toggleBtn) {
+          toggleBtn.innerHTML = '▶ จับเวลาต่อ';
+          toggleBtn.className = 's6-timer-btn primary';
+        }
+        updateS7TimerDisplay();
+      } else {
+        if (s7TimerSeconds === 0) {
+          s7TimerSeconds = s7TimerPresetSec;
+        }
+        s7TimerRunning = true;
+        if (toggleBtn) {
+          toggleBtn.innerHTML = '❚❚ หยุดชั่วคราว';
+          toggleBtn.className = 's6-timer-btn paused';
+        }
+        if (alertBox) alertBox.style.display = 'none';
+        updateS7TimerDisplay();
+
+        s7TimerInterval = setInterval(() => {
+          if (s7TimerSeconds > 0) {
+            s7TimerSeconds--;
+            updateS7TimerDisplay();
+            if (s7TimerSeconds === 0) {
+              clearInterval(s7TimerInterval);
+              s7TimerRunning = false;
+              if (toggleBtn) {
+                toggleBtn.innerHTML = '↺ เริ่มใหม่';
+                toggleBtn.className = 's6-timer-btn primary';
+              }
+              if (alertBox) alertBox.style.display = 'block';
+            }
+          }
+        }, 1000);
+      }
+    }
+
+    function resetS7Timer() {
+      clearInterval(s7TimerInterval);
+      s7TimerRunning = false;
+      s7TimerSeconds = s7TimerPresetSec;
+      const toggleBtn = document.getElementById('s7TimerToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '▶ เริ่มจับเวลา';
+        toggleBtn.className = 's6-timer-btn primary';
+      }
+      const alertBox = document.getElementById('s7TimerAlert');
+      if (alertBox) alertBox.style.display = 'none';
+      updateS7TimerDisplay();
+    }
+
+    let s7ShowingSolution = false;
+    function toggleS7Solution() {
+      const btn = document.getElementById('s7SolutionBtn');
+      const codeContent = document.getElementById('s7CodeContent');
+      if (!btn || !codeContent) return;
+
+      s7ShowingSolution = !s7ShowingSolution;
+
+      if (s7ShowingSolution) {
+        btn.classList.add('active-sol');
+        btn.innerHTML = 'ซ่อนโค้ดเฉลย';
+
+        codeContent.innerHTML = `
+          <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
+          <div class="code-line s7-part-css"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
+          <div class="code-line s7-part-css"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>;</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>;</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">48px</span>;</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
+          <div class="code-line s7-part-css glow-green" style="font-weight:bold;"><span class="line-num">15</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">p</span> {</span></div>
+          <div class="code-line s7-part-css glow-green" style="font-weight:bold;"><span class="line-num">16</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">#4b0082</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 2. เปลี่ยนสีคำคม (ม่วง) */</span></span></div>
+          <div class="code-line s7-part-css glow-green" style="font-weight:bold;"><span class="line-num">17</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">18px</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 2. ขนาดแตกต่างออกไป */</span></span></div>
+          <div class="code-line s7-part-css glow-green" style="font-weight:bold;"><span class="line-num">18</span><span class="line-code" style="padding-left:24px;">}</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">19</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">20</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+          <div class="code-line s7-part-html"><span class="line-num">21</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+          <div class="code-line s7-part-html"><span class="line-num">22</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span></span></div>
+          <div class="code-line s7-part-html glow-green" style="font-weight:bold;"><span class="line-num">23</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;p&gt;</span>ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติ...<span class="c-tag">&lt;/p&gt;</span> <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 1. เพิ่มวลี/คำคม */</span></span></div>
+          <div class="code-line s7-part-html"><span class="line-num">24</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/body&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">25</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+        `;
+      } else {
+        btn.classList.remove('active-sol');
+        btn.innerHTML = 'ดูโค้ดเฉลย';
+
+        codeContent.innerHTML = `
+          <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
+          <div class="code-line s7-part-css"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
+          <div class="code-line s7-part-css"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
+          <div class="code-line s7-part-css glow-blue" style="font-weight:bold;"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 1. จัดให้อยู่กึ่งกลางหน้าจอ */</span></span></div>
+          <div class="code-line s7-part-css"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
+          <div class="code-line s7-part-css glow-green" style="font-weight:bold;"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 2. สั่งให้ชื่อตัวละครเป็นสีแดง */</span></span></div>
+          <div class="code-line s7-part-css"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">48px</span>;</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
+          <div class="code-line s7-part-css"><span class="line-num">15</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">16</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+          <div class="code-line s7-part-html"><span class="line-num">17</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+          <div class="code-line s7-part-html glow-green" style="font-weight:bold;"><span class="line-num">18</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span> <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 ใส่หัวข้อตัวละคร */</span></span></div>
+          <div class="code-line s7-part-html"><span class="line-num">19</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
+          <div class="code-line"><span class="line-num">20</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+        `;
+      }
+    }
+
+    updateS7TimerDisplay();
+    
+    // ===== ระบบควบคุมโค้ด & นาฬิกาจับเวลา สไลด์ที่ 8 =====
+    function setS8CodeFilter(filter) {
+      const btnAll = document.getElementById('s8TabAll');
+      const btnCss = document.getElementById('s8TabCss');
+      const btnHtml = document.getElementById('s8TabHtml');
+      const cssLines = document.querySelectorAll('.s8-part-css');
+      const htmlLines = document.querySelectorAll('.s8-part-html');
+
+      if (btnAll) btnAll.classList.toggle('active', filter === 'all');
+      if (btnCss) btnCss.classList.toggle('active', filter === 'css');
+      if (btnHtml) btnHtml.classList.toggle('active', filter === 'html');
+
+      cssLines.forEach(el => {
+        el.classList.toggle('s7-line-hl-css', filter === 'css');
+      });
+      htmlLines.forEach(el => {
+        el.classList.toggle('s7-line-hl-html', filter === 'html');
+      });
+
+      const container = document.getElementById('s8CodeContent');
+      if (container) {
+        if (filter === 'css' && cssLines[0]) {
+          cssLines[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else if (filter === 'html' && htmlLines[0]) {
+          htmlLines[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
+
+    let s8TimerInterval = null;
+    let s8TimerSeconds = 120;
+    let s8TimerPresetSec = 120;
+    let s8TimerRunning = false;
+
+    function formatS8Time(sec) {
+      const m = Math.floor(sec / 60).toString().padStart(2, '0');
+      const s = (sec % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateS8TimerDisplay() {
+      const display = document.getElementById('s8TimerDisplay');
+      if (display) {
+        display.innerText = formatS8Time(s8TimerSeconds);
+        if (s8TimerSeconds === 0) {
+          display.className = 's6-timer-display ended';
+        } else if (s8TimerRunning) {
+          display.className = 's6-timer-display running';
+        } else {
+          display.className = 's6-timer-display';
+        }
+      }
+    }
+
+    function setS8TimerPreset(mins) {
+      clearInterval(s8TimerInterval);
+      s8TimerRunning = false;
+      s8TimerPresetSec = mins * 60;
+      s8TimerSeconds = s8TimerPresetSec;
+      
+      const alertBox = document.getElementById('s8TimerAlert');
+      if (alertBox) alertBox.style.display = 'none';
+
+      const toggleBtn = document.getElementById('s8TimerToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '▶ เริ่มจับเวลา';
+        toggleBtn.className = 's6-timer-btn primary';
+      }
+
+      const presetBtns = document.querySelectorAll('#s8TimerPresets .s6-preset-btn');
+      presetBtns.forEach((btn, idx) => {
+        btn.classList.toggle('active', (idx + 1) === mins);
+      });
+
+      updateS8TimerDisplay();
+    }
+
+    function toggleS8Timer() {
+      const toggleBtn = document.getElementById('s8TimerToggleBtn');
+      const alertBox = document.getElementById('s8TimerAlert');
+
+      if (s8TimerRunning) {
+        clearInterval(s8TimerInterval);
+        s8TimerRunning = false;
+        if (toggleBtn) {
+          toggleBtn.innerHTML = '▶ จับเวลาต่อ';
+          toggleBtn.className = 's6-timer-btn primary';
+        }
+        updateS8TimerDisplay();
+      } else {
+        if (s8TimerSeconds === 0) {
+          s8TimerSeconds = s8TimerPresetSec;
+        }
+        s8TimerRunning = true;
+        if (toggleBtn) {
+          toggleBtn.innerHTML = '❚❚ หยุดชั่วคราว';
+          toggleBtn.className = 's6-timer-btn paused';
+        }
+        if (alertBox) alertBox.style.display = 'none';
+        updateS8TimerDisplay();
+
+        s8TimerInterval = setInterval(() => {
+          if (s8TimerSeconds > 0) {
+            s8TimerSeconds--;
+            updateS8TimerDisplay();
+            if (s8TimerSeconds === 0) {
+              clearInterval(s8TimerInterval);
+              s8TimerRunning = false;
+              if (toggleBtn) {
+                toggleBtn.innerHTML = '↺ เริ่มใหม่';
+                toggleBtn.className = 's6-timer-btn primary';
+              }
+              if (alertBox) alertBox.style.display = 'block';
+            }
+          }
+        }, 1000);
+      }
+    }
+
+    function resetS8Timer() {
+      clearInterval(s8TimerInterval);
+      s8TimerRunning = false;
+      s8TimerSeconds = s8TimerPresetSec;
+      const toggleBtn = document.getElementById('s8TimerToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '▶ เริ่มจับเวลา';
+        toggleBtn.className = 's6-timer-btn primary';
+      }
+      const alertBox = document.getElementById('s8TimerAlert');
+      if (alertBox) alertBox.style.display = 'none';
+      updateS8TimerDisplay();
+    }
+
+    let s8HighlightActive = false;
+    function toggleS8Solution() {
+      const btn = document.getElementById('s8SolutionBtn');
+      const codeContent = document.getElementById('s8CodeContent');
+      if (!btn || !codeContent) return;
+
+      s8HighlightActive = !s8HighlightActive;
+      btn.classList.toggle('active-sol', s8HighlightActive);
+      btn.innerHTML = s8HighlightActive ? 'ไฮไลต์ชัดเจน' : 'ดูโค้ดตัวอย่าง';
+
+      const imgLines = codeContent.querySelectorAll('.glow-green');
+      imgLines.forEach(el => {
+        el.style.outline = s8HighlightActive ? '1.5px solid #141414' : 'none';
+      });
+    }
+
+    updateS8TimerDisplay();
+    
+    // ===== ระบบควบคุมโค้ด & นาฬิกาจับเวลา สไลด์ที่ 9 =====
+    function setS9CodeFilter(filter) {
+      const btnAll = document.getElementById('s9TabAll');
+      const btnCss = document.getElementById('s9TabCss');
+      const btnHtml = document.getElementById('s9TabHtml');
+      const cssLines = document.querySelectorAll('.s9-part-css');
+      const htmlLines = document.querySelectorAll('.s9-part-html');
+
+      if (btnAll) btnAll.classList.toggle('active', filter === 'all');
+      if (btnCss) btnCss.classList.toggle('active', filter === 'css');
+      if (btnHtml) btnHtml.classList.toggle('active', filter === 'html');
+
+      cssLines.forEach(el => {
+        el.classList.toggle('s7-line-hl-css', filter === 'css');
+      });
+      htmlLines.forEach(el => {
+        el.classList.toggle('s7-line-hl-html', filter === 'html');
+      });
+
+      const container = document.getElementById('s9CodeContent');
+      if (container) {
+        if (filter === 'css' && cssLines[0]) {
+          cssLines[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else if (filter === 'html' && htmlLines[0]) {
+          htmlLines[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
+
+    let s9TimerInterval = null;
+    let s9TimerSeconds = 120;
+    let s9TimerPresetSec = 120;
+    let s9TimerRunning = false;
+
+    function formatS9Time(sec) {
+      const m = Math.floor(sec / 60).toString().padStart(2, '0');
+      const s = (sec % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateS9TimerDisplay() {
+      const display = document.getElementById('s9TimerDisplay');
+      if (display) {
+        display.innerText = formatS9Time(s9TimerSeconds);
+        if (s9TimerSeconds === 0) {
+          display.className = 's6-timer-display ended';
+        } else if (s9TimerRunning) {
+          display.className = 's6-timer-display running';
+        } else {
+          display.className = 's6-timer-display';
+        }
+      }
+    }
+
+    function setS9TimerPreset(mins) {
+      clearInterval(s9TimerInterval);
+      s9TimerRunning = false;
+      s9TimerPresetSec = mins * 60;
+      s9TimerSeconds = s9TimerPresetSec;
+      
+      const alertBox = document.getElementById('s9TimerAlert');
+      if (alertBox) alertBox.style.display = 'none';
+
+      const toggleBtn = document.getElementById('s9TimerToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '▶ เริ่มจับเวลา';
+        toggleBtn.className = 's6-timer-btn primary';
+      }
+
+      const presetBtns = document.querySelectorAll('#s9TimerPresets .s6-preset-btn');
+      presetBtns.forEach((btn, idx) => {
+        btn.classList.toggle('active', (idx + 1) === mins);
+      });
+
+      updateS9TimerDisplay();
+    }
+
+    function toggleS9Timer() {
+      const toggleBtn = document.getElementById('s9TimerToggleBtn');
+      const alertBox = document.getElementById('s9TimerAlert');
+
+      if (s9TimerRunning) {
+        clearInterval(s9TimerInterval);
+        s9TimerRunning = false;
+        if (toggleBtn) {
+          toggleBtn.innerHTML = '▶ จับเวลาต่อ';
+          toggleBtn.className = 's6-timer-btn primary';
+        }
+        updateS9TimerDisplay();
+      } else {
+        if (s9TimerSeconds === 0) {
+          s9TimerSeconds = s9TimerPresetSec;
+        }
+        s9TimerRunning = true;
+        if (toggleBtn) {
+          toggleBtn.innerHTML = '❚❚ หยุดชั่วคราว';
+          toggleBtn.className = 's6-timer-btn paused';
+        }
+        if (alertBox) alertBox.style.display = 'none';
+        updateS9TimerDisplay();
+
+        s9TimerInterval = setInterval(() => {
+          if (s9TimerSeconds > 0) {
+            s9TimerSeconds--;
+            updateS9TimerDisplay();
+            if (s9TimerSeconds === 0) {
+              clearInterval(s9TimerInterval);
+              s9TimerRunning = false;
+              if (toggleBtn) {
+                toggleBtn.innerHTML = '↺ เริ่มใหม่';
+                toggleBtn.className = 's6-timer-btn primary';
+              }
+              if (alertBox) alertBox.style.display = 'block';
+            }
+          }
+        }, 1000);
+      }
+    }
+
+    function resetS9Timer() {
+      clearInterval(s9TimerInterval);
+      s9TimerRunning = false;
+      s9TimerSeconds = s9TimerPresetSec;
+      const toggleBtn = document.getElementById('s9TimerToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '▶ เริ่มจับเวลา';
+        toggleBtn.className = 's6-timer-btn primary';
+      }
+      const alertBox = document.getElementById('s9TimerAlert');
+      if (alertBox) alertBox.style.display = 'none';
+      updateS9TimerDisplay();
+    }
+
+    let s9HighlightActive = false;
+    function toggleS9Solution() {
+      const btn = document.getElementById('s9SolutionBtn');
+      const codeContent = document.getElementById('s9CodeContent');
+      if (!btn || !codeContent) return;
+
+      s9HighlightActive = !s9HighlightActive;
+      btn.classList.toggle('active-sol', s9HighlightActive);
+      btn.innerHTML = s9HighlightActive ? 'ไฮไลต์ชัดเจน' : 'ดูโค้ดตัวอย่าง';
+
+      const logoLines = codeContent.querySelectorAll('.glow-green');
+      logoLines.forEach(el => {
+        el.style.outline = s9HighlightActive ? '1.5px solid #141414' : 'none';
+      });
+    }
+
+    updateS9TimerDisplay();
+    
+    // ===== ฟังก์ชันคัดลอกโค้ดลงคลิปบอร์ด =====
+    function copySlideCode(contentId, btn) {
+      const container = document.getElementById(contentId);
+      if (!container) return;
+      const lines = container.querySelectorAll('.line-code');
+      let fullText = '';
+      lines.forEach(line => {
+        fullText += line.innerText + '\n';
+      });
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(fullText.trimEnd()).then(() => {
+          const orig = btn.innerHTML;
+          btn.innerHTML = 'คัดลอกแล้ว!';
+          setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        }).catch(() => {
+          fallbackCopy(fullText.trimEnd(), btn);
+        });
+      } else {
+        fallbackCopy(fullText.trimEnd(), btn);
+      }
+    }
+
+    function fallbackCopy(text, btn) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        const orig = btn.innerHTML;
+        btn.innerHTML = 'คัดลอกแล้ว!';
+        setTimeout(() => { btn.innerHTML = orig; }, 2000);
+      } catch (e) {
+        alert('คัดลอกไม่สำเร็จ กรุณาลากคลุมข้อความแล้วกด Ctrl+C');
+      }
+      document.body.removeChild(ta);
+    }
+
+    initSlides();
+    updateHeroPlayground();
+    updateS6TimerDisplay();
+  </script>
+</body>
+</html>

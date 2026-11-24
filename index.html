@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>ชุมนุม Web Application (ม.1 - ม.3)</title>
+  <style>
+    :root {
+      --ios-bg: #F2F2F7;
+      --ios-card: #FFFFFF;
+      --ios-glass: rgba(255, 255, 255, 0.76);
+      --ios-fill: rgba(118, 118, 128, 0.12);
+      --ios-separator: rgba(60, 60, 67, 0.12);
+      --ios-label: #1C1C1E;
+      --ios-secondary: #6C6C70;
+      --ios-tertiary: #8E8E93;
+      --ios-blue: #007AFF;
+      --ios-green: #34C759;
+      --ios-indigo: #5856D6;
+      --ios-orange: #FF9500;
+      --ios-shadow-card: 0 10px 30px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+      --ios-shadow-hover: 0 18px 40px rgba(0, 122, 255, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Tahoma, sans-serif;
+      background-color: var(--ios-bg);
+      background-image:
+        radial-gradient(at 15% 10%, rgba(0, 122, 255, 0.08) 0px, transparent 50%),
+        radial-gradient(at 85% 15%, rgba(88, 86, 214, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 90%, rgba(52, 199, 89, 0.06) 0px, transparent 50%);
+      color: var(--ios-label);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    /* ===== iOS Frosted Glass Navigation Bar ===== */
+    .ios-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+      height: 52px;
+      background: var(--ios-glass);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 0.5px solid var(--ios-separator);
+      padding: 0 clamp(18px, 4vw, 48px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ios-nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ios-label);
+      letter-spacing: -0.01em;
+    }
+
+    .ios-app-mini-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: linear-gradient(180deg, #389BFF 0%, #007AFF 100%);
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 122, 255, 0.28);
+    }
+
+    .ios-nav-pill {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ios-secondary);
+      background: var(--ios-fill);
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    /* ===== Main Container ===== */
+    .home-container {
+      max-width: 920px;
+      width: 100%;
+      margin: auto;
+      padding: clamp(28px, 5vw, 56px) clamp(18px, 4vw, 36px);
+      text-align: center;
+    }
+
+    .hero-header {
+      margin-bottom: clamp(28px, 4vw, 42px);
+      animation: iosSpringIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes iosSpringIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--ios-blue);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4.8vw, 46px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.18;
+      color: var(--ios-label);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: clamp(15px, 2.2vw, 18px);
+      color: var(--ios-secondary);
+      line-height: 1.5;
+    }
+
+    /* ===== View Panels ===== */
+    .view-panel {
+      animation: iosSpringIn 0.42s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    .view-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--ios-card);
+      color: var(--ios-blue);
+      border: 0.5px solid var(--ios-separator);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(0, 122, 255, 0.08);
+    }
+
+    .back-btn:active {
+      transform: scale(0.96);
+    }
+
+    .view-subtitle-inline {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--ios-secondary);
+    }
+
+    /* ===== iOS App Card Grid ===== */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(16px, 2.8vw, 24px);
+      width: 100%;
+    }
+
+    .menu-btn {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      text-align: left;
+      text-decoration: none;
+      background: var(--ios-card);
+      border: 0.5px solid rgba(0, 0, 0, 0.06);
+      border-radius: 24px;
+      padding: clamp(24px, 3.5vw, 32px);
+      color: var(--ios-label);
+      cursor: pointer;
+      box-shadow: var(--ios-shadow-card);
+      transition: transform 0.26s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.26s ease;
+      touch-action: manipulation;
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .menu-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--ios-shadow-hover);
+    }
+
+    .menu-btn:active {
+      transform: scale(0.975);
+    }
+
+    /* iOS Squircle App Icon */
+    .menu-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+      transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .menu-btn:hover .menu-icon {
+      transform: scale(1.06);
+    }
+
+    .btn-lesson .menu-icon {
+      background: linear-gradient(180deg, #389BFF 0%, #007AFF 100%);
+      box-shadow: 0 8px 18px rgba(0, 122, 255, 0.28);
+    }
+
+    .btn-week2 .menu-icon {
+      background: linear-gradient(180deg, #7D7AFF 0%, #5856D6 100%);
+      box-shadow: 0 8px 18px rgba(88, 86, 214, 0.28);
+    }
+
+    .btn-code .menu-icon {
+      background: linear-gradient(180deg, #4CD964 0%, #34C759 100%);
+      box-shadow: 0 8px 18px rgba(52, 199, 89, 0.28);
+    }
+
+    .menu-content {
+      width: 100%;
+    }
+
+    .menu-title {
+      font-size: clamp(22px, 2.8vw, 27px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ios-label);
+      margin-bottom: 6px;
+    }
+
+    .menu-desc {
+      font-size: 15px;
+      color: var(--ios-secondary);
+      line-height: 1.5;
+    }
+
+    /* iOS Action Pill ("GET" / Open button feel) */
+    .menu-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--ios-blue);
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-top: 18px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .menu-btn:hover .menu-tag-pill {
+      background: var(--ios-blue);
+      color: #FFFFFF;
+    }
+
+    .menu-tag-pill.tag-code {
+      background: rgba(52, 199, 89, 0.12);
+      color: #248A3D;
+    }
+
+    .menu-btn:hover .menu-tag-pill.tag-code {
+      background: var(--ios-green);
+      color: #FFFFFF;
+    }
+
+    .menu-badge-corner {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--ios-blue);
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .menu-badge-corner.badge-accent {
+      background: rgba(88, 86, 214, 0.12);
+      color: var(--ios-indigo);
+    }
+
+    /* ===== Footer ===== */
+    .ios-footer {
+      width: 100%;
+      padding: 16px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--ios-tertiary);
+    }
+
+    @media (max-width: 680px) {
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-btn {
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      .menu-icon {
+        margin-bottom: 0;
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+      }
+
+
+      .menu-badge-corner {
+        position: static;
+        display: inline-block;
+        margin-bottom: 6px;
+      }
+
+      .menu-tag-pill {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- iOS Translucent Top Bar -->
+  <header class="ios-navbar">
+    <div class="ios-nav-brand">
+      <span class="ios-app-mini-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 18 22 12 16 6"/>
+          <polyline points="8 6 2 12 8 18"/>
+        </svg>
+      </span>
+      <span>Web Application Club</span>
+    </div>
+    <span class="ios-nav-pill">ม.1 - ม.3</span>
+  </header>
+
+  <main class="home-container">
+    <div class="hero-header">
+      <div class="badge">วิชาชุมนุม ชั้นมัธยมศึกษาปีที่ 1 - 3</div>
+      <h1>สร้างเว็บแอปพลิเคชัน (Web Application)</h1>
+      <p class="subtitle">เลือกเมนูที่ต้องการใช้งานด้านล่าง</p>
+    </div>
+
+    <!-- ==================== VIEW 1: หน้าหลัก (2 ปุ่ม: บทเรียน & เขียนโค้ด) ==================== -->
+    <div id="mainView" class="view-panel">
+      <div class="menu-grid">
+        <!-- ปุ่มที่ 1: บทเรียน -->
+        <button type="button" class="menu-btn btn-lesson" onclick="navigateTo('lessons')">
+          <div class="menu-icon" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+          </div>
+          <div class="menu-content">
+            <div class="menu-title">บทเรียน</div>
+            <div class="menu-desc">รวมบทเรียนและสไลด์การสอนสร้างเว็บไซต์ (HTML &amp; CSS)</div>
+            <div class="menu-tag-pill">
+              <span>เลือกรอบสัปดาห์</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- ปุ่มที่ 2: เขียนโค้ด -->
+        <a href="code.html" class="menu-btn btn-code">
+          <div class="menu-icon" aria-hidden="true">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="3" ry="3"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <div class="menu-content">
+            <div class="menu-title">เขียนโค้ด</div>
+            <div class="menu-desc">เปิดหน้าจำลอง VS Code พร้อมดูผลลัพธ์หน้าเว็บทันที (Live Preview)</div>
+            <div class="menu-tag-pill tag-code">
+              <span>เริ่มเขียนโปรแกรม</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ==================== VIEW 2: หน้ารายการบทเรียน (เลือกรอบ Week 1, 2) ==================== -->
+    <div id="lessonsView" class="view-panel" style="display: none;">
+      <div class="view-header-bar">
+        <button type="button" class="back-btn" onclick="navigateTo('main')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          <span>ย้อนกลับไปหน้าหลัก</span>
+        </button>
+        <span class="view-subtitle-inline">เลือกรอบบทเรียนประจำสัปดาห์ (Select Week)</span>
+      </div>
+
+      <div class="menu-grid">
+        <!-- Week 1 -->
+        <a href="week1.html" class="menu-btn btn-lesson">
+          <div class="menu-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="4"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="9" y1="21" x2="9" y2="9"/>
+            </svg>
+          </div>
+          <div class="menu-content">
+            <span class="menu-badge-corner">Week 1</span>
+            <div class="menu-title">บทเรียน Week 1</div>
+            <div class="menu-desc">เริ่มต้น Web Creator: โครงสร้าง HTML และเว็บแรกของฉัน</div>
+          </div>
+        </a>
+
+        <!-- Week 2 -->
+        <a href="week2.html" class="menu-btn btn-week2">
+          <div class="menu-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+              <polyline points="2 17 12 22 22 17"/>
+              <polyline points="2 12 12 17 22 12"/>
+            </svg>
+          </div>
+          <div class="menu-content">
+            <span class="menu-badge-corner badge-accent">Week 2</span>
+            <div class="menu-title">บทเรียน Week 2</div>
+            <div class="menu-desc">ก้าวสู่ Full Stack Junior: แต่งสี ฮีโร่ RoV และจัดกึ่งกลางด้วย CSS</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="ios-footer">
+    ชุมนุม Web Application • ชั้นมัธยมศึกษาปีที่ 1 - 3
+  </footer>
+
+  <script>
+    function navigateTo(view) {
+      const mainView = document.getElementById('mainView');
+      const lessonsView = document.getElementById('lessonsView');
+      if (!mainView || !lessonsView) return;
+
+      if (view === 'lessons') {
+        mainView.style.display = 'none';
+        lessonsView.style.display = 'block';
+        window.location.hash = 'lessons';
+      } else {
+        lessonsView.style.display = 'none';
+        mainView.style.display = 'block';
+        if (window.location.hash) {
+          history.pushState('', document.title, window.location.pathname + window.location.search);
+        }
+      }
+    }
+
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash === '#lessons') {
+        navigateTo('lessons');
+      } else {
+        navigateTo('main');
+      }
+    });
+
+    if (window.location.hash === '#lessons') {
+      navigateTo('lessons');
+    }
+  </script>
+
+</body>
+
+</html>

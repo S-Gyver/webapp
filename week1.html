@@ -1,0 +1,2099 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>บทเรียน Web Creator - ชุมนุม Web Application</title>
+      <style>
+    :root {
+      --ios-bg: #F2F2F7;
+      --ios-card: #FFFFFF;
+      --ios-grouped: #F5F5FA;
+      --ios-glass: rgba(255, 255, 255, 0.8);
+      --ios-fill: rgba(118, 118, 128, 0.12);
+      --ios-separator: rgba(60, 60, 67, 0.13);
+      --ios-label: #1C1C1E;
+      --ios-secondary: #6C6C70;
+      --ios-tertiary: #8E8E93;
+      --ios-blue: #007AFF;
+      --ios-green: #34C759;
+      --ios-indigo: #5856D6;
+      --ios-orange: #FF9500;
+      --ios-red: #FF3B30;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Tahoma, sans-serif;
+      background-color: var(--ios-bg);
+      background-image:
+        radial-gradient(at 10% 10%, rgba(0, 122, 255, 0.07) 0px, transparent 50%),
+        radial-gradient(at 90% 15%, rgba(88, 86, 214, 0.07) 0px, transparent 50%);
+      color: var(--ios-label);
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: text;
+    }
+
+    .glow-orb-1, .glow-orb-2 { display: none !important; }
+
+    /* ===== iOS Frosted Top Bar ===== */
+    .topbar {
+      height: 52px;
+      background: var(--ios-glass);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 0.5px solid var(--ios-separator);
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .topbar-left, .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+    .top-btn {
+      text-decoration: none;
+      background: var(--ios-fill);
+      color: var(--ios-blue);
+      border: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.18s ease, transform 0.14s ease;
+    }
+
+    .top-btn:hover { background: rgba(0, 122, 255, 0.16); }
+    .top-btn:active { transform: scale(0.96); }
+
+    .top-btn-green {
+      background: var(--ios-green);
+      color: #FFFFFF;
+      font-weight: 700;
+      box-shadow: 0 3px 10px rgba(52, 199, 89, 0.28);
+    }
+
+    .top-btn-green:hover { background: #2DB84E; color: #FFFFFF; }
+
+    .slide-title-indicator {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ios-secondary);
+      background: var(--ios-fill);
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+
+    /* ===== Presentation Stage ===== */
+    .slide-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(10px, 1.8vh, 18px) clamp(12px, 2.4vw, 32px);
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1260px;
+      height: 100%;
+      max-height: min(700px, calc(100vh - 124px));
+      background: var(--ios-card);
+      color: var(--ios-label);
+      border: 0.5px solid rgba(0, 0, 0, 0.07);
+      border-radius: 26px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: iosSlideIn 0.36s cubic-bezier(0.25, 1, 0.5, 1);
+      scrollbar-width: thin;
+      scrollbar-color: #C7C7CC transparent;
+    }
+
+    .slide::-webkit-scrollbar { width: 6px; }
+    .slide::-webkit-scrollbar-thumb { background: #C7C7CC; border-radius: 999px; }
+    .slide.active { display: flex; }
+
+    @keyframes iosSlideIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.992); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .cover-bottom-strip {
+      min-height: 40px;
+      background: #FAFAFC;
+      border-top: 0.5px solid var(--ios-separator);
+      padding: 6px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--ios-tertiary);
+      gap: 12px;
+    }
+
+    /* ===== SLIDE 1: Cover ===== */
+    .cover-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr;
+      align-items: center;
+      padding: 32px 46px 20px;
+      gap: 36px;
+    }
+
+    .club-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--ios-blue);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .cover-main-title {
+      font-size: clamp(42px, 5.4vw, 66px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 14px;
+      color: var(--ios-label);
+    }
+
+    .cover-subtitle-pill {
+      display: inline-block;
+      background: linear-gradient(180deg, #389BFF 0%, #007AFF 100%);
+      color: #FFFFFF;
+      font-size: 19px;
+      font-weight: 700;
+      padding: 8px 22px;
+      border-radius: 999px;
+      box-shadow: 0 6px 16px rgba(0, 122, 255, 0.25);
+      margin-bottom: 24px;
+    }
+
+    .roadmap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .roadmap-card {
+      background: var(--ios-grouped);
+      border-radius: 18px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .roadmap-card:hover {
+      transform: translateY(-3px);
+      background: #FFFFFF;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .rm-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .rm-1 { background: linear-gradient(180deg, #389BFF, #007AFF); }
+    .rm-2 { background: linear-gradient(180deg, #7D7AFF, #5856D6); }
+    .rm-3 { background: linear-gradient(180deg, #FFB340, #FF9500); }
+    .rm-4 { background: linear-gradient(180deg, #4CD964, #34C759); }
+
+    .rm-text { font-size: 16.5px; font-weight: 700; color: var(--ios-label); }
+    .rm-sub { font-size: 12.5px; color: var(--ios-secondary); margin-top: 2px; }
+
+    .cover-visual { position: relative; display: flex; flex-direction: column; gap: 14px; }
+
+    .floating-badge {
+      position: absolute;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-family: 'Consolas', monospace;
+      font-weight: 800;
+      font-size: 13px;
+      z-index: 5;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .fb-html { top: -12px; left: -12px; background: #FF9500; color: #FFFFFF; }
+    .fb-css  { top: 38%; right: -12px; background: #007AFF; color: #FFFFFF; }
+    .fb-js   { bottom: 56px; left: -12px; background: #5856D6; color: #FFFFFF; }
+
+    .mock-vscode-card {
+      background: #FFFFFF;
+      border: 0.5px solid var(--ios-separator);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
+    }
+
+    .mock-bar {
+      background: #F2F2F7;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 0.5px solid var(--ios-separator);
+    }
+
+    .mock-dots { display: flex; gap: 6px; }
+    .m-dot { width: 11px; height: 11px; border-radius: 50%; }
+
+    .mock-code-body {
+      padding: 20px 24px;
+      font-family: 'Cascadia Mono', 'Consolas', monospace;
+      font-size: 16.5px;
+      line-height: 1.65;
+      min-height: 230px;
+      background: #FFFFFF;
+      color: var(--ios-label);
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background-color: var(--ios-blue);
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blinkCursor 0.8s steps(2, start) infinite;
+    }
+    @keyframes blinkCursor { to { visibility: hidden; } }
+
+    .mock-preview-badge {
+      align-self: flex-end;
+      background: var(--ios-green);
+      color: #FFFFFF;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(52, 199, 89, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    /* ===== SLIDE 2: Web Application ===== */
+    .s2-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.18fr 0.92fr;
+      align-items: center;
+      padding: 30px 46px 18px;
+      gap: 32px;
+    }
+
+    .s2-title {
+      font-size: clamp(36px, 4.8vw, 54px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 18px;
+      color: var(--ios-label);
+    }
+
+    .s2-def-box {
+      background: var(--ios-grouped);
+      border-radius: 20px;
+      padding: 22px 26px;
+      font-size: 19px;
+      line-height: 1.65;
+      color: var(--ios-label);
+      margin-bottom: 18px;
+    }
+
+    .s2-def-box b { color: var(--ios-blue); }
+    .browser-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+    .b-chip {
+      background: #FFFFFF;
+      color: var(--ios-label);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 999px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .s2-summary-pill {
+      background: var(--ios-blue);
+      border-radius: 20px;
+      padding: 16px 26px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 22px;
+      font-weight: 800;
+      color: #FFFFFF;
+      box-shadow: 0 8px 24px rgba(0, 122, 255, 0.25);
+    }
+
+    .s2-compare-card {
+      width: 100%;
+      background: var(--ios-grouped);
+      border-radius: 22px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .s2-sim-row {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .s2-sim-row.webapp-row {
+      background: rgba(52, 199, 89, 0.08);
+      border: 1px solid rgba(52, 199, 89, 0.3);
+    }
+
+    .s2-bar-track { height: 10px; background: #E5E5EA; border-radius: 999px; overflow: hidden; }
+    .s2-bar-fill { height: 100%; width: 0%; border-radius: 999px; transition: width 0.3s ease; }
+
+    /* ===== SLIDE 3: App Examples ===== */
+    .s3-container { flex: 1; display: flex; flex-direction: column; padding: 22px 42px 14px; }
+    .s3-header { margin-bottom: 14px; }
+    .s3-title { font-size: clamp(26px, 3.6vw, 38px); font-weight: 800; letter-spacing: -0.02em; color: var(--ios-label); }
+    .s3-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 16px; }
+
+    .app-example-card {
+      background: var(--ios-grouped);
+      border-radius: 20px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .app-screen-mock {
+      flex: 1;
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 0.5px solid var(--ios-separator);
+      background: #ffffff;
+      color: var(--ios-label);
+      position: relative;
+      min-height: 135px;
+    }
+
+    .app-card-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .app-name { font-size: 17px; font-weight: 800; color: var(--ios-label); }
+    .app-desc-tag { font-size: 12px; font-weight: 600; color: var(--ios-secondary); background: #FFFFFF; padding: 4px 12px; border-radius: 999px; }
+
+    .yt-play-box {
+      width: 78px;
+      height: 52px;
+      background: #FF3B30;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(255, 59, 48, 0.3);
+      cursor: pointer;
+    }
+
+    .canva-swatch { border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 11px; }
+    .canva-draggable { position: absolute; cursor: grab; padding: 6px 12px; border-radius: 10px; color: #ffffff; font-weight: 700; font-size: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.16); user-select: none; }
+    .gdoc-editor { flex: 1; padding: 8px 14px; background: #ffffff; outline: none; overflow-y: auto; cursor: text; user-select: text; font-size: 13px; color: var(--ios-label); line-height: 1.5; }
+    .gdoc-tool-btn { background: #E5E5EA; color: var(--ios-label); border: none; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .gform-option { display: flex; align-items: center; gap: 8px; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; color: var(--ios-label); }
+    .gform-option.checked { background: rgba(88, 86, 214, 0.12); color: var(--ios-indigo); font-weight: 700; }
+    .gform-radio { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--ios-indigo); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .gform-option.checked .gform-radio::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--ios-indigo); }
+    .yt-playing-scene { position: absolute; inset: 0; background: #F2F2F7; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--ios-label); }
+    .yt-controls-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 28px; background: rgba(28, 28, 30, 0.82); backdrop-filter: blur(10px); color: #FFFFFF; display: flex; align-items: center; padding: 0 10px; gap: 8px; font-size: 11px; }
+    .yt-progress-track { flex: 1; height: 4px; background: rgba(255,255,255,0.3); border-radius: 999px; overflow: hidden; }
+    .yt-progress-fill { height: 100%; width: 0%; background: #FF3B30; transition: width 0.2s linear; }
+
+    /* ===== SLIDE 4: Website VS Web App ===== */
+    .s4-container { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 42px 14px; }
+    .s4-title { font-size: clamp(26px, 3.5vw, 36px); font-weight: 800; color: var(--ios-label); margin-bottom: 12px; }
+    .vs-header-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .vs-pill { background: var(--ios-grouped); padding: 10px 18px; border-radius: 14px; font-size: 18px; font-weight: 800; color: var(--ios-blue); text-align: center; }
+    .vs-pill-right { color: #248A3D; background: rgba(52, 199, 89, 0.12); }
+    .vs-badge { width: 42px; height: 42px; border-radius: 12px; background: var(--ios-orange); color: #FFFFFF; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .vs-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 12px; }
+    .vs-card { background: var(--ios-grouped); border-radius: 20px; padding: 14px 18px; }
+    .vs-list { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 15.5px; color: var(--ios-label); }
+    .vs-list li { display: flex; align-items: center; gap: 10px; background: #FFFFFF; padding: 8px 14px; border-radius: 12px; }
+    .s4-summary-box { background: var(--ios-grouped); border-radius: 18px; padding: 14px 18px; }
+    .s4-summary-title { font-size: 16.5px; font-weight: 800; color: var(--ios-blue); margin-bottom: 4px; }
+    .s4-summary-text { font-size: 15px !important; line-height: 1.5; color: var(--ios-secondary); }
+    .s4-quiz-strip { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--ios-separator); flex-wrap: wrap; }
+    .s4-quiz-btn { background: #FFFFFF; color: var(--ios-label); border: 0.5px solid var(--ios-separator); padding: 6px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 600; font-family: inherit; cursor: pointer; }
+    .s4-quiz-btn.answered-site { background: var(--ios-blue); color: #FFFFFF; border-color: transparent; }
+    .s4-quiz-btn.answered-app { background: var(--ios-green); color: #FFFFFF; border-color: transparent; }
+
+    /* ===== SLIDE 5: Day 1 Goal ===== */
+    .s5-container { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 28px 46px 18px; }
+    .day1-badge { display: inline-flex; align-items: center; background: rgba(255, 149, 0, 0.14); color: #C93400; font-size: 15px; font-weight: 800; padding: 6px 16px; border-radius: 999px; margin-bottom: 14px; }
+    .s5-goal-title { font-size: clamp(26px, 3.6vw, 40px); font-weight: 800; line-height: 1.25; color: var(--ios-label); margin-bottom: 20px; }
+    .s5-goal-title span { color: var(--ios-blue); }
+    .s5-bottom-grid { display: grid; grid-template-columns: 1fr 1.12fr; align-items: stretch; gap: 24px; flex: 1; }
+    .s5-preview-screen, .s5-topic-card { background: var(--ios-grouped); border-radius: 22px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; }
+    .s5-topic-card { justify-content: center; }
+    .s5-bullet-main { font-size: 21px; font-weight: 800; color: var(--ios-label); display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .s5-step-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .s5-flow-item { background: #FFFFFF; border-radius: 16px; padding: 14px 12px; transition: all 0.2s ease; border: 1.5px solid transparent; }
+    .s5-flow-item.active-s5-step { border-color: var(--ios-blue); background: rgba(0, 122, 255, 0.06); box-shadow: 0 6px 16px rgba(0, 122, 255, 0.12); }
+    .s5-flow-icon { font-size: 12px; font-weight: 800; color: var(--ios-blue); margin-bottom: 6px; }
+    .s5-flow-text { font-size: 14.5px; font-weight: 700; color: var(--ios-label); }
+
+    /* ===== SLIDE 6: HTML + CSS + JS ===== */
+    .s6-container { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 42px 14px; }
+    .s6-top-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+    .s6-title-pill { font-size: clamp(22px, 3vw, 30px); font-weight: 800; color: var(--ios-label); }
+    .s6-formula-pill { background: var(--ios-grouped); padding: 6px 18px; border-radius: 999px; font-size: 20px; font-weight: 800; }
+    .s6-main-grid { flex: 1; display: grid; grid-template-columns: 1.15fr 0.95fr; gap: 22px; align-items: stretch; }
+    .s6-tech-list { display: flex; flex-direction: column; justify-content: space-between; gap: 10px; }
+    .s6-tech-card { background: var(--ios-grouped); border-radius: 18px; padding: 12px 16px; display: flex; align-items: center; gap: 16px; cursor: pointer; border: 1.5px solid transparent; transition: all 0.2s ease; }
+    .s6-tech-card.active-stage-html, .s6-tech-card.active-stage-css, .s6-tech-card.active-stage-js { background: #FFFFFF; border-color: var(--ios-blue); box-shadow: 0 8px 22px rgba(0, 122, 255, 0.12); }
+    .shield-icon { width: 50px; height: 58px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .s6-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+    .s6-tech-title { font-size: 17px; font-weight: 800; color: var(--ios-label) !important; }
+    .s6-analogy-badge { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: #FFFFFF !important; color: var(--ios-blue) !important; }
+    .s6-tech-desc { font-size: 14px; color: var(--ios-secondary); line-height: 1.45; }
+    .s6-sim-panel { background: var(--ios-grouped); border-radius: 22px; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+    .sim-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; background: rgba(118, 118, 128, 0.14); padding: 3px; border-radius: 10px; }
+    .sim-tab-btn { background: transparent; color: var(--ios-secondary); border: none; padding: 6px 8px; border-radius: 8px; font-size: 13.5px; font-weight: 700; font-family: inherit; cursor: pointer; }
+    .sim-tab-btn.active-1, .sim-tab-btn.active-2, .sim-tab-btn.active-3 { background: #FFFFFF; color: var(--ios-label); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .sim-browser-window { flex: 1; background: #ffffff; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; border: 0.5px solid var(--ios-separator); }
+    .sim-browser-bar { height: 28px; background: #F2F2F7; display: flex; align-items: center; padding: 0 12px; gap: 6px; border-bottom: 0.5px solid var(--ios-separator); font-size: 11.5px; color: var(--ios-secondary); font-weight: 600; }
+    .sim-stage-body { flex: 1; padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+    .sim-stage-body.mode-html { background: #ffffff; color: #000000; font-family: 'Times New Roman', serif; align-items: flex-start; justify-content: flex-start; }
+    .sim-stage-body.mode-html .sim-card { border: 1px dashed #999; padding: 10px; width: 100%; }
+    .sim-stage-body.mode-html .sim-avatar { width: 54px; height: 36px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-size: 11px; margin-bottom: 6px; }
+    .sim-stage-body.mode-html .sim-h3 { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+    .sim-stage-body.mode-html .sim-p { font-size: 14px; margin-bottom: 8px; }
+    .sim-stage-body.mode-html .sim-btn { background: #e5e5e5; color: #000; border: 1px solid #767676; padding: 4px 10px; font-size: 13px; cursor: not-allowed; }
+    .sim-stage-body.mode-css, .sim-stage-body.mode-js { background: #F2F2F7; font-family: -apple-system, 'Segoe UI', sans-serif; }
+    .sim-stage-body.mode-css .sim-card, .sim-stage-body.mode-js .sim-card { background: #ffffff; border-radius: 20px; padding: 18px 22px; text-align: center; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08); width: 92%; max-width: 320px; }
+    .sim-stage-body.mode-css .sim-avatar, .sim-stage-body.mode-js .sim-avatar { width: 48px; height: 48px; margin: 0 auto 8px; border-radius: 14px; background: linear-gradient(180deg, #389BFF, #007AFF); color: #FFFFFF; font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+    .sim-stage-body.mode-css .sim-h3, .sim-stage-body.mode-js .sim-h3 { font-size: 19px; font-weight: 800; color: var(--ios-label); margin-bottom: 4px; }
+    .sim-stage-body.mode-css .sim-p, .sim-stage-body.mode-js .sim-p { font-size: 13.5px; color: var(--ios-secondary); margin-bottom: 12px; }
+    .sim-stage-body.mode-css .sim-btn { background: #E5E5EA; color: var(--ios-secondary); border: none; padding: 8px 18px; font-size: 13px; font-weight: 700; border-radius: 999px; cursor: pointer; }
+    .sim-stage-body.mode-js .sim-btn { background: var(--ios-green); color: #ffffff; border: none; padding: 8px 20px; font-size: 13.5px; font-weight: 700; border-radius: 999px; box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3); cursor: pointer; }
+    .sim-status-caption { background: #FFFFFF; border-radius: 12px; padding: 9px 14px; font-size: 13px; font-weight: 700; color: var(--ios-blue) !important; text-align: center; }
+
+    /* ===== SLIDE 7: Start Notepad ===== */
+    .s7-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 36px 56px; gap: 18px; }
+    .s7-rocket-circle { background: rgba(0, 122, 255, 0.1); color: var(--ios-blue); border-radius: 999px; font-weight: 800; }
+    .s7-main-title { font-size: clamp(42px, 6vw, 66px) !important; font-weight: 800; letter-spacing: -0.03em; color: var(--ios-label); }
+    .s7-sub { font-size: 20px !important; color: var(--ios-secondary); max-width: 720px; }
+    .s7-search-demo { background: var(--ios-grouped); border-radius: 999px; padding: 8px 10px 8px 20px; display: flex; align-items: center; gap: 12px; width: 100%; max-width: 600px; }
+    .s7-search-input { flex: 1; background: transparent; border: none; outline: none; color: var(--ios-label); font-size: 20px; font-weight: 700; font-family: inherit; }
+    .s7-ready-steps { display: flex; gap: 14px; margin-top: 6px; flex-wrap: wrap; justify-content: center; }
+    .s7-step-pill { background: var(--ios-grouped); border-radius: 16px; padding: 12px 20px; display: flex; align-items: center; gap: 10px; font-size: 16.5px; font-weight: 700; color: var(--ios-label); }
+
+    /* ===== SLIDE 8: Required HTML Tags ===== */
+    .s8-container { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 42px 14px; }
+    .s8-header-pill { font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; color: var(--ios-label); margin-bottom: 12px; }
+    .s8-main-layout { flex: 1; display: grid; grid-template-columns: 1.32fr 0.88fr; gap: 22px; align-items: center; }
+    .s8-code-table { background: var(--ios-grouped); border-radius: 20px; padding: 14px 18px; display: flex; flex-direction: column; gap: 5px; }
+    .s8-row { display: grid; grid-template-columns: 1.15fr 1fr; column-gap: 16px; align-items: center; padding: 6px 12px; border-radius: 10px; font-size: 18.5px; font-weight: 700; cursor: pointer; background: #FFFFFF; transition: all 0.16s ease; }
+    .s8-row:hover, .s8-row.pair-active { background: rgba(0, 122, 255, 0.1); transform: translateX(4px); }
+    .s8-inline-input { background: #F2F2F7; color: var(--ios-label); border: 1.5px solid rgba(0, 122, 255, 0.35); border-radius: 8px; padding: 2px 8px; font-family: 'Consolas', monospace; font-size: 17.5px; font-weight: 700; outline: none; width: 128px; }
+    .s8-inline-input:focus { background: #FFFFFF; border-color: var(--ios-blue); box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15); }
+    .s8-body-input { width: 220px; }
+    .s8-code { font-family: 'Consolas', monospace; white-space: pre; }
+    .s8-desc { font-size: 15px; }
+    .col-purple { color: #5856D6; }
+    .col-red    { color: #FF3B30; }
+    .col-blue   { color: #007AFF; }
+    .col-amber  { color: #C93400; }
+    .col-green  { color: #248A3D; }
+    .col-white  { color: #1C1C1E; }
+    .s8-preview-card { background: var(--ios-grouped); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .s8-browser-mock { background: #ffffff; border-radius: 14px; overflow: hidden; border: 1.5px solid var(--ios-separator); }
+    .s8-browser-top { background: #F2F2F7; padding: 8px 12px 0; display: flex; align-items: center; gap: 10px; border-bottom: 0.5px solid var(--ios-separator); }
+    .s8-tab-pill { background: #ffffff; color: var(--ios-label); padding: 5px 14px; border-radius: 10px 10px 0 0; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .s8-browser-body { height: 175px; padding: 22px; color: var(--ios-label); font-size: 26px; font-weight: 800; display: flex; align-items: flex-start; justify-content: flex-start; }
+    .s8-highlight-amber { background: rgba(255, 149, 0, 0.2) !important; }
+    .s8-highlight-green { background: rgba(52, 199, 89, 0.14) !important; }
+    .s8-highlight-red { border-color: var(--ios-red) !important; }
+
+    /* ===== SLIDE 9: Save File Steps ===== */
+    .s9-container { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 40px 14px; }
+    .s9-top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+    .s9-header-pill { font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; color: var(--ios-label); }
+    .s9-steps-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; align-items: stretch; }
+    .s9-step-card { background: var(--ios-grouped); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; border: 1.5px solid transparent; cursor: pointer; transition: all 0.2s ease; }
+    .s9-step-card:hover, .s9-step-card.active-save-step { border-color: var(--ios-blue); background: #FFFFFF; box-shadow: 0 10px 26px rgba(0, 122, 255, 0.12); transform: translateY(-3px); }
+    .s9-card-banner { background: #F2F2F7; padding: 8px 12px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--ios-label); }
+    .s9-num-badge { background: var(--ios-blue); color: #FFFFFF; width: 24px; height: 24px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 800; flex-shrink: 0; }
+    .s9-win-mock { flex: 1; background: #FFFFFF; color: var(--ios-label); display: flex; flex-direction: column; font-size: 12px; user-select: none; }
+    .s9-win-title { background: #FAFAFC; padding: 5px 10px; font-size: 11px; color: var(--ios-secondary); border-bottom: 0.5px solid var(--ios-separator); display: flex; align-items: center; gap: 6px; }
+    .s9-menu-item { padding: 5px 12px; display: flex; justify-content: space-between; color: var(--ios-label); font-size: 12px; }
+    .s9-menu-item.highlight-menu { background: var(--ios-blue); color: #ffffff; font-weight: 700; border-radius: 6px; margin: 2px 6px; padding: 6px 10px; }
+    .s9-path-bar { background: #F2F2F7; margin: 6px 8px; padding: 4px 8px; border-radius: 7px; font-size: 11px; color: var(--ios-label); display: flex; align-items: center; gap: 4px; }
+    .s9-explorer-split { flex: 1; display: grid; grid-template-columns: 78px 1fr; border-top: 0.5px solid var(--ios-separator); border-bottom: 0.5px solid var(--ios-separator); }
+    .s9-left-nav { background: #FAFAFC; border-right: 0.5px solid var(--ios-separator); padding: 6px 4px; display: flex; flex-direction: column; gap: 4px; font-size: 11px; }
+    .s9-nav-row { padding: 4px 6px; border-radius: 6px; color: var(--ios-secondary); }
+    .s9-nav-row.active-nav { background: var(--ios-blue); color: #ffffff; font-weight: 700; }
+    .s9-right-files { padding: 8px; background: #FFFFFF; }
+    .s9-folder-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 122, 255, 0.1); color: var(--ios-blue); padding: 5px 10px; border-radius: 8px; font-weight: 700; font-size: 12px; }
+    .s9-bottom-fields { padding: 8px; background: #FAFAFC; display: flex; flex-direction: column; gap: 5px; }
+    .s9-field-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--ios-label); }
+    .s9-field-box { flex: 1; background: #FFFFFF; border: 0.5px solid var(--ios-separator); padding: 3px 7px; border-radius: 6px; color: var(--ios-label); font-family: 'Consolas', monospace; font-size: 12px; }
+    .s9-field-box.highlight-input { border: 1.5px solid var(--ios-green); background: rgba(52, 199, 89, 0.1); color: #248A3D; font-weight: 800; }
+    .s9-card-footer { background: #FAFAFC; padding: 10px 12px; font-size: 13px; color: var(--ios-secondary); border-top: 0.5px solid var(--ios-separator); line-height: 1.45; min-height: 58px; }
+
+    /* ===== SLIDE 10: Problem VS Challenge ===== */
+    .s10-container { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 18px 40px 14px; }
+    .s10-grid { flex: 1; display: grid; grid-template-columns: 1fr 1.12fr; gap: 20px; align-items: stretch; }
+    .s10-panel { background: var(--ios-grouped); border-radius: 22px; padding: 16px 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+    .s10-panel-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .s10-badge-problem { background: rgba(255, 59, 48, 0.12); color: var(--ios-red); padding: 5px 14px; border-radius: 999px; font-size: 15px; font-weight: 800; }
+    .s10-badge-challenge { background: var(--ios-blue); color: #ffffff; padding: 5px 16px; border-radius: 999px; font-size: 15px; font-weight: 800; }
+    .s10-mini-code { background: #FFFFFF; border: 0.5px solid var(--ios-separator); border-radius: 14px; overflow: hidden; }
+    .s10-mini-code-bar { background: #F2F2F7; padding: 6px 12px; font-size: 12px; color: var(--ios-secondary); border-bottom: 0.5px solid var(--ios-separator); font-weight: 700; }
+    .s10-mini-code-body { padding: 10px 14px; font-family: 'Consolas', monospace; font-size: 14.5px; line-height: 1.5; color: var(--ios-label); }
+    .s10-browser-card { background: #ffffff; border: 0.5px solid var(--ios-separator) !important; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05); }
+    .s10-b-tabs { background: #F2F2F7; padding: 6px 12px 0; display: flex; align-items: center; gap: 8px; color: var(--ios-label); font-size: 12px; }
+    .s10-b-tab { background: #FFFFFF; padding: 4px 12px; border-radius: 8px 8px 0 0; display: flex; align-items: center; gap: 6px; font-weight: 700; }
+    .s10-b-addr { background: #FAFAFC; padding: 5px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 0.5px solid var(--ios-separator); color: var(--ios-tertiary); font-size: 11px; }
+    .s10-url-pill { flex: 1; background: #F2F2F7; padding: 3px 10px; border-radius: 8px; color: var(--ios-secondary); font-family: 'Consolas', monospace; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .s10-page-content { padding: 14px 18px; color: var(--ios-label); font-size: 17.5px; font-weight: 700; min-height: 130px; }
+    .s10-why-alert { background: rgba(255, 149, 0, 0.12); color: #C93400; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.45; display: flex; align-items: center; gap: 10px; }
+    .s10-tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .s10-tool-card { background: #FFFFFF; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); }
+    .s10-tag-chip { background: rgba(0, 122, 255, 0.12); color: var(--ios-blue); font-family: 'Consolas', monospace; font-size: 18px; padding: 4px 10px; border-radius: 10px; font-weight: 800; flex-shrink: 0; }
+    .s10-tool-title { font-size: 15.5px; font-weight: 700; color: var(--ios-label); }
+    .s10-tool-sub { font-size: 12.5px; color: var(--ios-secondary); }
+
+    /* ===== Bottom Frosted Bar ===== */
+    .bottombar {
+      height: 58px;
+      background: var(--ios-glass);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-top: 0.5px solid var(--ios-separator);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .slide-nav-btn {
+      background: var(--ios-blue);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 14.5px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0, 122, 255, 0.24);
+    }
+
+    .slide-nav-btn:disabled { background: var(--ios-fill); color: var(--ios-tertiary); box-shadow: none; cursor: not-allowed; }
+    .slide-dots { display: flex; align-items: center; gap: 6px; }
+    .dot-btn { width: 34px; height: 34px; border-radius: 10px; background: var(--ios-fill); color: var(--ios-secondary); border: none; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .dot-btn.active { background: var(--ios-blue); color: #FFFFFF; box-shadow: 0 3px 8px rgba(0, 122, 255, 0.28); }
+    .hidden { display: none !important; }
+
+    @media (max-width: 1024px) { .s9-steps-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 850px) {
+      .cover-grid, .s2-grid, .s5-bottom-grid, .s6-main-grid, .s8-main-layout, .s10-grid { grid-template-columns: 1fr; display: flex; flex-direction: column; }
+      .cover-visual { width: 100%; }
+      .s3-grid, .vs-cards-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .topbar { height: 48px; padding: 0 12px; }
+      .top-btn { padding: 5px 10px; font-size: 12px; }
+      .slide-stage { padding: 8px 10px; overflow-y: auto; align-items: flex-start; }
+      .slide { height: auto; min-height: 100%; max-height: none; overflow-y: visible; border-radius: 22px; }
+      .roadmap-grid, .s5-step-flow, .s9-steps-grid, .s10-tools-grid, .s7-ready-steps { grid-template-columns: 1fr; }
+      .vs-header-row { grid-template-columns: 1fr; }
+      .vs-badge { display: none; }
+      .bottombar { height: 52px; padding: 0 10px; }
+      .slide-nav-btn { padding: 6px 12px; font-size: 13px; }
+      .slide-dots { overflow-x: auto; max-width: calc(100vw - 170px); scrollbar-width: none; }
+      .slide-dots::-webkit-scrollbar { display: none; }
+      .dot-btn { width: 28px; height: 28px; font-size: 12px; flex-shrink: 0; }
+      .cover-bottom-strip { flex-direction: column; padding: 8px 14px; font-size: 11.5px; }
+    }
+    @media (max-width: 480px) { .topbar-right .btn-fs-text, .topbar-right .code-link-text { display: none; } }
+    @media (min-width: 1600px) { .slide { max-width: 1440px; max-height: min(840px, calc(100vh - 150px)); } }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="top-btn">← <span class="home-nav-text">หน้าแรก</span></a>
+      <span class="slide-title-indicator" id="slideCounterText">สไลด์ 1 / 1</span>
+    </div>
+    <div class="topbar-right">
+      <button class="top-btn" onclick="toggleFullscreen()" title="ขยายเต็มหน้าจอ">[ ] <span class="btn-fs-text">ขยายเต็มจอ</span></button>
+      <a href="code.html" class="top-btn top-btn-green" title="ไปยังหน้าเขียนโปรแกรม">&lt;/&gt; <span class="code-link-text">ไปหน้าเขียนโปรแกรม</span></a>
+    </div>
+  </header>
+
+  <main class="slide-stage">
+
+    <!-- สไลด์ที่ 1: หน้าปก WEB CREATOR พร้อมแอนิเมชัน -->
+    <section class="slide active">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="cover-grid">
+        <!-- ฝั่งซ้าย -->
+        <div>
+          <div class="club-tag">WEEK 01 // วิชาชุมนุม ชั้นมัธยมศึกษาปีที่ 1 - 3</div>
+          <h1 class="cover-main-title">WEB CREATOR</h1>
+          <div class="cover-subtitle-pill">เปลี่ยนไอเดียให้เป็นเว็บแอป</div>
+
+          <div class="roadmap-grid">
+            <div class="roadmap-card">
+              <div class="rm-icon rm-1">01</div>
+              <div>
+                <div class="rm-text">พื้นฐาน</div>
+                <div class="rm-sub">โครงสร้าง HTML &amp; โค้ดเริ่มต้น</div>
+              </div>
+            </div>
+
+            <div class="roadmap-card">
+              <div class="rm-icon rm-2">02</div>
+              <div>
+                <div class="rm-text">ออกแบบเว็บไซต์</div>
+                <div class="rm-sub">ตกแต่งสีสันด้วย CSS &amp; JS</div>
+              </div>
+            </div>
+
+            <div class="roadmap-card">
+              <div class="rm-icon rm-3">03</div>
+              <div>
+                <div class="rm-text">ต่อฐานข้อมูล</div>
+                <div class="rm-sub">เก็บและดึงข้อมูลเว็บแอป</div>
+              </div>
+            </div>
+
+            <div class="roadmap-card">
+              <div class="rm-icon rm-4">04</div>
+              <div>
+                <div class="rm-text">Deploy ขึ้นอินเทอร์เน็ต</div>
+                <div class="rm-sub">ออนไลน์เว็บจริงให้เพื่อนเข้าชม</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ฝั่งขวา: หน้าต่างโค้ดที่พิมพ์เองอัตโนมัติ (Typing Animation) -->
+        <div class="cover-visual">
+          <span class="floating-badge fb-html">&lt;HTML&gt;</span>
+          <span class="floating-badge fb-css">{ CSS }</span>
+          <span class="floating-badge fb-js">JS()</span>
+
+          <div class="mock-vscode-card">
+            <div class="mock-bar">
+              <div class="mock-dots">
+                <span class="m-dot" style="background:#ff5f56;"></span>
+                <span class="m-dot" style="background:#ffbd2e;"></span>
+                <span class="m-dot" style="background:#27c93f;"></span>
+              </div>
+              <span style="font-size:12.5px; color:#141414; font-weight:800; font-family:Consolas,monospace;">index.html — VS Code</span>
+            </div>
+            <div class="mock-code-body">
+              <div style="color:#6E6C65;">&lt;!<span style="color:#D93800; font-weight:700;">DOCTYPE</span> <span style="color:#0F52BA;">html</span>&gt;</div>
+              <div style="color:#6E6C65;">&lt;<span style="color:#D93800; font-weight:700;">html</span>&gt;</div>
+              <div style="color:#6E6C65;">&lt;<span style="color:#D93800; font-weight:700;">head</span>&gt;</div>
+              <div style="padding-left:20px; color:#6E6C65;">&lt;<span style="color:#D93800; font-weight:700;">title</span>&gt;<span style="color:#141414; font-weight:700;">Web Creator</span>&lt;/<span style="color:#D93800; font-weight:700;">title</span>&gt;</div>
+              <div style="color:#6E6C65;">&lt;/<span style="color:#D93800; font-weight:700;">head</span>&gt;</div>
+              <div style="color:#6E6C65;">&lt;<span style="color:#D93800; font-weight:700;">body</span>&gt;</div>
+              <div style="padding-left:20px; color:#6E6C65;">
+                &lt;<span style="color:#D93800; font-weight:700;">h1</span>&gt;<span id="typingText" style="color:#007AFF; font-weight:800;"></span><span class="typing-cursor"></span>&lt;/<span style="color:#D93800; font-weight:700;">h1</span>&gt;
+              </div>
+              <div style="color:#6E6C65;">&lt;/<span style="color:#D93800; font-weight:700;">body</span>&gt;</div>
+              <div style="color:#6E6C65;">&lt;/<span style="color:#D93800; font-weight:700;">html</span>&gt;</div>
+            </div>
+          </div>
+
+          <div id="liveBadgeBox" class="mock-preview-badge">
+            <span style="font-family:Consolas,monospace; color:#007AFF; font-weight:900;">LIVE //</span>
+            <span id="liveBadgeText">สวัสดีชาวโลก!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-bottom-strip">
+        <span>01 // สื่อการสอนวิชาชุมนุม Web Application</span>
+        <span>กดปุ่ม <b>ถัดไป →</b> หรือลูกศรขวา เพื่อเริ่มเรียน</span>
+      </div>
+    </section>
+
+    <!-- สไลด์ที่ 2: WEB APPLICATION คืออะไร -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="s2-grid">
+        <!-- ฝั่งซ้าย: ความหมาย + สรุปจำง่าย -->
+        <div>
+          <div class="club-tag">SECTION 02 // ทำความรู้จักก่อนเริ่มเรียน</div>
+          <h2 class="s2-title">WEB APPLICATION</h2>
+
+          <div class="s2-def-box">
+            <b>เว็บแอปพลิเคชัน (Web Application หรือ Web App)</b> คือ โปรแกรมหรือแอปพลิเคชันที่ใช้งานผ่านเว็บเบราว์เซอร์ โดย<b>ไม่จำเป็นต้องติดตั้งโปรแกรม</b>ลงในคอมพิวเตอร์
+            <div class="browser-tags">
+              <span class="b-chip">01 Google Chrome</span>
+              <span class="b-chip">02 Microsoft Edge</span>
+              <span class="b-chip">03 Safari</span>
+            </div>
+          </div>
+
+          <div class="s2-summary-pill">
+            <span style="color:#007AFF; font-family:Consolas,monospace;">//</span>
+            <span>“ โปรแกรมที่เราใช้งานบนเว็บ ”</span>
+          </div>
+        </div>
+
+        <!-- ฝั่งขวา: ทดลองเปรียบเทียบ โปรแกรมติดตั้งลงเครื่อง VS เว็บแอป -->
+        <div class="s2-right-visual" style="animation:none;">
+          <div class="s2-compare-card">
+            <div style="font-size:16.5px; font-weight:900; color:#141414; text-align:left; border-bottom:1px solid #141414; padding-bottom:8px;">
+              COMPARE // ลองกดเปรียบเทียบความสะดวกดูสิ!
+            </div>
+
+            <!-- 1. โปรแกรมทั่วไปที่ต้องติดตั้ง -->
+            <div class="s2-sim-row">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:16px; font-weight:800; color:#141414;">01 โปรแกรมทั่วไป (Desktop App)</span>
+                <button onclick="runInstallDemo()" style="background:#FFFFFF; color:#141414; border:0.5px solid rgba(60,60,67,0.16); box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:5px 12px; border-radius:10px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit;">ลองกดติดตั้ง</button>
+              </div>
+              <div class="s2-bar-track">
+                <div id="desktopInstallBar" class="s2-bar-fill" style="background:#f59e0b; width:25%;"></div>
+              </div>
+              <div id="desktopInstallText" style="font-size:14px; color:#52524E;">
+                ต้องดาวน์โหลดไฟล์ .exe ➔ กดติดตั้งลงเครื่อง ➔ ใช้พื้นที่ความจำ
+              </div>
+            </div>
+
+            <!-- 2. เว็บแอปพลิเคชัน -->
+            <div class="s2-sim-row webapp-row">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:16px; font-weight:800; color:#141414;">02 เว็บแอป (Web Application)</span>
+                <button onclick="runWebAppDemo()" style="background:#007AFF; color:#fff; border:0.5px solid rgba(60,60,67,0.16); box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:5px 14px; border-radius:10px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit;">ลองกดเปิดเว็บแอป</button>
+              </div>
+              <div class="s2-bar-track">
+                <div id="webAppLaunchBar" class="s2-bar-fill" style="background:#007AFF; width:100%;"></div>
+              </div>
+              <div id="webAppLaunchText" style="font-size:14.5px; color:#141414; font-weight:800;">
+                แค่เปิดเว็บเบราว์เซอร์ ➔ เข้าใช้งานได้ทันทีใน 1 วินาที ไม่ต้องติดตั้ง!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-bottom-strip">
+        <span>02 // สัปดาห์ที่ 1 • ทำความรู้จักกับ Web Application</span>
+        <span>กดปุ่ม <b>← ก่อนหน้า / ถัดไป →</b> เพื่อเปลี่ยนสไลด์</span>
+      </div>
+    </section>
+
+    <!-- สไลด์ที่ 3: ตัวอย่าง Web Application -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="s3-container">
+        <div class="s3-header">
+          <h2 class="s3-title">03 — ตัวอย่าง Web Application</h2>
+        </div>
+
+        <div class="s3-grid">
+          <!-- 1. Canva (คลิกเพิ่มกล่องสี & ลากขยับได้จริง) -->
+          <div class="app-example-card">
+            <div class="app-screen-mock">
+              <div style="height:26px; background:#141414; display:flex; align-items:center; justify-content:space-between; padding:0 12px; color:#fff; font-weight:800; font-size:13px;">
+                <span>Canva (คลิกสีซ้ายเพื่อเพิ่ม • ลากกล่องขวาได้!)</span>
+                <button onclick="clearCanvaBoxes()" style="font-size:10px; background:rgba(255,255,255,0.25); color:#fff; border:none; padding:2px 8px; border-radius:12px; cursor:pointer;">ล้างหน้ากระดาษ</button>
+              </div>
+              <div style="flex:1; display:flex; overflow:hidden;">
+                <!-- แถบแม่แบบซ้าย: กดเพื่อเสกกล่องลงกระดาน -->
+                <div style="width:36%; background:#18191b; padding:8px; display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                  <div class="canva-swatch" style="background:#fb7185;" onclick="addCanvaBox('#fb7185', 'สวัสดี ✨')">+ กล่องชมพู</div>
+                  <div class="canva-swatch" style="background:#38bdf8;" onclick="addCanvaBox('#38bdf8', 'Web App 🚀')">+ กล่องฟ้า</div>
+                  <div class="canva-swatch" style="background:#f59e0b;" onclick="addCanvaBox('#f59e0b', 'ม.1 - ม.3 🎉')">+ กล่องส้ม</div>
+                  <div class="canva-swatch" style="background:#22c55e;" onclick="addCanvaBox('#22c55e', 'ออกแบบ 🎨')">+ กล่องเขียว</div>
+                </div>
+                <!-- พื้นที่ออกแบบขวา (ลากกล่องไปมาได้จริง) -->
+                <div id="canvaStage" style="flex:1; background:#f1f5f9; position:relative; overflow:hidden;">
+                  <div class="canva-draggable" style="background:#ff5757; left:28px; top:18px;" onmousedown="startCanvaDrag(event, this)">
+                    ↔ ลากฉันได้นะ!
+                  </div>
+                  <div class="canva-draggable" style="background:#38bdf8; left:65px; top:68px;" onmousedown="startCanvaDrag(event, this)">
+                    🎨 พบกันวันอังคาร
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="app-card-label">
+              <div class="app-name">01 Canva</div>
+              <span class="app-desc-tag">ลองคลิกเพิ่มกล่อง &amp; ลากขยับดูสิ!</span>
+            </div>
+          </div>
+
+          <!-- 2. Google Docs (คลิกพิมพ์ข้อความได้จริง) -->
+          <div class="app-example-card">
+            <div class="app-screen-mock">
+              <div style="height:24px; background:#202124; display:flex; align-items:center; padding:0 10px; gap:6px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#ff5f56;"></span>
+                <span style="width:8px;height:8px;border-radius:50%;background:#ffbd2e;"></span>
+                <span style="width:8px;height:8px;border-radius:50%;background:#27c93f;"></span>
+                <span style="color:#9aa0a6; font-size:10px; margin-left:6px; font-family:Consolas,monospace;">https://docs.google.com</span>
+              </div>
+              <div style="height:24px; background:#f8f9fa; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; padding:0 10px; font-size:10px; color:#5f6368; gap:6px;">
+                <button class="gdoc-tool-btn" onclick="document.execCommand('bold')"><b>B</b></button>
+                <button class="gdoc-tool-btn" onclick="document.execCommand('italic')"><i>I</i></button>
+                <button class="gdoc-tool-btn" onclick="document.execCommand('underline')"><u>U</u></button>
+                <span style="color:#2563eb; font-weight:700; margin-left:4px;">คลิกพิมพ์ข้อความด้านล่างได้เลย!</span>
+              </div>
+              <div
+                id="gdocEditor"
+                class="gdoc-editor"
+                contenteditable="true"
+                spellcheck="false"
+              >
+                <div style="color:#2563eb; font-size:16px; font-weight:800; margin-bottom:2px;">Project Proposal (คลิกพิมพ์ต่อที่นี่...)</div>
+                <div>สวัสดีครับ! เอกสารนี้สามารถคลิกแล้วพิมพ์แก้ไขบนหน้าเว็บได้ทันทีเหมือนโปรแกรม Word</div>
+              </div>
+            </div>
+            <div class="app-card-label">
+              <div class="app-name">02 Google Docs</div>
+              <span class="app-desc-tag">ลองคลิกแล้วพิมพ์ข้อความได้จริง!</span>
+            </div>
+          </div>
+
+          <!-- 3. Google Forms (คลิกติ๊กเลือกตัวเลือก & กดส่งได้จริง) -->
+          <div class="app-example-card">
+            <div class="app-screen-mock" style="background:#f0ebf8;">
+              <div style="height:26px; background:#ffffff; border-bottom:1px solid #ddd; display:flex; align-items:center; justify-content:space-between; padding:0 12px; font-size:11px; font-weight:700; color:#673ab7;">
+                <span>แบบสอบถามความพึงพอใจ</span>
+                <button onclick="submitMiniForm()" style="background:#673ab7; color:#fff; border:none; padding:2px 12px; border-radius:12px; font-size:11px; font-weight:700; cursor:pointer;">ส่งคำตอบ (Send)</button>
+              </div>
+              <div id="gformBody" style="flex:1; padding:8px 18px; display:flex; flex-direction:column; gap:6px; justify-content:center;">
+                <div style="background:#ffffff; border-top:5px solid #673ab7; border-radius:6px; padding:6px 12px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+                  <div style="font-size:12px; font-weight:800; color:#1e293b;">คุณชอบเรียนวิชาสร้าง Web App มากแค่ไหน?</div>
+                </div>
+                <div style="background:#ffffff; border-radius:6px; padding:6px 10px; display:flex; flex-direction:column; gap:3px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+                  <div class="gform-option checked" onclick="selectFormOption(this)">
+                    <span class="gform-radio"></span> <span>พอใจมากที่สุด 😍</span>
+                  </div>
+                  <div class="gform-option" onclick="selectFormOption(this)">
+                    <span class="gform-radio"></span> <span>พอใจมาก 😊</span>
+                  </div>
+                  <div class="gform-option" onclick="selectFormOption(this)">
+                    <span class="gform-radio"></span> <span>ปานกลาง 🙂</span>
+                  </div>
+                </div>
+              </div>
+              <!-- หน้าจอแสดงหลังกดส่งแบบสอบถาม -->
+              <div id="gformSuccess" class="hidden" style="flex:1; padding:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:#ffffff;">
+                <div style="font-size:28px;">🎉</div>
+                <div style="font-size:14px; font-weight:800; color:#16a34a;">บันทึกคำตอบของคุณเรียบร้อยแล้ว!</div>
+                <button onclick="resetMiniForm()" style="background:#673ab7; color:#fff; border:none; padding:4px 14px; border-radius:6px; font-size:12px; cursor:pointer;">ตอบแบบสอบถามอีกครั้ง</button>
+              </div>
+            </div>
+            <div class="app-card-label">
+              <div class="app-name">03 Google Forms</div>
+              <span class="app-desc-tag">ลองคลิกติ๊กตัวเลือก &amp; กดส่งดูสิ!</span>
+            </div>
+          </div>
+
+          <!-- 4. YouTube (คลิกปุ่ม Play เพื่อเล่นวิดีโอแอนิเมชันได้จริง) -->
+          <div class="app-example-card">
+            <div class="app-screen-mock" style="background:#EFECE6; align-items:center; justify-content:center;">
+              <!-- หน้าปกก่อนกด Play -->
+              <div id="ytCoverState" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                <div class="yt-play-box" onclick="toggleMiniYoutube(true)">
+                  <svg width="38" height="38" viewBox="0 0 24 24" fill="#ffffff">
+                    <polygon points="8,5 19,12 8,19" />
+                  </svg>
+                </div>
+                <span style="color:#141414; font-size:12px; font-weight:700;">คลิกปุ่ม Play เพื่อเล่นวิดีโอ</span>
+              </div>
+
+              <!-- หน้าจอขณะกำลังเล่นวิดีโอแอนิเมชัน -->
+              <div id="ytPlayingState" class="yt-playing-scene hidden">
+                <div style="font-family:Consolas,monospace;font-size:18px;font-weight:900;color:#007AFF;border:0.5px solid rgba(60,60,67,0.16);padding:4px 10px;background:#FFFFFF;">[PLAYING]</div>
+                <div style="font-size:14px; font-weight:800; color:#141414; margin-top:6px;">กำลังเล่น: ตะลุยโลก Web Creator!</div>
+                <div class="yt-controls-bar">
+                  <button onclick="toggleMiniYoutube(false)" style="background:transparent; border:none; color:#fff; cursor:pointer; font-size:13px;">❚❚ หยุด</button>
+                  <div class="yt-progress-track">
+                    <div id="ytProgressFill" class="yt-progress-fill"></div>
+                  </div>
+                  <span id="ytTimeText">0:00 / 0:10</span>
+                </div>
+              </div>
+            </div>
+            <div class="app-card-label">
+              <div class="app-name">04 YouTube</div>
+              <span class="app-desc-tag">ลองคลิกปุ่ม Play เพื่อเล่นวิดีโอ!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-bottom-strip">
+        <span>03 // ตัวอย่างโปรแกรมยอดนิยมที่ทำงานบนเว็บเบราว์เซอร์ (Web Application)</span>
+        <span>กดปุ่ม <b>← ก่อนหน้า / ถัดไป →</b> เพื่อเปลี่ยนสไลด์</span>
+      </div>
+    </section>
+
+    <!-- สไลด์ที่ 4: ความต่าง เว็บไซต์ (Website) VS เว็บแอปพลิเคชัน -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="s4-container">
+        <div>
+          <h2 class="s4-title">ความต่างระหว่าง เว็บไซต์ VS เว็บแอปพลิเคชัน</h2>
+
+          <div class="vs-header-row">
+            <div class="vs-pill vs-pill-left">01 เว็บไซต์ (Website)</div>
+            <div class="vs-badge">VS</div>
+            <div class="vs-pill vs-pill-right">02 เว็บแอปพลิเคชัน (Web App)</div>
+          </div>
+
+          <div class="vs-cards-grid">
+            <!-- ฝั่งซ้าย: เว็บไซต์ (Website) -->
+            <div class="vs-card vs-card-website">
+              <ul class="vs-list">
+                <li><span style="font-family:Consolas,monospace;font-weight:900;">01</span> <span>เน้นแสดงข้อมูล (ให้อ่านหรือดูข้อมูล)</span></li>
+                <li><span style="font-family:Consolas,monospace;font-weight:900;">02</span> <span>อ่านบทความ ข่าวสาร หรือบล็อก</span></li>
+                <li><span style="font-family:Consolas,monospace;font-weight:900;">03</span> <span>ดูข้อมูลสินค้า แคตตาล็อก หรือเมนู</span></li>
+                <li><span style="font-family:Consolas,monospace;font-weight:900;">04</span> <span>เปิดอ่านเนื้อหาทั่วไป หน้าเว็บไม่เปลี่ยน</span></li>
+              </ul>
+            </div>
+
+            <!-- ฝั่งขวา: เว็บแอป (Web Application) -->
+            <div class="vs-card vs-card-webapp">
+              <ul class="vs-list">
+                <li><span style="font-family:Consolas,monospace;font-weight:900;color:#007AFF;">01</span> <span>เน้นให้ผู้ใช้ทำงานและโต้ตอบได้จริง</span></li>
+                <li><span style="font-family:Consolas,monospace;font-weight:900;color:#007AFF;">02</span> <span>กรอกข้อมูล ค้นหา และบันทึกข้อมูล</span></li>
+                <li><span style="font-family:Consolas,monospace;font-weight:900;color:#007AFF;">03</span> <span>สั่งซื้อสินค้าและชำระเงินออนไลน์</span></li>
+                <li><span style="font-family:Consolas,monospace;font-weight:900;color:#007AFF;">04</span> <span>คำนวณคะแนน เล่นเกม หรือแต่งรูป</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- กล่องสรุปง่ายๆ ด้านล่าง + มินิควิซทายใจนักเรียน -->
+        <div class="s4-summary-box">
+          <div class="s4-summary-title">SUMMARY // สรุปง่ายๆ สไตล์ Web Creator</div>
+          <div class="s4-summary-text">
+            <b>เว็บไซต์</b> มีไว้ให้เรา <i>"อ่าน/ดูข้อมูล"</i> เป็นหลัก ส่วน <b>เว็บแอปพลิเคชัน</b> คือเว็บที่ให้เรา <i>"โต้ตอบ ใช้งาน หรือทำกิจกรรมต่าง ๆ ได้จริง"</i>
+          </div>
+          <div class="s4-quiz-strip">
+            <span style="font-size:14px; font-weight:800; color:#141414;">QUIZ — ลองทายดูสิ! เว็บไหนเป็นอะไร (คลิกเพื่อเฉลย):</span>
+            <button class="s4-quiz-btn" onclick="revealQuiz(this, 'site', '[Website] เว็บอ่านข่าว = Website')">01 เว็บอ่านข่าว</button>
+            <button class="s4-quiz-btn" onclick="revealQuiz(this, 'app', '[Web App] Shopee ซื้อของ = Web App')">02 Shopee สั่งของ</button>
+            <button class="s4-quiz-btn" onclick="revealQuiz(this, 'site', '[Website] บทความประวัติศาสตร์ = Website')">03 เว็บบทความ</button>
+            <button class="s4-quiz-btn" onclick="revealQuiz(this, 'app', '[Web App] Canva แต่งรูป = Web App')">04 Canva แต่งรูป</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-bottom-strip">
+        <span>04 // เปรียบเทียบความแตกต่างระหว่าง Website และ Web Application</span>
+        <span>กดปุ่ม <b>← ก่อนหน้า / ถัดไป →</b> เพื่อเปลี่ยนสไลด์</span>
+      </div>
+    </section>
+
+    <!-- สไลด์ที่ 5: วันที่ 1 เป้าหมาย -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="s5-container">
+        <div>
+          <div class="day1-badge">DAY 01 // วันที่ 1</div>
+          <h2 class="s5-goal-title">
+            เป้าหมาย: ทุกคนสร้างไฟล์ และ<span>เห็นข้อความตัวเองบนเบราว์เซอร์ได้</span>
+          </h2>
+        </div>
+
+        <div class="s5-bottom-grid">
+          <!-- ฝั่งซ้าย: จอแสดงผลจำลองตามสเต็ปที่คลิก 1 -> 2 -> 3 -->
+          <div class="s5-preview-screen">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #141414; padding-bottom:10px;">
+              <span id="s5StepTitle" style="font-size:18px; font-weight:900; color:#141414;">ขั้นที่ 1: เขียนโค้ดในโปรแกรม Notepad</span>
+              <span id="s5StepBadge" style="background:#141414; color:#fff; font-family:Consolas,monospace; font-size:12px; font-weight:800; padding:3px 10px; border-radius:10px;">Step 1 / 3</span>
+            </div>
+
+            <div id="s5StepVisual" style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:14px 0; font-family:Consolas,monospace; font-size:16.5px; color:#141414;">
+              <div style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.16); border-radius:12px; padding:14px;">
+                &lt;!DOCTYPE html&gt;<br>
+                &lt;html&gt;<br>
+                &lt;body&gt;<br>
+                &nbsp;&nbsp;<span style="color:#007AFF; font-weight:bold;">สวัสดี! นี่คือเว็บแรกของฉัน</span><br>
+                &lt;/body&gt;<br>
+                &lt;/html&gt;
+              </div>
+            </div>
+
+            <div id="s5StepDesc" style="font-size:13.5px; color:#52524E; font-weight:600;">
+              คลิกที่กล่องขั้นตอนที่ 1, 2, 3 ด้านขวา เพื่อดูเส้นทางกว่าจะกลายเป็นหน้าเว็บ!
+            </div>
+          </div>
+
+          <!-- ฝั่งขวา: หัวข้อการเรียนรู้ประจำวันที่ 1 (คลิกดูแต่ละสเต็ปได้) -->
+          <div class="s5-topic-card">
+            <div class="s5-bullet-main">
+              <span style="width:10px;height:10px;background:#007AFF;display:inline-block;"></span>
+              <span>รู้จักส่วนประกอบหลักๆ ของเว็บไซต์</span>
+            </div>
+
+            <div class="s5-step-flow">
+              <div id="s5Flow1" class="s5-flow-item active-s5-step" onclick="setS5Step(1)" style="cursor:pointer;">
+                <div class="s5-flow-icon">STEP 01</div>
+                <div class="s5-flow-text">1. เขียนโค้ดใน Notepad</div>
+              </div>
+              <div id="s5Flow2" class="s5-flow-item" onclick="setS5Step(2)" style="cursor:pointer;">
+                <div class="s5-flow-icon">STEP 02</div>
+                <div class="s5-flow-text">2. บันทึกเป็นไฟล์ .html</div>
+              </div>
+              <div id="s5Flow3" class="s5-flow-item" onclick="setS5Step(3)" style="cursor:pointer;">
+                <div class="s5-flow-icon">STEP 03</div>
+                <div class="s5-flow-text">3. เปิดดูข้อความบนเว็บ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-bottom-strip">
+        <span>05 // เป้าหมายการเรียนรู้ประจำสัปดาห์ที่ 1 (วันที่ 1)</span>
+        <span>กดปุ่ม <b>← ก่อนหน้า / ถัดไป →</b> เพื่อเปลี่ยนสไลด์</span>
+      </div>
+    </section>
+
+    <!-- สไลด์ที่ 6: กว่าจะเป็นเว็บได้ต้องมี 2(1) สิ่งนี้ HTML + CSS (JS) -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="s6-container">
+        <!-- แถบหัวข้อด้านบน -->
+        <div class="s6-top-row">
+          <div class="s6-title-pill">
+            กว่าจะเป็นเว็บได้ต้องมี <span style="color:#007AFF;">2 (+1)</span> สิ่งนี้
+          </div>
+          <div class="s6-formula-pill">
+            <span style="color:#f97316;">HTML</span>
+            <span style="color:#ffffff;"> + </span>
+            <span style="color:#007AFF;">CSS</span>
+            <span style="color:#facc15;"> + (JS)</span>
+          </div>
+        </div>
+
+        <!-- เนื้อหาหลัก ซ้าย-ขวา -->
+        <div class="s6-main-grid">
+          <!-- ฝั่งซ้าย: การ์ด 3 ภาษา (คลิกเพื่อดูความเปลี่ยนแปลงฝั่งขวาได้ทันที) -->
+          <div class="s6-tech-list">
+            <!-- 1. HTML -->
+            <div id="techCard1" class="s6-tech-card" style="border-left: 6px solid #e44d26;" onclick="setWebStage(1)">
+              <div class="shield-icon">
+                <svg viewBox="0 0 64 72" width="52" height="60">
+                  <polygon points="4,0 60,0 55,62 32,72 9,62" fill="#e44d26"/>
+                  <polygon points="32,6 54,6 50,57 32,65" fill="#f16529"/>
+                  <text x="32" y="49" text-anchor="middle" fill="#ffffff" font-size="38" font-weight="900" font-family="Segoe UI, sans-serif">5</text>
+                </svg>
+              </div>
+              <div style="flex:1;">
+                <div class="s6-card-head">
+                  <span class="s6-tech-title" style="color:#f97316;">1. HTML (HyperText Markup Language)</span>
+                  <span class="s6-analogy-badge" style="background:rgba(249,115,22,0.2); color:#fb923c;">เปรียบเหมือน: โครงสร้าง</span>
+                </div>
+                <div class="s6-tech-desc">
+                  ใช้สร้าง<b>เค้าโครงเว็บ</b>และกำหนดว่าบนหน้าเว็บจะมีอะไรบ้าง เช่น หัวข้อ ข้อความ รูปภาพ ลิงก์ และปุ่มกด
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. CSS -->
+            <div id="techCard2" class="s6-tech-card" style="border-left: 6px solid #0284c7;" onclick="setWebStage(2)">
+              <div class="shield-icon">
+                <svg viewBox="0 0 64 72" width="52" height="60">
+                  <polygon points="4,0 60,0 55,62 32,72 9,62" fill="#0277bd"/>
+                  <polygon points="32,6 54,6 50,57 32,65" fill="#039be5"/>
+                  <text x="32" y="49" text-anchor="middle" fill="#ffffff" font-size="38" font-weight="900" font-family="Segoe UI, sans-serif">3</text>
+                </svg>
+              </div>
+              <div style="flex:1;">
+                <div class="s6-card-head">
+                  <span class="s6-tech-title" style="color:#007AFF;">2. CSS (Cascading Style Sheets)</span>
+                  <span class="s6-analogy-badge" style="background:rgba(56,189,248,0.2); color:#007AFF;">เปรียบเหมือน: เสื้อผ้า &amp; สีสัน</span>
+                </div>
+                <div class="s6-tech-desc">
+                  ใช้<b>ตกแต่งความสวยงาม</b> กำหนดสี ขนาดตัวอักษร พื้นหลัง เส้นขอบ และจัดวางองค์ประกอบให้น่าใช้งาน
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. JS -->
+            <div id="techCard3" class="s6-tech-card active-stage-js" style="border-left: 6px solid #facc15;" onclick="setWebStage(3)">
+              <div class="shield-icon">
+                <svg viewBox="0 0 64 72" width="52" height="60">
+                  <polygon points="4,0 60,0 55,62 32,72 9,62" fill="#eab308"/>
+                  <polygon points="32,6 54,6 50,57 32,65" fill="#facc15"/>
+                  <text x="32" y="49" text-anchor="middle" fill="#0f172a" font-size="34" font-weight="900" font-family="Segoe UI, sans-serif">JS</text>
+                </svg>
+              </div>
+              <div style="flex:1;">
+                <div class="s6-card-head">
+                  <span class="s6-tech-title" style="color:#facc15;">(3.) JS (JavaScript)</span>
+                  <span class="s6-analogy-badge" style="background:rgba(250,204,21,0.2); color:#facc15;">เปรียบเหมือน: สมองสั่งงาน</span>
+                </div>
+                <div class="s6-tech-desc">
+                  ใช้<b>เพิ่มการทำงานและการโต้ตอบ</b>ให้หน้าเว็บมีชีวิตชีวา เช่น พอกดปุ่ม A แล้วให้แสดงชื่อหรือคำนวณแต้ม
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ฝั่งขวา: ห้องทดลองจำลองหน้าเว็บ 3 ขั้นตอน (กดสลับดูความแตกต่างได้จริง!) -->
+          <div class="s6-sim-panel">
+            <div class="sim-tabs">
+              <button id="simTab1" class="sim-tab-btn" onclick="setWebStage(1)">1. มีแค่ HTML</button>
+              <button id="simTab2" class="sim-tab-btn" onclick="setWebStage(2)">2. เติม +CSS</button>
+              <button id="simTab3" class="sim-tab-btn active-3" onclick="setWebStage(3)">3. เติม +JS</button>
+            </div>
+
+            <div class="sim-browser-window">
+              <div class="sim-browser-bar">
+                <span style="width:9px;height:9px;border-radius:50%;background:#ff5f56;"></span>
+                <span style="width:9px;height:9px;border-radius:50%;background:#ffbd2e;"></span>
+                <span style="width:9px;height:9px;border-radius:50%;background:#27c93f;"></span>
+                <span id="simBrowserTitle" style="margin-left:6px;">ตัวอย่างหน้าเว็บ: HTML + CSS + JS</span>
+              </div>
+
+              <div id="simStageBody" class="sim-stage-body mode-js">
+                <div class="sim-card">
+                  <div id="simAvatar" class="sim-avatar">JS</div>
+                  <div id="simHeading" class="sim-h3">การ์ดแนะนำตัว</div>
+                  <div id="simSubtext" class="sim-p">นักเรียนชุมนุม Web Application</div>
+                  <button id="simActionBtn" class="sim-btn" onclick="handleSimButtonClick()">
+                    กดปุ่ม A เพื่อแสดงชื่อ
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div id="simStatusCaption" class="sim-status-caption">
+              ครบทั้ง HTML + CSS + JS: หน้าเว็บสวยงาม และกดปุ่มโต้ตอบได้จริง!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-bottom-strip">
+        <span>คลิกที่ปุ่ม <b>1. มีแค่ HTML</b> / <b>2. เติม +CSS</b> / <b>3. เติม +JS</b> เพื่อดูความแตกต่างของแต่ละภาษา</span>
+        <span>กดปุ่ม <b>← ก่อนหน้า / ถัดไป →</b> เพื่อเปลี่ยนสไลด์</span>
+      </div>
+    </section>
+
+    <!-- สไลด์ที่ 7: เริ่มกันเลย! -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="s7-container">
+        <div class="s7-rocket-circle" style="padding:8px 16px; font-size:15px;">START // STEP 01</div>
+        <h2 class="s7-main-title" style="font-size:72px;">เริ่มกันเลย!</h2>
+        <p class="s7-sub" style="font-size:22px;">ขั้นตอนแรก: ให้ทุกคนกดปุ่มค้นหาใน Windows แล้วเปิดโปรแกรม <b style="color:#007AFF;">Notepad</b></p>
+
+        <!-- ช่องจำลองการค้นหาโปรแกรม Notepad ใน Windows -->
+        <div class="s7-search-demo">
+          <span style="font-family:Consolas,monospace;font-size:13px;font-weight:900;color:#52524E;">SEARCH //</span>
+          <input type="text" class="s7-search-input" value="Notepad" readonly />
+          <button onclick="changeSlide(1)" style="background:#007AFF; color:#fff; border:0.5px solid rgba(60,60,67,0.16); box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:9px 18px; border-radius:12px; font-size:15px; font-weight:800; cursor:pointer; font-family:inherit;">
+            เปิด Notepad แล้วไปดูโค้ดกัน ➔
+          </button>
+        </div>
+
+        <div class="s7-ready-steps">
+          <div class="s7-step-pill">
+            <span style="font-family:Consolas,monospace;color:#007AFF;">01</span>
+            <span>1. เปิด Notepad</span>
+          </div>
+          <div class="s7-step-pill">
+            <span style="font-family:Consolas,monospace;color:#007AFF;">02</span>
+            <span>2. พิมพ์โค้ด HTML</span>
+          </div>
+          <div class="s7-step-pill">
+            <span style="font-family:Consolas,monospace;color:#007AFF;">03</span>
+            <span>3. เปิดดูหน้าเว็บจริง!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-bottom-strip">
+        <span>07 // เตรียมความพร้อมก่อนลงมือเขียนโค้ด</span>
+        <span>กดปุ่ม <b>← ก่อนหน้า / ถัดไป →</b> เพื่อเปลี่ยนสไลด์</span>
+      </div>
+    </section>
+
+    <!-- สไลด์ที่ 8: โค้ดที่จำเป็นต้องมี + หน้าที่ -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="s8-container">
+        <div class="s8-header-pill">
+          08 — โค้ดที่จำเป็นต้องมี <span style="color:#007AFF;">+</span> หน้าที่
+        </div>
+
+        <div class="s8-main-layout">
+          <!-- ฝั่งซ้าย: ตารางโค้ดและหน้าที่ แยกสีตามคู่แท็กเหมือนในรูป -->
+          <div class="s8-code-table">
+            <div class="s8-row" data-pair="doctype" onmouseenter="hoverCodeRow('doctype')" onmouseleave="hoverCodeRow(null)">
+              <div class="s8-code col-purple">&lt;!DOCTYPE html&gt;</div>
+              <div class="s8-desc col-purple">ประกาศว่าใช้ HTML5</div>
+            </div>
+
+            <div class="s8-row" data-pair="html" onmouseenter="hoverCodeRow('html')" onmouseleave="hoverCodeRow(null)">
+              <div class="s8-code col-red">&lt;html&gt;</div>
+              <div class="s8-desc col-red">จุดเริ่มต้นของหน้าเว็บ</div>
+            </div>
+
+            <div class="s8-row" data-pair="head" onmouseenter="hoverCodeRow('head')" onmouseleave="hoverCodeRow(null)">
+              <div class="s8-code col-blue">&lt;head&gt;</div>
+              <div class="s8-desc col-blue">ส่วนเก็บข้อมูลเว็บไซต์</div>
+            </div>
+
+            <div class="s8-row" data-pair="title" onmouseenter="hoverCodeRow('title')" onmouseleave="hoverCodeRow(null)">
+              <div class="s8-code"><span class="col-amber">  &lt;title&gt;</span><input type="text" id="s8TitleInput" class="s8-inline-input" value="project" oninput="updateS8LivePreview('title')" onfocus="hoverCodeRow('title')" title="คลิกเพื่อพิมพ์เปลี่ยนชื่อแท็บ Browser" /><span class="col-amber">&lt;/title&gt;</span></div>
+              <div class="s8-desc col-amber">ชื่อบนแท็บ Browser (พิมพ์แก้ได้!)</div>
+            </div>
+
+            <div class="s8-row" data-pair="head" onmouseenter="hoverCodeRow('head')" onmouseleave="hoverCodeRow(null)">
+              <div class="s8-code col-blue">&lt;/head&gt;</div>
+              <div class="s8-desc col-blue">จบการทำงานของ head</div>
+            </div>
+
+            <div class="s8-row" data-pair="body" onmouseenter="hoverCodeRow('body')" onmouseleave="hoverCodeRow(null)">
+              <div class="s8-code col-green">&lt;body&gt;</div>
+              <div class="s8-desc col-green">ส่วนแสดงเนื้อหาหน้าเว็บ</div>
+            </div>
+
+            <div class="s8-row" data-pair="text" onmouseenter="hoverCodeRow('text')" onmouseleave="hoverCodeRow(null)">
+              <div class="s8-code col-white">  <input type="text" id="s8BodyInput" class="s8-inline-input s8-body-input" value="Hello world" oninput="updateS8LivePreview('text')" onfocus="hoverCodeRow('text')" title="คลิกเพื่อพิมพ์เปลี่ยนข้อความบนหน้าเว็บ" /></div>
+              <div class="s8-desc col-white">ข้อความบนหน้าเว็บ (พิมพ์แก้ได้!)</div>
+            </div>
+
+            <div class="s8-row" data-pair="body" onmouseenter="hoverCodeRow('body')" onmouseleave="hoverCodeRow(null)">
+              <div class="s8-code col-green">&lt;/body&gt;</div>
+              <div class="s8-desc col-green">จบการทำงาน body</div>
+            </div>
+
+            <div class="s8-row" data-pair="html" onmouseenter="hoverCodeRow('html')" onmouseleave="hoverCodeRow(null)">
+              <div class="s8-code col-red">&lt;/html&gt;</div>
+              <div class="s8-desc col-red">จบการทำงาน html</div>
+            </div>
+          </div>
+
+          <!-- ฝั่งขวา: แสดงตำแหน่งจริงบนหน้าต่างเว็บเบราว์เซอร์เมื่อเอาเมาส์ชี้โค้ด -->
+          <div class="s8-preview-card">
+            <div style="font-size:14.5px; font-weight:800; color:#141414; text-align:left;">
+              HOVER // ลองเอาเมาส์ชี้ที่โค้ดแต่ละบรรทัด เพื่อดูตำแหน่งบนเว็บจริง
+            </div>
+
+            <div id="s8BrowserMock" class="s8-browser-mock">
+              <div class="s8-browser-top">
+                <div style="display:flex; gap:5px; padding-bottom:6px;">
+                  <span style="width:10px;height:10px;border-radius:50%;background:#ff5f56;"></span>
+                  <span style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;"></span>
+                  <span style="width:10px;height:10px;border-radius:50%;background:#27c93f;"></span>
+                </div>
+                <div id="s8TabPill" class="s8-tab-pill">
+                  <span style="width:7px;height:7px;background:#007AFF;display:inline-block;"></span>
+                  <span id="s8TabTitleText">project</span>
+                </div>
+              </div>
+              <div id="s8BrowserBody" class="s8-browser-body">
+                <span id="s8BodyText" style="padding:6px 12px; border-radius:12px; transition:all 0.2s;">Hello world</span>
+              </div>
+            </div>
+
+            <div id="s8ExplainBox" style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.16); border-left:4px solid #007AFF; border-radius:12px; padding:12px 14px; font-size:14px; color:#141414; line-height:1.5; min-height:68px; display:flex; align-items:center;">
+              แท็กใน HTML มักมาเป็นคู่เสมอ คือมี แท็กเปิด เช่น &lt;body&gt; และ แท็กปิด ที่มีเครื่องหมาย / เช่น &lt;/body&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-bottom-strip">
+        <span>08 // โครงสร้างโค้ด HTML พื้นฐานที่ทุกหน้าเว็บต้องมี</span>
+        <span>กดปุ่ม <b>← ก่อนหน้า / ถัดไป →</b> เพื่อเปลี่ยนสไลด์</span>
+      </div>
+    </section>
+
+    <!-- สไลด์ที่ 9: วิธีการ SAVE ไฟล์ -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="s9-container">
+        <div class="s9-top-bar">
+          <div class="s9-header-pill">วิธีการ SAVE ไฟล์</div>
+          <div style="font-size:14px; color:#52524E; font-weight:700;">
+            คลิกที่แต่ละขั้นตอนเพื่อเน้นดูรายละเอียดบนจอ
+          </div>
+        </div>
+
+        <div class="s9-steps-grid">
+          <!-- ขั้นตอนที่ 1: กด File > Save as -->
+          <div class="s9-step-card active-save-step" onclick="selectSaveStep(this)">
+            <div class="s9-card-banner">
+              <span class="s9-num-badge">1</span>
+              <span>กดเมนู File &gt; Save as</span>
+            </div>
+            <div class="s9-win-mock">
+              <div class="s9-win-title">Notepad — File Menu</div>
+              <div style="padding:4px 0; display:flex; flex-direction:column; gap:1px;">
+                <div class="s9-menu-item"><span>New tab</span><span>Ctrl+N</span></div>
+                <div class="s9-menu-item"><span>New window</span><span>Ctrl+Shift+N</span></div>
+                <div class="s9-menu-item"><span>Open</span><span>Ctrl+O</span></div>
+                <div class="s9-menu-item"><span>Save</span><span>Ctrl+S</span></div>
+                <div class="s9-menu-item highlight-menu"><span>Save as</span><span>Ctrl+Shift+S</span></div>
+                <div class="s9-menu-item"><span>Save all</span><span>Ctrl+Alt+S</span></div>
+                <div class="s9-menu-item"><span>Exit</span><span></span></div>
+              </div>
+            </div>
+            <div class="s9-card-footer">
+              กดปุ่ม <b style="color:#007AFF;">File</b> มุมซ้ายบน แล้วเลือก <b style="color:#1F6E43;">Save as</b> (หรือกด Ctrl+Shift+S)
+            </div>
+          </div>
+
+          <!-- ขั้นตอนที่ 2: เลือก Desktop > โฟลเดอร์ Web Creator -->
+          <div class="s9-step-card" onclick="selectSaveStep(this)">
+            <div class="s9-card-banner">
+              <span class="s9-num-badge">2</span>
+              <span>เลือกโฟลเดอร์ที่เก็บไฟล์</span>
+            </div>
+            <div class="s9-win-mock">
+              <div class="s9-win-title">Save as</div>
+              <div class="s9-path-bar">PC &gt; Desktop &gt;</div>
+              <div class="s9-explorer-split">
+                <div class="s9-left-nav">
+                  <div class="s9-nav-row active-nav">Desktop</div>
+                  <div class="s9-nav-row">Downloads</div>
+                  <div class="s9-nav-row">Documents</div>
+                </div>
+                <div class="s9-right-files">
+                  <div style="font-size:10px; color:#a1a1aa; margin-bottom:6px;">Name</div>
+                  <div class="s9-folder-pill">[DIR] Web Creator</div>
+                </div>
+              </div>
+              <div class="s9-bottom-fields">
+                <div class="s9-field-row">
+                  <span style="width:58px;">File name:</span>
+                  <div class="s9-field-box">!DOCTYPE html</div>
+                </div>
+                <div class="s9-field-row">
+                  <span style="width:58px;">Save type:</span>
+                  <div class="s9-field-box">Text documents (*.txt)</div>
+                </div>
+              </div>
+            </div>
+            <div class="s9-card-footer">
+              คลิก <b style="color:#007AFF;">Desktop</b> ด้านซ้าย แล้วดับเบิลคลิกเข้าโฟลเดอร์ <b style="color:#9A3B00;">[DIR] Web Creator</b>
+            </div>
+          </div>
+
+          <!-- ขั้นตอนที่ 3: ตั้งชื่อ index.html -->
+          <div class="s9-step-card" onclick="selectSaveStep(this)">
+            <div class="s9-card-banner">
+              <span class="s9-num-badge">3</span>
+              <span>ตั้งชื่อไฟล์เป็น index.html</span>
+            </div>
+            <div class="s9-win-mock">
+              <div class="s9-win-title">Save as</div>
+              <div class="s9-path-bar" style="border-color:#facc15;">Desktop &gt; Web Creator</div>
+              <div class="s9-explorer-split">
+                <div class="s9-left-nav">
+                  <div class="s9-nav-row active-nav">Desktop</div>
+                  <div class="s9-nav-row">Downloads</div>
+                  <div class="s9-nav-row">Documents</div>
+                </div>
+                <div class="s9-right-files" style="display:flex; align-items:center; justify-content:center; color:#71717a; font-size:11px;">
+                  (อยู่ในโฟลเดอร์ Web Creator)
+                </div>
+              </div>
+              <div class="s9-bottom-fields">
+                <div class="s9-field-row">
+                  <span style="width:58px; color:#1F6E43; font-weight:700;">File name:</span>
+                  <div class="s9-field-box highlight-input">index.html</div>
+                </div>
+                <div class="s9-field-row">
+                  <span style="width:58px;">Save type:</span>
+                  <div class="s9-field-box">All Files (*.*)</div>
+                </div>
+              </div>
+            </div>
+            <div class="s9-card-footer">
+              พิมพ์ชื่อไฟล์ <b style="color:#1F6E43;">index.html</b> (ต้องมี <b style="color:#9A3B00;">.html</b> ต่อท้ายเสมอ) แล้วกด Save
+            </div>
+          </div>
+
+          <!-- ขั้นตอนที่ 4: ได้ไฟล์หน้าเว็บพร้อมเปิดใช้งาน -->
+          <div class="s9-step-card" onclick="selectSaveStep(this)">
+            <div class="s9-card-banner">
+              <span class="s9-num-badge">4</span>
+              <span>เปิดไฟล์หน้าเว็บในโฟลเดอร์!</span>
+            </div>
+            <div class="s9-win-mock">
+              <div class="s9-win-title">File Explorer — Web Creator</div>
+              <div class="s9-path-bar">PC &gt; Desktop &gt; Web Creator</div>
+              <div class="s9-explorer-split">
+                <div class="s9-left-nav">
+                  <div class="s9-nav-row">Home</div>
+                  <div class="s9-nav-row active-nav">Desktop</div>
+                  <div class="s9-nav-row">Downloads</div>
+                </div>
+                <div class="s9-right-files">
+                  <div style="font-size:10px; color:#a1a1aa; margin-bottom:8px;">Name</div>
+                  <div style="display:flex; align-items:center; gap:8px; background:#FFF0E8; border:0.5px solid rgba(60,60,67,0.16); padding:7px 10px; border-radius:10px; color:#141414; font-weight:800; font-size:13.5px;">
+                    <span style="font-family:Consolas,monospace;color:#007AFF;">[HTML]</span>
+                    <span>index</span>
+                  </div>
+                </div>
+              </div>
+              <div style="padding:10px; text-align:center; color:#1F6E43; font-weight:800; font-size:12px;">
+                ไฟล์กลายเป็นไอคอนเบราว์เซอร์แล้ว!
+              </div>
+            </div>
+            <div class="s9-card-footer">
+              เปิดโฟลเดอร์ <b style="color:#9A3B00;">Web Creator</b> จะเจอไฟล์ <b style="color:#007AFF;">index.html</b> ดับเบิลคลิกเปิดดูเว็บได้เลย!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-bottom-strip">
+        <span>09 // ขั้นตอนการบันทึกไฟล์โค้ดจาก Notepad ให้กลายเป็นหน้าเว็บ</span>
+        <span>กดปุ่ม <b>← ก่อนหน้า / ถัดไป →</b> เพื่อเปลี่ยนสไลด์</span>
+      </div>
+    </section>
+
+    <!-- สไลด์ที่ 10: สิ่งที่ได้ VS Challenge (<br> และ <hr>) -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="s10-container">
+        <div class="s10-grid">
+          <!-- ฝั่งซ้าย: สิ่งที่ได้ (ปัญหาเมื่อกดแค่ Enter ใน Notepad) -->
+          <div class="s10-panel s10-panel-problem">
+            <div class="s10-panel-header">
+              <span class="s10-badge-problem">01 // สิ่งที่ได้ (ตอนยังไม่ใส่คำสั่ง)</span>
+            </div>
+
+            <!-- โค้ดที่นักเรียนพิมพ์ใน Notepad -->
+            <div class="s10-mini-code">
+              <div class="s10-mini-code-bar">
+                <span>โค้ดที่พิมพ์ใน Notepad (กดแค่ Enter)</span>
+              </div>
+              <div class="s10-mini-code-body">
+                <span style="color:#1F6E43;">&lt;body&gt;</span><br>
+                &nbsp;&nbsp;ชื่อ-นามสกุล :<br>
+                &nbsp;&nbsp;ชื่อเล่น :<br>
+                &nbsp;&nbsp;ชั้น :<br>
+                &nbsp;&nbsp;เลขที่ :<br>
+                <span style="color:#1F6E43;">&lt;/body&gt;</span>
+              </div>
+            </div>
+
+            <!-- ผลลัพธ์บนเบราว์เซอร์ที่ไหลติดกันเป็นบรรทัดเดียว -->
+            <div class="s10-browser-card" style="border-color:#fb7185;">
+              <div class="s10-b-tabs">
+                <div class="s10-b-tab">
+                  <span style="width:7px;height:7px;background:#007AFF;display:inline-block;"></span>
+                  <span>My information</span>
+                </div>
+              </div>
+              <div class="s10-b-addr">
+                <span>← &nbsp; → &nbsp; ↻</span>
+                <div class="s10-url-pill">C:/Users/student/Desktop/Web Creator/index.html</div>
+              </div>
+              <div class="s10-page-content" style="display:flex; flex-direction:column; justify-content:space-between;">
+                <div style="background:#fee2e2; border:2px dashed #ef4444; padding:10px 14px; border-radius:12px; color:#991b1b;">
+                  ชื่อ-นามสกุล : ชื่อเล่น : ชั้น : เลขที่ :
+                </div>
+                <div style="font-size:15px; color:#dc2626; font-weight:800; text-align:center; margin-top:10px;">
+                  “ อ้าว! ทำไมบนหน้าเว็บมันไหลมาติดกันเป็นบรรทัดเดียว? ”
+                </div>
+              </div>
+            </div>
+
+            <div class="s10-why-alert">
+              <span style="font-family:Consolas,monospace;font-weight:900;color:#007AFF;">NOTE</span>
+              <span>เพราะเบราว์เซอร์<b>ไม่สนใจการกด Enter</b> ในโค้ด ถ้าอยากให้ขึ้นบรรทัดใหม่ ต้องใช้แท็กคำสั่งพิเศษ!</span>
+            </div>
+          </div>
+
+          <!-- ฝั่งขวา: Challenge (โจทย์ท้าทาย + คำสั่ง <br> และ <hr>) -->
+          <div class="s10-panel s10-panel-challenge">
+            <div class="s10-panel-header">
+              <span class="s10-badge-challenge">02 // CHALLENGE (ภารกิจวันนี้!)</span>
+              <button class="top-btn" style="font-size:13px; padding:5px 12px;" onclick="toggleS10Answer()">
+                ดูเฉลยโค้ด
+              </button>
+            </div>
+
+            <!-- 2 คำสั่งเพิ่มเติมที่ใช้แก้โจทย์ -->
+            <div>
+              <div style="font-size:15px; font-weight:800; color:#007AFF; margin-bottom:8px;">
+                คำสั่งเพิ่มเติมที่ใช้จัดหน้าเว็บให้สวยงาม:
+              </div>
+              <div class="s10-tools-grid">
+                <div class="s10-tool-card">
+                  <span class="s10-tag-chip">&lt;br&gt;</span>
+                  <div>
+                    <div class="s10-tool-title">ขึ้นบรรทัดใหม่</div>
+                    <div class="s10-tool-sub">วางท้ายบรรทัดที่ต้องการตัด</div>
+                  </div>
+                </div>
+
+                <div class="s10-tool-card">
+                  <span class="s10-tag-chip">&lt;hr&gt;</span>
+                  <div>
+                    <div class="s10-tool-title">ขีดเส้นคั่นแนวนอน</div>
+                    <div class="s10-tool-sub">สร้างเส้นตรงยาวคั่นหัวข้อ</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- หน้าตาผลลัพธ์เป้าหมายที่นักเรียนต้องทำให้ได้ -->
+            <div class="s10-browser-card" style="border-color:#007AFF; flex:1;">
+              <div class="s10-b-tabs">
+                <div class="s10-b-tab">
+                  <span style="width:7px;height:7px;background:#007AFF;display:inline-block;"></span>
+                  <span>My information (เป้าหมายที่ต้องทำ)</span>
+                </div>
+              </div>
+              <div class="s10-b-addr">
+                <span>← &nbsp; → &nbsp; ↻</span>
+                <div class="s10-url-pill">C:/Users/student/Desktop/Web Creator/index.html</div>
+              </div>
+              <div class="s10-page-content" style="line-height:1.65;">
+                <div>ชื่อ-นามสกุล : <span style="color:#0284c7; font-weight:600;">(ใส่ชื่อตัวเอง)</span></div>
+                <hr style="margin:10px 0; border:0; border-top:2px solid #94a3b8;">
+                <div>ชื่อเล่น : <span style="color:#0284c7; font-weight:600;">(ใส่ชื่อเล่น)</span></div>
+                <div>ชั้น : <span style="color:#0284c7; font-weight:600;">(ม.1 - ม.3)</span></div>
+                <div>เลขที่ : <span style="color:#0284c7; font-weight:600;">(ใส่เลขที่)</span></div>
+              </div>
+            </div>
+
+            <!-- กล่องเฉลยโค้ด (ซ่อนอยู่จนกว่าครูจะกดปุ่ม ดูเฉลยโค้ด) -->
+            <div id="s10AnswerCode" class="s10-mini-code hidden" style="border-color:#1F6E43;">
+              <div class="s10-mini-code-bar" style="background:#052e16; color:#1F6E43;">
+                <span>✅ เฉลยโค้ด HTML ที่ใช้ &lt;hr&gt; และ &lt;br&gt;</span>
+              </div>
+              <div class="s10-mini-code-body">
+                ชื่อ-นามสกุล : เด็กชายรักเรียน เขียนเว็บ <span style="color:#9A3B00; font-weight:800;">&lt;hr&gt;</span><br>
+                ชื่อเล่น : โค้ดดิ้ง <span style="color:#9A3B00; font-weight:800;">&lt;br&gt;</span><br>
+                ชั้น : ม.1 <span style="color:#9A3B00; font-weight:800;">&lt;br&gt;</span><br>
+                เลขที่ : 1
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-bottom-strip">
+        <span>10 // โจทย์ท้าทายประจำวันที่ 1: ใช้คำสั่ง <b>&lt;br&gt;</b> และ <b>&lt;hr&gt;</b> จัดหน้าเว็บแนะนำตัวให้เหมือนฝั่งขวา!</span>
+        <span>กดปุ่ม <b>&lt;/&gt; ไปหน้าเขียนโปรแกรม</b> มุมขวาบนเพื่อสาธิตให้นักเรียนดูได้เลย</span>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bottombar">
+    <button id="prevBtn" class="slide-nav-btn" onclick="changeSlide(-1)">⬅️ ก่อนหน้า</button>
+    <div id="slideDots" class="slide-dots"></div>
+    <button id="nextBtn" class="slide-nav-btn" onclick="changeSlide(1)">ถัดไป →</button>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.getElementById('slideDots');
+    const counterText = document.getElementById('slideCounterText');
+    let currentSlide = 0;
+
+    function initSlides() {
+      dotsContainer.innerHTML = '';
+      slides.forEach((_, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'dot-btn' + (idx === currentSlide ? ' active' : '');
+        btn.innerText = idx + 1;
+        btn.onclick = () => goToSlide(idx);
+        dotsContainer.appendChild(btn);
+      });
+      updateSlideUI();
+    }
+
+    function goToSlide(index) {
+      currentSlide = Math.max(0, Math.min(slides.length - 1, index));
+      updateSlideUI();
+    }
+
+    function changeSlide(step) {
+      goToSlide(currentSlide + step);
+    }
+
+    function updateSlideUI() {
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentSlide);
+      });
+      const dotBtns = dotsContainer.querySelectorAll('.dot-btn');
+      dotBtns.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentSlide);
+      });
+      document.getElementById('prevBtn').disabled = currentSlide === 0;
+      document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+      counterText.innerText = `สไลด์ ${currentSlide + 1} / ${slides.length}`;
+
+      const activeDot = dotsContainer.querySelector('.dot-btn.active');
+      if (activeDot) {
+        activeDot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+
+      if (window.innerWidth <= 768) {
+        const activeSlide = slides[currentSlide];
+        if (activeSlide) activeSlide.scrollTop = 0;
+        const stage = document.querySelector('.slide-stage');
+        if (stage) stage.scrollTop = 0;
+      }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      // ถ้ากำลังคลิกพิมพ์อยู่ในช่อง input หรือ Google Docs ไม่ต้องเลื่อนสไลด์เวลาเคาะลูกศรซ้าย-ขวา
+      const active = document.activeElement;
+      if (active && (active.isContentEditable || active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+        return;
+      }
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') changeSlide(1);
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') changeSlide(-1);
+    });
+
+    // ===== รองรับการปัดหน้าจอ (Touch Swipe) บนมือถือและ iPad =====
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const stageEl = document.querySelector('.slide-stage');
+    if (stageEl) {
+      stageEl.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+      stageEl.addEventListener('touchend', (e) => {
+        const diffX = e.changedTouches[0].screenX - touchStartX;
+        const diffY = e.changedTouches[0].screenY - touchStartY;
+        if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY) * 1.3) {
+          if (diffX < 0) changeSlide(1);
+          else changeSlide(-1);
+        }
+      }, { passive: true });
+    }
+
+    // ===== 1. ระบบ Interactive ของ Canva (เพิ่มกล่อง & ลากวางได้จริง) =====
+    let draggedCanvaEl = null;
+    let canvaOffsetX = 0;
+    let canvaOffsetY = 0;
+
+    function addCanvaBox(color, label) {
+      const stage = document.getElementById('canvaStage');
+      const box = document.createElement('div');
+      box.className = 'canva-draggable';
+      box.style.background = color;
+      box.style.left = Math.floor(15 + Math.random() * 90) + 'px';
+      box.style.top = Math.floor(12 + Math.random() * 65) + 'px';
+      box.innerText = label;
+      box.onmousedown = (e) => startCanvaDrag(e, box);
+      stage.appendChild(box);
+    }
+
+    function clearCanvaBoxes() {
+      document.getElementById('canvaStage').innerHTML = '';
+    }
+
+    function startCanvaDrag(e, el) {
+      e.preventDefault();
+      draggedCanvaEl = el;
+      const rect = el.getBoundingClientRect();
+      canvaOffsetX = e.clientX - rect.left;
+      canvaOffsetY = e.clientY - rect.top;
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      if (!draggedCanvaEl) return;
+      const stageRect = document.getElementById('canvaStage').getBoundingClientRect();
+      let newX = e.clientX - stageRect.left - canvaOffsetX;
+      let newY = e.clientY - stageRect.top - canvaOffsetY;
+      newX = Math.max(0, Math.min(stageRect.width - draggedCanvaEl.offsetWidth, newX));
+      newY = Math.max(0, Math.min(stageRect.height - draggedCanvaEl.offsetHeight, newY));
+      draggedCanvaEl.style.left = newX + 'px';
+      draggedCanvaEl.style.top = newY + 'px';
+    });
+
+    window.addEventListener('mouseup', () => {
+      draggedCanvaEl = null;
+    });
+
+    // ===== 3. ระบบ Interactive ของ Google Forms (ติ๊กเลือก & กดส่ง) =====
+    function selectFormOption(optionEl) {
+      const all = optionEl.parentElement.querySelectorAll('.gform-option');
+      all.forEach(item => item.classList.remove('checked'));
+      optionEl.classList.add('checked');
+    }
+
+    function submitMiniForm() {
+      document.getElementById('gformBody').classList.add('hidden');
+      document.getElementById('gformSuccess').classList.remove('hidden');
+    }
+
+    function resetMiniForm() {
+      document.getElementById('gformSuccess').classList.add('hidden');
+      document.getElementById('gformBody').classList.remove('hidden');
+    }
+
+    // ===== 4. ระบบ Interactive ของ YouTube (กด Play เล่นวิดีโอแอนิเมชัน) =====
+    let ytTimer = null;
+    let ytSeconds = 0;
+
+    function toggleMiniYoutube(play) {
+      const cover = document.getElementById('ytCoverState');
+      const player = document.getElementById('ytPlayingState');
+      const fill = document.getElementById('ytProgressFill');
+      const timeText = document.getElementById('ytTimeText');
+
+      clearInterval(ytTimer);
+      if (play) {
+        cover.classList.add('hidden');
+        player.classList.remove('hidden');
+        ytSeconds = 0;
+        fill.style.width = '0%';
+        timeText.innerText = '0:00 / 0:10';
+
+        ytTimer = setInterval(() => {
+          ytSeconds++;
+          if (ytSeconds > 10) {
+            ytSeconds = 0;
+          }
+          fill.style.width = (ytSeconds * 10) + '%';
+          timeText.innerText = '0:' + String(ytSeconds).padStart(2, '0') + ' / 0:10';
+        }, 1000);
+      } else {
+        player.classList.add('hidden');
+        cover.classList.remove('hidden');
+      }
+    }
+
+    // ===== ระบบ Interactive สไลด์ที่ 6: ห้องทดลองเปรียบเทียบ 1.HTML -> 2.+CSS -> 3.+JS =====
+    let currentWebStage = 3;
+    let simClickIdx = 0;
+
+    function setWebStage(stage) {
+      currentWebStage = stage;
+      const body = document.getElementById('simStageBody');
+      const avatar = document.getElementById('simAvatar');
+      const heading = document.getElementById('simHeading');
+      const subtext = document.getElementById('simSubtext');
+      const btn = document.getElementById('simActionBtn');
+      const caption = document.getElementById('simStatusCaption');
+      const browserTitle = document.getElementById('simBrowserTitle');
+
+      // รีเซ็ตสถานะปุ่มและแท็บ
+      [1, 2, 3].forEach(n => {
+        document.getElementById('simTab' + n).className = 'sim-tab-btn' + (n === stage ? ' active-' + n : '');
+      });
+      document.getElementById('techCard1').classList.toggle('active-stage-html', stage === 1);
+      document.getElementById('techCard2').classList.toggle('active-stage-css', stage === 2);
+      document.getElementById('techCard3').classList.toggle('active-stage-js', stage === 3);
+
+      heading.innerText = 'การ์ดแนะนำตัว';
+      subtext.innerText = 'นักเรียนชุมนุม Web Application';
+
+      if (stage === 1) {
+        body.className = 'sim-stage-body mode-html';
+        avatar.innerText = '[รูปภาพ]';
+        btn.innerText = 'ปุ่ม A';
+        browserTitle.innerText = 'โหมดที่ 1: มีเฉพาะโครงสร้าง HTML';
+        caption.style.color = '#fb923c';
+        caption.innerText = '1. มีแค่ HTML: มีข้อความและปุ่มครบ แต่ยังเป็นขาว-ดำ ไม่มีสีสัน และกดปุ่มไม่ทำงาน';
+      } else if (stage === 2) {
+        body.className = 'sim-stage-body mode-css';
+        avatar.innerText = 'CSS';
+        btn.innerText = 'ปุ่ม A (ยังไม่มี JS)';
+        browserTitle.innerText = 'โหมดที่ 2: HTML + ตกแต่งด้วย CSS';
+        caption.style.color = '#38bdf8';
+        caption.innerText = '2. เติม CSS: หน้าเว็บมีสีสันสวยงาม จัดกึ่งกลางดูดี แต่กดปุ่มแล้วยังไม่มีอะไรเกิดขึ้น';
+      } else {
+        body.className = 'sim-stage-body mode-js';
+        avatar.innerText = 'JS';
+        btn.innerText = 'กดปุ่ม A เพื่อแสดงชื่อ!';
+        browserTitle.innerText = 'โหมดที่ 3: HTML + CSS + สั่งงานด้วย JS';
+        caption.style.color = '#4ade80';
+        caption.innerText = '3. เติม JS: หน้าเว็บทั้งสวยงาม และพอกดปุ่ม A ก็สามารถโต้ตอบแสดงชื่อได้จริง!';
+      }
+    }
+
+    function handleSimButtonClick() {
+      const heading = document.getElementById('simHeading');
+      const subtext = document.getElementById('simSubtext');
+      const avatar = document.getElementById('simAvatar');
+      const caption = document.getElementById('simStatusCaption');
+
+      if (currentWebStage === 1) {
+        caption.innerText = '[NOTE] ตอนนี้มีแค่ HTML อย่างเดียว ปุ่มเลยยังกดทำอะไรไม่ได้ครับ (ลองกดแท็บ 3. เติม +JS ดูสิ!)';
+      } else if (currentWebStage === 2) {
+        caption.innerText = '[NOTE] ตอนนี้มีแค่ HTML + CSS หน้าเว็บสวยแล้ว แต่ยังไม่มีสมอง (JS) ปุ่มเลยยังไม่ทำงานครับ!';
+      } else {
+        const demos = [
+          { icon: '01', name: 'สวัสดี! น้องโค้ดดิ้ง ม.1', msg: 'JavaScript สั่งให้แสดงชื่อเรียบร้อยแล้ว!' },
+          { icon: '02', name: 'สวัสดี! นักสร้างเว็บมือใหม่', msg: 'กดปุ่มปุ๊บ เปลี่ยนข้อความปั๊บด้วย JS!' },
+          { icon: '+100', name: 'คะแนนของคุณ: +100 แต้ม!', msg: 'JavaScript คำนวณคะแนนให้ทันที!' }
+        ];
+        const pick = demos[simClickIdx % demos.length];
+        simClickIdx++;
+        avatar.innerText = pick.icon;
+        heading.innerText = pick.name;
+        subtext.innerText = pick.msg;
+      }
+    }
+
+    // ===== ระบบ Interactive สไลด์ที่ 8: ชี้บรรทัดโค้ดแล้วไฮไลต์คู่แท็ก + ตำแหน่งบนเบราว์เซอร์ =====
+    function hoverCodeRow(pairKey) {
+      const rows = document.querySelectorAll('.s8-row');
+      rows.forEach(r => {
+        r.classList.toggle('pair-active', pairKey && r.getAttribute('data-pair') === pairKey);
+      });
+
+      const browserMock = document.getElementById('s8BrowserMock');
+      const tabPill = document.getElementById('s8TabPill');
+      const browserBody = document.getElementById('s8BrowserBody');
+      const bodyText = document.getElementById('s8BodyText');
+      const explainBox = document.getElementById('s8ExplainBox');
+
+      browserMock.classList.remove('s8-highlight-red');
+      tabPill.classList.remove('s8-highlight-amber');
+      browserBody.classList.remove('s8-highlight-green');
+      bodyText.style.background = 'transparent';
+      bodyText.style.color = '#0f172a';
+
+      if (pairKey === 'doctype') {
+        explainBox.innerHTML = '[DOCTYPE] <b>&lt;!DOCTYPE html&gt;</b> : บอกเว็บเบราว์เซอร์ว่าไฟล์นี้เขียนด้วยมาตรฐาน HTML5 (อยู่บรรทัดแรกสุดเสมอ)';
+      } else if (pairKey === 'html') {
+        browserMock.classList.add('s8-highlight-red');
+        explainBox.innerHTML = '[HTML] <b>&lt;html&gt; ... &lt;/html&gt;</b> : แท็กใหญ่สุดที่ครอบโค้ดทั้งหมดของหน้าเว็บไว้ข้างใน';
+      } else if (pairKey === 'head') {
+        explainBox.innerHTML = '[HEAD] <b>&lt;head&gt; ... &lt;/head&gt;</b> : ส่วนตั้งค่าข้อมูลของเว็บ (เช่น ชื่อแท็บบนเบราว์เซอร์)';
+      } else if (pairKey === 'title') {
+        tabPill.classList.add('s8-highlight-amber');
+        explainBox.innerHTML = '[TITLE] <b>&lt;title&gt;project&lt;/title&gt;</b> : ข้อความข้างในจะไปปรากฏเป็น <b>ชื่อบนแท็บของ Browser</b> ด้านบน!';
+      } else if (pairKey === 'body') {
+        browserBody.classList.add('s8-highlight-green');
+        explainBox.innerHTML = '[BODY] <b>&lt;body&gt; ... &lt;/body&gt;</b> : พื้นที่หน้ากระดาษสีขาวของเว็บ อยากให้คนเข้าเว็บเห็นอะไร ให้ใส่ไว้ในนี้!';
+      } else if (pairKey === 'text') {
+        browserBody.classList.add('s8-highlight-green');
+        bodyText.style.background = '#fde047';
+        explainBox.innerHTML = '[TEXT] <b>Hello world</b> : ข้อความที่เราพิมพ์ไว้ใน &lt;body&gt; จะแสดงผลออกมาบนหน้าเว็บทันที';
+      } else {
+        explainBox.innerHTML = 'NOTE // ลองคลิกพิมพ์ข้อความในช่อง <b>project</b> หรือ <b>Hello world</b> เพื่อดูผลลัพธ์เปลี่ยนสดๆ บนเบราว์เซอร์จำลองได้เลย!';
+      }
+    }
+
+    function updateS8LivePreview(which) {
+      const titleVal = document.getElementById('s8TitleInput').value;
+      const bodyVal = document.getElementById('s8BodyInput').value;
+      document.getElementById('s8TabTitleText').innerText = titleVal || 'Untitled';
+      document.getElementById('s8BodyText').innerText = bodyVal;
+      hoverCodeRow(which);
+    }
+
+    // ===== ระบบ Interactive สไลด์ที่ 9: คลิกเน้นขั้นตอนการ Save =====
+    function selectSaveStep(cardEl) {
+      const allCards = document.querySelectorAll('.s9-step-card');
+      allCards.forEach(c => c.classList.remove('active-save-step'));
+      cardEl.classList.add('active-save-step');
+    }
+
+    // ===== ระบบ Interactive สไลด์ที่ 2: ทดลองเปรียบเทียบการติดตั้งโปรแกรม VS เปิดเว็บแอป =====
+    function runInstallDemo() {
+      const bar = document.getElementById('desktopInstallBar');
+      const txt = document.getElementById('desktopInstallText');
+      bar.style.width = '10%';
+      txt.innerText = '[1/3] กำลังดาวน์โหลดไฟล์ติดตั้ง (150 MB)... กรุณารอสักครู่';
+      setTimeout(() => {
+        bar.style.width = '55%';
+        txt.innerText = '[2/3] กำลังติดตั้งโปรแกรมลงฮาร์ดดิสก์...';
+      }, 700);
+      setTimeout(() => {
+        bar.style.width = '90%';
+        txt.innerText = '[3/3] ต้องรอติดตั้งจนเสร็จถึงจะเปิดใช้งานได้';
+      }, 1500);
+    }
+
+    function runWebAppDemo() {
+      const bar = document.getElementById('webAppLaunchBar');
+      const txt = document.getElementById('webAppLaunchText');
+      bar.style.width = '0%';
+      setTimeout(() => {
+        bar.style.width = '100%';
+        txt.innerText = '[READY] เปิดผ่านเบราว์เซอร์ปุ๊บ ใช้งานได้ทันที ไม่ต้องติดตั้งเลย!';
+      }, 120);
+    }
+
+    // ===== ระบบ Interactive สไลด์ที่ 4: มินิควิซทายใจ =====
+    function revealQuiz(btn, type, answerText) {
+      btn.innerText = answerText;
+      btn.classList.remove('answered-site', 'answered-app');
+      btn.classList.add(type === 'site' ? 'answered-site' : 'answered-app');
+    }
+
+    // ===== ระบบ Interactive สไลด์ที่ 5: คลิกดู 3 ขั้นตอนการสร้างไฟล์เว็บแรก =====
+    function setS5Step(step) {
+      [1, 2, 3].forEach(n => {
+        document.getElementById('s5Flow' + n).classList.toggle('active-s5-step', n === step);
+      });
+      const title = document.getElementById('s5StepTitle');
+      const badge = document.getElementById('s5StepBadge');
+      const visual = document.getElementById('s5StepVisual');
+
+      badge.innerText = `Step ${step} / 3`;
+      if (step === 1) {
+        title.innerText = 'ขั้นที่ 1: เขียนโค้ดในโปรแกรม Notepad';
+        visual.innerHTML = `
+          <div style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.16); border-radius:12px; padding:14px; color:#141414;">
+            &lt;!DOCTYPE html&gt;<br>
+            &lt;html&gt;<br>
+            &lt;body&gt;<br>
+            &nbsp;&nbsp;<span style="color:#007AFF; font-weight:bold;">สวัสดี! นี่คือเว็บแรกของฉัน</span><br>
+            &lt;/body&gt;<br>
+            &lt;/html&gt;
+          </div>`;
+      } else if (step === 2) {
+        title.innerText = 'ขั้นที่ 2: บันทึกไฟล์เป็นนามสกุล .html';
+        visual.innerHTML = `
+          <div style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.16); border-left:5px solid #007AFF; border-radius:12px; padding:18px; text-align:left;">
+            <div style="font-size:14px; color:#52524E; margin-bottom:6px;">ตั้งชื่อไฟล์ในช่อง File name:</div>
+            <div style="font-size:26px; font-weight:900; color:#141414;">index.html</div>
+          </div>`;
+      } else {
+        title.innerText = 'ขั้นที่ 3: ดับเบิลคลิกเปิดดูข้อความของเราบนเว็บเบราว์เซอร์!';
+        visual.innerHTML = `
+          <div style="background:#ffffff; color:#141414; border:1px solid rgba(0,122,255,0.28); box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:12px; padding:18px; text-align:left;">
+            <div style="font-size:12px; color:#52524E; font-weight:700; margin-bottom:6px;">BROWSER // Google Chrome / Microsoft Edge</div>
+            <div style="font-size:24px; font-weight:900; color:#007AFF;">สวัสดี! นี่คือเว็บแรกของฉัน</div>
+          </div>`;
+      }
+    }
+
+    // ===== ระบบ Interactive สไลด์ที่ 10: เปิด/ซ่อน โค้ดเฉลย Challenge =====
+    function toggleS10Answer() {
+      document.getElementById('s10AnswerCode').classList.toggle('hidden');
+    }
+
+    // ===== แอนิเมชันพิมพ์โค้ดเองอัตโนมัติบนสไลด์หน้าปก =====
+    const phrases = [
+      'สวัสดีชาวโลก!',
+      'ยินดีต้อนรับสู่ Web Creator',
+      'เขียนโค้ดง่ายๆ เห็นผลทันที'
+    ];
+    let phraseIdx = 0;
+    let charIdx = 0;
+    let isDeleting = false;
+    const typingEl = document.getElementById('typingText');
+    const liveBadgeText = document.getElementById('liveBadgeText');
+    const liveBadgeBox = document.getElementById('liveBadgeBox');
+
+    function runTypingLoop() {
+      const currentPhrase = phrases[phraseIdx];
+      if (!isDeleting) {
+        charIdx++;
+        typingEl.innerText = currentPhrase.substring(0, charIdx);
+        liveBadgeText.innerText = typingEl.innerText || '...';
+        if (charIdx === currentPhrase.length) {
+          liveBadgeBox.style.transform = 'scale(1.06)';
+          setTimeout(() => { liveBadgeBox.style.transform = 'scale(1)'; }, 250);
+          isDeleting = true;
+          setTimeout(runTypingLoop, 2200);
+          return;
+        }
+        setTimeout(runTypingLoop, 85);
+      } else {
+        charIdx--;
+        typingEl.innerText = currentPhrase.substring(0, charIdx);
+        if (charIdx === 0) {
+          isDeleting = false;
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          setTimeout(runTypingLoop, 400);
+          return;
+        }
+        setTimeout(runTypingLoop, 40);
+      }
+    }
+
+    initSlides();
+    runTypingLoop();
+  </script>
+</body>
+</html>
