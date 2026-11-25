@@ -266,3 +266,1068 @@ html[data-theme="dark"] .badge-html { color: #FF9F0A; }
 html[data-theme="dark"] .badge-css { color: #64D2FF; }
 html[data-theme="dark"] .badge-js { color: #FFD60A; }
 html[data-theme="dark"] .badge-txt { color: #AEAEB2; }
+
+
+/* =========================================================
+   แก้ไขสีข้อความในการ์ดจำลองและภารกิจท้าประลองให้อ่านง่าย คมชัด (Dark Mode)
+========================================================= */
+html[data-theme="dark"] .mock-browser-body {
+  background: #2C2C2E !important;
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] .mock-browser-body > div:first-child {
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] #frontendSkillMsg {
+  color: #AEAEB2 !important;
+}
+html[data-theme="dark"] .concept-visual-card {
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] .concept-visual-card div[style*="color:#52524E"],
+html[data-theme="dark"] .concept-visual-card div[style*="color: #52524E"] {
+  color: #AEAEB2 !important;
+}
+html[data-theme="dark"] .concept-visual-card div[style*="color:#141414"],
+html[data-theme="dark"] .concept-visual-card div[style*="color: #141414"] {
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] .concept-visual-card span[style*="color:#52524E"],
+html[data-theme="dark"] .concept-visual-card span[style*="color: #52524E"] {
+  color: #AEAEB2 !important;
+}
+
+/* การ์ดภารกิจท้าประลอง (Mini Challenge) ในทุกสไลด์ */
+html[data-theme="dark"] .s6-mission-card {
+  background: #2C2C2E !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] .s6-mission-card > div[style*="color: #141414"],
+html[data-theme="dark"] .s6-mission-card > div[style*="color:#141414"] {
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] .s6-mission-list {
+  color: #E5E5EA !important;
+}
+html[data-theme="dark"] .s6-mission-list b {
+  color: #64D2FF !important;
+}
+html[data-theme="dark"] .s6-mission-badge {
+  color: #FFFFFF !important;
+}
+
+/* ป้ายและข้อความคำแนะนำในสไลด์ Week 1 & Week 2 */
+html[data-theme="dark"] #desktopInstallText,
+html[data-theme="dark"] #s5StepDesc {
+  color: #AEAEB2 !important;
+}
+html[data-theme="dark"] #webAppLaunchText,
+html[data-theme="dark"] #s5StepTitle,
+html[data-theme="dark"] #s5StepVisual,
+html[data-theme="dark"] #s8ExplainBox {
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] .s10-panel-challenge {
+  background: #2C2C2E !important;
+  color: #FFFFFF !important;
+}
+
+
+/* Pop-up แจ้งเตือนสไตล์ iOS ในโหมดมืด */
+html[data-theme="dark"] .ios-modal-box {
+  background: rgba(30, 30, 32, 0.94) !important;
+  color: #FFFFFF !important;
+  border: 0.5px solid rgba(255, 255, 255, 0.16) !important;
+}
+html[data-theme="dark"] .ios-modal-box div {
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] .ios-modal-box div:last-child {
+  color: #AEAEB2 !important;
+}
+html[data-theme="dark"] #__editorial_modal_close {
+  color: #0A84FF !important;
+  border-top-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+
+/* =========================================================
+   หน้าเลือกตัวละคร RoV (Hero Selection Slide 6)
+========================================================= */
+.hero-selection-layout {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+  margin-top: 14px;
+}
+.hero-qr-card {
+  width: 290px;
+  flex-shrink: 0;
+  background: var(--ios-card);
+  border: 0.5px solid var(--ios-separator);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--ios-shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hero-qr-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.qr-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34C759;
+  box-shadow: 0 0 10px #34C759;
+  animation: qrPulseAnim 1.8s infinite;
+}
+@keyframes qrPulseAnim {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.25); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+.hero-qr-frame {
+  padding: 10px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-qr-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.hero-qr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 11px;
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: transform 0.14s ease, opacity 0.14s ease;
+}
+.hero-qr-btn:hover { opacity: 0.9; }
+.hero-qr-btn:active { transform: scale(0.96); }
+.hero-qr-btn.primary { background: #007AFF; color: #FFFFFF; }
+.hero-qr-btn.secondary { background: var(--ios-fill); color: var(--ios-label); }
+.hero-qr-tip {
+  font-size: 11.5px;
+  color: var(--ios-secondary);
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.45;
+}
+
+.hero-board-card {
+  flex: 1;
+  background: var(--ios-card);
+  border: 0.5px solid var(--ios-separator);
+  border-radius: 20px;
+  padding: 18px 22px;
+  box-shadow: var(--ios-shadow-card);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.hero-board-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 0.5px solid var(--ios-separator);
+}
+.hero-board-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.hero-counter-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(0, 122, 255, 0.12);
+  color: #007AFF;
+  font-size: 13px;
+  font-weight: 800;
+}
+.hero-board-hint {
+  font-size: 12.5px;
+  color: var(--ios-secondary);
+}
+.hero-board-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-board-btn {
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.14s ease, opacity 0.14s ease;
+}
+.hero-board-btn:hover { opacity: 0.9; }
+.hero-board-btn:active { transform: scale(0.96); }
+.hero-board-btn.random { background: #FF9500; color: #FFFFFF; }
+.hero-board-btn.reset { background: var(--ios-fill); color: var(--ios-secondary); }
+
+.hero-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 10px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.hero-card-item {
+  background: var(--ios-fill);
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 0.5px solid var(--ios-separator);
+  cursor: pointer;
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.hero-card-item:hover {
+  transform: translateY(-2px);
+  border-color: #007AFF;
+  background: rgba(0, 122, 255, 0.08);
+}
+.hero-card-item.claimed {
+  background: rgba(52, 199, 89, 0.1);
+  border-color: rgba(52, 199, 89, 0.4);
+}
+.hero-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.hero-role-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ios-secondary);
+}
+.hero-status-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+.hero-status-pill.pill-free {
+  background: rgba(0, 122, 255, 0.12);
+  color: #007AFF;
+}
+.hero-status-pill.pill-locked {
+  background: rgba(255, 59, 48, 0.16);
+  color: #FF3B30;
+}
+.hero-name-label {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--ios-label);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hero-owner-label {
+  font-size: 11px;
+  color: var(--ios-secondary);
+  min-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+  .hero-selection-layout {
+    flex-direction: column;
+  }
+  .hero-qr-card {
+    width: 100%;
+  }
+}
+
+/* Dark Mode Overrides for Hero Picker */
+html[data-theme="dark"] .hero-counter-badge {
+  background: rgba(10, 132, 255, 0.22);
+  color: #0A84FF;
+}
+html[data-theme="dark"] .hero-qr-btn.primary {
+  background: #0A84FF;
+}
+html[data-theme="dark"] .hero-card-item:hover {
+  background: rgba(10, 132, 255, 0.18);
+  border-color: #0A84FF;
+}
+html[data-theme="dark"] .hero-card-item.claimed {
+  background: rgba(48, 209, 88, 0.18);
+  border-color: rgba(48, 209, 88, 0.5);
+}
+html[data-theme="dark"] .hero-status-pill.pill-free {
+  background: rgba(10, 132, 255, 0.2);
+  color: #64D2FF;
+}
+html[data-theme="dark"] .hero-status-pill.pill-locked {
+  background: rgba(255, 69, 58, 0.22);
+  color: #FF6961;
+}
+
+
+/* =========================================================
+   สไตล์การ์ดตัวละครแบบมีรูปภาพทางการ (Official Avatars)
+========================================================= */
+.hero-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.hero-filter-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.hero-tab-btn {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 0.5px solid var(--ios-separator);
+  background: var(--ios-fill);
+  color: var(--ios-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.16s ease;
+}
+.hero-tab-btn:hover {
+  background: rgba(0, 122, 255, 0.12);
+  color: #007AFF;
+}
+.hero-tab-btn.active {
+  background: #007AFF;
+  color: #FFFFFF;
+  border-color: #007AFF;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+}
+
+.hero-search-wrap {
+  position: relative;
+  min-width: 200px;
+}
+.hero-search-input {
+  width: 100%;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 0.5px solid var(--ios-separator);
+  background: var(--ios-fill);
+  color: var(--ios-label);
+  font-size: 12.5px;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+.hero-search-input:focus {
+  border-color: #007AFF;
+  background: var(--ios-card);
+}
+
+/* ปรับ Grid การ์ดฮีโร่แบบมีรูป */
+.hero-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+  gap: 12px !important;
+  max-height: 490px !important;
+  overflow-y: auto !important;
+  padding: 4px 6px 12px 2px !important;
+}
+
+.hero-card-item {
+  background: var(--ios-card) !important;
+  border-radius: 16px !important;
+  padding: 8px !important;
+  border: 1px solid var(--ios-separator) !important;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
+  display: flex !important;
+  flex-direction: column !important;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+}
+.hero-card-item:hover {
+  transform: translateY(-4px) !important;
+  border-color: #007AFF !important;
+  box-shadow: 0 8px 20px rgba(0, 122, 255, 0.18) !important;
+}
+.hero-card-item.claimed {
+  background: rgba(52, 199, 89, 0.06) !important;
+  border-color: rgba(52, 199, 89, 0.45) !important;
+}
+.hero-card-item.claimed:hover {
+  border-color: #FF3B30 !important;
+}
+
+/* ส่วนรูปภาพอวตาร */
+.hero-avatar-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(118, 118, 128, 0.12);
+  margin-bottom: 6px;
+}
+.hero-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.28s ease;
+}
+.hero-card-item:hover .hero-avatar-img {
+  transform: scale(1.08);
+}
+.hero-role-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #FFFFFF;
+  backdrop-filter: blur(4px);
+}
+.hero-role-badge.role-Marksman { background: rgba(255, 149, 0, 0.85); }
+.hero-role-badge.role-Assassin { background: rgba(255, 59, 48, 0.85); }
+.hero-role-badge.role-Mage     { background: rgba(175, 82, 222, 0.85); }
+.hero-role-badge.role-Fighter  { background: rgba(255, 45, 85, 0.85); }
+.hero-role-badge.role-Tank     { background: rgba(52, 199, 89, 0.85); }
+.hero-role-badge.role-Support  { background: rgba(0, 122, 255, 0.85); }
+
+.hero-lock-badge {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(2px);
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.hero-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.hero-name-label {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  color: var(--ios-label) !important;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hero-owner-label {
+  font-size: 11px !important;
+  color: var(--ios-secondary) !important;
+  text-align: center;
+  min-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tap-to-pick {
+  color: #007AFF;
+  font-weight: 700;
+}
+
+/* Dark Mode Overrides for Avatars & Filters */
+html[data-theme="dark"] .hero-tab-btn {
+  background: rgba(118, 118, 128, 0.2);
+  color: #AEAEB2;
+}
+html[data-theme="dark"] .hero-tab-btn:hover {
+  background: rgba(10, 132, 255, 0.22);
+  color: #64D2FF;
+}
+html[data-theme="dark"] .hero-tab-btn.active {
+  background: #0A84FF;
+  color: #FFFFFF;
+  border-color: #0A84FF;
+}
+html[data-theme="dark"] .hero-search-input {
+  background: #2C2C2E;
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+html[data-theme="dark"] .hero-card-item {
+  background: #242426 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+}
+html[data-theme="dark"] .hero-card-item:hover {
+  border-color: #0A84FF !important;
+  box-shadow: 0 8px 24px rgba(10, 132, 255, 0.28) !important;
+}
+html[data-theme="dark"] .hero-card-item.claimed {
+  background: rgba(48, 209, 88, 0.14) !important;
+  border-color: rgba(48, 209, 88, 0.45) !important;
+}
+html[data-theme="dark"] .tap-to-pick {
+  color: #64D2FF;
+}
+
+
+/* =========================================================
+   Apple iOS Style Custom Modal Pop-up (สำหรับเลือกล็อกตัวละคร)
+========================================================= */
+.ios-custom-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  padding: 20px;
+  animation: iosModalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes iosModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.ios-custom-card {
+  background: var(--ios-card);
+  border: 0.5px solid var(--ios-separator);
+  border-radius: 26px;
+  width: 100%;
+  max-width: 370px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 26px 22px 20px;
+  animation: iosModalScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--ios-label);
+}
+@keyframes iosModalScaleUp {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.ios-modal-hero-img {
+  width: 96px;
+  height: 96px;
+  border-radius: 22px;
+  object-fit: cover;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+  border: 3px solid var(--ios-card);
+  margin-bottom: 14px;
+}
+.ios-modal-role-pill {
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(0, 122, 255, 0.12);
+  color: #007AFF;
+  margin-bottom: 8px;
+}
+.ios-modal-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--ios-label);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.ios-modal-sub {
+  font-size: 13.5px;
+  color: var(--ios-secondary);
+  margin-bottom: 18px;
+  line-height: 1.5;
+  padding: 0 8px;
+}
+.ios-modal-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1.5px solid var(--ios-separator);
+  background: var(--ios-fill);
+  color: var(--ios-label);
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  transition: all 0.2s ease;
+  margin-bottom: 18px;
+  text-align: center;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.ios-modal-input:focus {
+  border-color: #007AFF;
+  background: var(--ios-card);
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
+}
+.ios-modal-claimed-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(52, 199, 89, 0.14);
+  color: #34C759;
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 18px;
+  border: 1px solid rgba(52, 199, 89, 0.35);
+}
+.ios-modal-btn-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+.ios-modal-btn {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: transform 0.14s ease, opacity 0.14s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.ios-modal-btn:hover { opacity: 0.92; }
+.ios-modal-btn:active { transform: scale(0.96); }
+.ios-modal-btn.btn-cancel {
+  background: var(--ios-fill);
+  color: var(--ios-label);
+}
+.ios-modal-btn.btn-confirm {
+  background: #007AFF;
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.35);
+}
+.ios-modal-btn.btn-danger {
+  background: #FF3B30;
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(255, 59, 48, 0.35);
+}
+
+/* Dark Mode Overrides for Custom Modal */
+html[data-theme="dark"] .ios-custom-card {
+  background: #1C1C1E;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+}
+html[data-theme="dark"] .ios-modal-role-pill {
+  background: rgba(10, 132, 255, 0.22);
+  color: #64D2FF;
+}
+html[data-theme="dark"] .ios-modal-input {
+  background: #2C2C2E;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+}
+html[data-theme="dark"] .ios-modal-input:focus {
+  border-color: #0A84FF;
+  background: #1C1C1E;
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.25);
+}
+html[data-theme="dark"] .ios-modal-claimed-badge {
+  background: rgba(48, 209, 88, 0.2);
+  color: #30D158;
+  border-color: rgba(48, 209, 88, 0.4);
+}
+html[data-theme="dark"] .ios-modal-btn.btn-confirm {
+  background: #0A84FF;
+}
+html[data-theme="dark"] .ios-modal-btn.btn-danger {
+  background: #FF453A;
+}
+
+
+/* =========================================================
+   ปุ่มและหน้าต่างดูตัวละครที่ถูกเลือกแล้ว (Claimed List Modal)
+========================================================= */
+.hero-board-btn.view-claimed {
+  background: #34C759;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(52, 199, 89, 0.28);
+}
+.hero-board-btn.view-claimed:hover {
+  background: #2fb350;
+  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.38);
+}
+
+.hero-tab-btn.claimed-tab-btn {
+  background: rgba(52, 199, 89, 0.12);
+  color: #34C759;
+  border-color: rgba(52, 199, 89, 0.35);
+  font-weight: 800;
+}
+.hero-tab-btn.claimed-tab-btn:hover {
+  background: rgba(52, 199, 89, 0.22);
+}
+.hero-tab-btn.claimed-tab-btn.active {
+  background: #34C759;
+  color: #FFFFFF;
+  border-color: #34C759;
+  box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3);
+}
+
+.claimed-list-card {
+  max-width: 480px !important;
+  text-align: left !important;
+  align-items: stretch !important;
+  padding: 22px 20px 18px !important;
+}
+.claimed-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 0.5px solid var(--ios-separator);
+}
+.claimed-modal-close-btn {
+  background: var(--ios-fill);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 800;
+  color: var(--ios-secondary);
+  font-family: inherit;
+  transition: transform 0.14s ease, background 0.14s ease;
+}
+.claimed-modal-close-btn:hover {
+  background: rgba(118, 118, 128, 0.24);
+  transform: scale(1.08);
+}
+
+.claimed-list-scroll {
+  max-height: 420px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 4px;
+}
+.claimed-row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--ios-fill);
+  border-radius: 14px;
+  border: 0.5px solid var(--ios-separator);
+  transition: transform 0.14s ease, border-color 0.14s ease;
+}
+.claimed-row-item:hover {
+  transform: translateX(2px);
+  border-color: rgba(52, 199, 89, 0.45);
+}
+.claimed-row-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.claimed-row-num {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--ios-tertiary);
+  width: 18px;
+  text-align: center;
+}
+.claimed-row-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+.claimed-row-name {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--ios-label);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.claimed-row-role {
+  font-size: 11px;
+  color: var(--ios-secondary);
+  font-weight: 600;
+}
+.claimed-row-right {
+  flex-shrink: 0;
+}
+.claimed-owner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(52, 199, 89, 0.16);
+  color: #34C759;
+  font-size: 12.5px;
+  font-weight: 800;
+  border: 0.5px solid rgba(52, 199, 89, 0.35);
+}
+
+/* Dark Mode Overrides for Claimed Modal */
+html[data-theme="dark"] .hero-board-btn.view-claimed {
+  background: #30D158;
+}
+html[data-theme="dark"] .hero-tab-btn.claimed-tab-btn {
+  background: rgba(48, 209, 88, 0.16);
+  color: #30D158;
+  border-color: rgba(48, 209, 88, 0.4);
+}
+html[data-theme="dark"] .hero-tab-btn.claimed-tab-btn.active {
+  background: #30D158;
+  color: #FFFFFF;
+}
+html[data-theme="dark"] .claimed-row-item {
+  background: #242426;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+html[data-theme="dark"] .claimed-owner-badge {
+  background: rgba(48, 209, 88, 0.2);
+  color: #30D158;
+  border-color: rgba(48, 209, 88, 0.4);
+}
+
+
+/* แบนเนอร์และเอฟเฟกต์เมื่อเพิ่งเลือกล็อกตัวละคร */
+.claimed-success-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(52, 199, 89, 0.14);
+  border: 1px solid rgba(52, 199, 89, 0.35);
+  border-radius: 16px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  animation: bannerSlideDown 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes bannerSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.claimed-row-item.newly-claimed {
+  background: rgba(52, 199, 89, 0.16) !important;
+  border-color: #34C759 !important;
+  box-shadow: 0 0 0 1.5px #34C759, 0 4px 14px rgba(52, 199, 89, 0.25) !important;
+}
+.new-tag {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #34C759;
+  color: #FFFFFF;
+  margin-left: 6px;
+  display: inline-block;
+  vertical-align: middle;
+}
+html[data-theme="dark"] .claimed-success-banner {
+  background: rgba(48, 209, 88, 0.2);
+  border-color: rgba(48, 209, 88, 0.45);
+}
+html[data-theme="dark"] .claimed-row-item.newly-claimed {
+  background: rgba(48, 209, 88, 0.22) !important;
+  border-color: #30D158 !important;
+  box-shadow: 0 0 0 1.5px #30D158, 0 4px 18px rgba(48, 209, 88, 0.35) !important;
+}
+
+
+/* =========================================================
+   เอฟเฟกต์โชว์ตัวละครฮีโร่ขึ้นจอโปรเจกเตอร์ (RoV Champion Lock-In Splash)
+========================================================= */
+.rov-splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: rovSplashFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  cursor: pointer;
+}
+.rov-splash-overlay.closing {
+  animation: rovSplashFadeOut 0.25s ease-in forwards;
+}
+@keyframes rovSplashFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes rovSplashFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.rov-splash-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(10, 20, 40, 0.92) 0%, rgba(0, 0, 0, 0.96) 100%);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+}
+.rov-splash-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 520px;
+  width: 100%;
+  padding: 36px 28px 28px;
+  border-radius: 36px;
+  background: linear-gradient(180deg, rgba(30, 36, 50, 0.95) 0%, rgba(15, 18, 26, 0.98) 100%);
+  border: 2px solid rgba(255, 190, 0, 0.6);
+  box-shadow: 0 0 80px rgba(255, 170, 0, 0.35), 0 30px 90px rgba(0, 0, 0, 0.85);
+  animation: rovCardZoomIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes rovCardZoomIn {
+  0% { transform: scale(0.6) translateY(40px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.rov-splash-header-tag {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #FFD60A;
+  text-shadow: 0 0 16px rgba(255, 214, 10, 0.8);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  animation: tagPulse 1.6s ease infinite alternate;
+}
+@keyframes tagPulse {
+  from { transform: scale(0.96); opacity: 0.85; }
+  to { transform: scale(1.04); opacity: 1; }
+}
+.rov-splash-img-wrap {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  border-radius: 32px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  border: 4px solid #FFD60A;
+  box-shadow: 0 0 40px rgba(255, 214, 10, 0.5), 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+.rov-splash-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.rov-splash-glow {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 24px rgba(255, 214, 10, 0.4);
+  pointer-events: none;
+}
+.rov-splash-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #64D2FF;
+  margin-bottom: 8px;
+  backdrop-filter: blur(4px);
+}
+.rov-splash-title {
+  font-size: 32px;
+  font-weight: 900;
+  color: #FFFFFF;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+.rov-splash-player-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(52, 199, 89, 0.22);
+  border: 1.5px solid #30D158;
+  box-shadow: 0 0 24px rgba(48, 209, 88, 0.35);
+  border-radius: 999px;
+  padding: 8px 24px;
+  font-size: 17px;
+  color: #FFFFFF;
+  margin-bottom: 14px;
+  animation: pillGlow 1.8s ease infinite alternate;
+}
+@keyframes pillGlow {
+  from { box-shadow: 0 0 14px rgba(48, 209, 88, 0.25); }
+  to { box-shadow: 0 0 30px rgba(48, 209, 88, 0.65); }
+}
+.rov-splash-player-pill b {
+  color: #30D158;
+  font-weight: 900;
+}
+.rov-splash-tip {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4px;
+}

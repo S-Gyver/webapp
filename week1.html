@@ -662,6 +662,9 @@
     @media (max-width: 480px) { .topbar-right .btn-fs-text, .topbar-right .code-link-text { display: none; } }
     @media (min-width: 1600px) { .slide { max-width: 1440px; max-height: min(840px, calc(100vh - 150px)); } }
   </style>
+  <!-- ระบบสลับโหมด มืด / สว่าง (iOS Theme) -->
+  <link rel="stylesheet" href="theme.css">
+  <script src="theme.js"></script>
 </head>
 <body>
 
@@ -738,13 +741,13 @@
                 <span class="m-dot" style="background:#ffbd2e;"></span>
                 <span class="m-dot" style="background:#27c93f;"></span>
               </div>
-              <span style="font-size:12.5px; color:#141414; font-weight:800; font-family:Consolas,monospace;">index.html — VS Code</span>
+              <span style="font-size:12.5px; color:var(--ios-label, #141414); font-weight:800; font-family:Consolas,monospace;">index.html — VS Code</span>
             </div>
             <div class="mock-code-body">
               <div style="color:#6E6C65;">&lt;!<span style="color:#D93800; font-weight:700;">DOCTYPE</span> <span style="color:#0F52BA;">html</span>&gt;</div>
               <div style="color:#6E6C65;">&lt;<span style="color:#D93800; font-weight:700;">html</span>&gt;</div>
               <div style="color:#6E6C65;">&lt;<span style="color:#D93800; font-weight:700;">head</span>&gt;</div>
-              <div style="padding-left:20px; color:#6E6C65;">&lt;<span style="color:#D93800; font-weight:700;">title</span>&gt;<span style="color:#141414; font-weight:700;">Web Creator</span>&lt;/<span style="color:#D93800; font-weight:700;">title</span>&gt;</div>
+              <div style="padding-left:20px; color:#6E6C65;">&lt;<span style="color:#D93800; font-weight:700;">title</span>&gt;<span style="color:var(--ios-label, #141414); font-weight:700;">Web Creator</span>&lt;/<span style="color:#D93800; font-weight:700;">title</span>&gt;</div>
               <div style="color:#6E6C65;">&lt;/<span style="color:#D93800; font-weight:700;">head</span>&gt;</div>
               <div style="color:#6E6C65;">&lt;<span style="color:#D93800; font-weight:700;">body</span>&gt;</div>
               <div style="padding-left:20px; color:#6E6C65;">
@@ -797,20 +800,20 @@
         <!-- ฝั่งขวา: ทดลองเปรียบเทียบ โปรแกรมติดตั้งลงเครื่อง VS เว็บแอป -->
         <div class="s2-right-visual" style="animation:none;">
           <div class="s2-compare-card">
-            <div style="font-size:16.5px; font-weight:900; color:#141414; text-align:left; border-bottom:1px solid #141414; padding-bottom:8px;">
+            <div style="font-size:16.5px; font-weight:900; color:var(--ios-label, #141414); text-align:left; border-bottom:1px solid var(--ios-separator); padding-bottom:8px;">
               COMPARE // ลองกดเปรียบเทียบความสะดวกดูสิ!
             </div>
 
             <!-- 1. โปรแกรมทั่วไปที่ต้องติดตั้ง -->
             <div class="s2-sim-row">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:16px; font-weight:800; color:#141414;">01 โปรแกรมทั่วไป (Desktop App)</span>
-                <button onclick="runInstallDemo()" style="background:#FFFFFF; color:#141414; border:0.5px solid rgba(60,60,67,0.16); box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:5px 12px; border-radius:10px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit;">ลองกดติดตั้ง</button>
+                <span style="font-size:16px; font-weight:800; color:var(--ios-label, #141414);">01 โปรแกรมทั่วไป (Desktop App)</span>
+                <button onclick="runInstallDemo()" style="background:#FFFFFF; color:var(--ios-label, #141414); border:0.5px solid rgba(60,60,67,0.16); box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:5px 12px; border-radius:10px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit;">ลองกดติดตั้ง</button>
               </div>
               <div class="s2-bar-track">
                 <div id="desktopInstallBar" class="s2-bar-fill" style="background:#f59e0b; width:25%;"></div>
               </div>
-              <div id="desktopInstallText" style="font-size:14px; color:#52524E;">
+              <div id="desktopInstallText" style="font-size:14px; color:var(--ios-secondary, #6C6C70);">
                 ต้องดาวน์โหลดไฟล์ .exe ➔ กดติดตั้งลงเครื่อง ➔ ใช้พื้นที่ความจำ
               </div>
             </div>
@@ -818,13 +821,13 @@
             <!-- 2. เว็บแอปพลิเคชัน -->
             <div class="s2-sim-row webapp-row">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:16px; font-weight:800; color:#141414;">02 เว็บแอป (Web Application)</span>
+                <span style="font-size:16px; font-weight:800; color:var(--ios-label, #141414);">02 เว็บแอป (Web Application)</span>
                 <button onclick="runWebAppDemo()" style="background:#007AFF; color:#fff; border:0.5px solid rgba(60,60,67,0.16); box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:5px 14px; border-radius:10px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit;">ลองกดเปิดเว็บแอป</button>
               </div>
               <div class="s2-bar-track">
                 <div id="webAppLaunchBar" class="s2-bar-fill" style="background:#007AFF; width:100%;"></div>
               </div>
-              <div id="webAppLaunchText" style="font-size:14.5px; color:#141414; font-weight:800;">
+              <div id="webAppLaunchText" style="font-size:14.5px; color:var(--ios-label, #141414); font-weight:800;">
                 แค่เปิดเว็บเบราว์เซอร์ ➔ เข้าใช้งานได้ทันทีใน 1 วินาที ไม่ต้องติดตั้ง!
               </div>
             </div>
@@ -958,13 +961,13 @@
                     <polygon points="8,5 19,12 8,19" />
                   </svg>
                 </div>
-                <span style="color:#141414; font-size:12px; font-weight:700;">คลิกปุ่ม Play เพื่อเล่นวิดีโอ</span>
+                <span style="color:var(--ios-label, #141414); font-size:12px; font-weight:700;">คลิกปุ่ม Play เพื่อเล่นวิดีโอ</span>
               </div>
 
               <!-- หน้าจอขณะกำลังเล่นวิดีโอแอนิเมชัน -->
               <div id="ytPlayingState" class="yt-playing-scene hidden">
                 <div style="font-family:Consolas,monospace;font-size:18px;font-weight:900;color:#007AFF;border:0.5px solid rgba(60,60,67,0.16);padding:4px 10px;background:#FFFFFF;">[PLAYING]</div>
-                <div style="font-size:14px; font-weight:800; color:#141414; margin-top:6px;">กำลังเล่น: ตะลุยโลก Web Creator!</div>
+                <div style="font-size:14px; font-weight:800; color:var(--ios-label, #141414); margin-top:6px;">กำลังเล่น: ตะลุยโลก Web Creator!</div>
                 <div class="yt-controls-bar">
                   <button onclick="toggleMiniYoutube(false)" style="background:transparent; border:none; color:#fff; cursor:pointer; font-size:13px;">❚❚ หยุด</button>
                   <div class="yt-progress-track">
@@ -1033,7 +1036,7 @@
             <b>เว็บไซต์</b> มีไว้ให้เรา <i>"อ่าน/ดูข้อมูล"</i> เป็นหลัก ส่วน <b>เว็บแอปพลิเคชัน</b> คือเว็บที่ให้เรา <i>"โต้ตอบ ใช้งาน หรือทำกิจกรรมต่าง ๆ ได้จริง"</i>
           </div>
           <div class="s4-quiz-strip">
-            <span style="font-size:14px; font-weight:800; color:#141414;">QUIZ — ลองทายดูสิ! เว็บไหนเป็นอะไร (คลิกเพื่อเฉลย):</span>
+            <span style="font-size:14px; font-weight:800; color:var(--ios-label, #141414);">QUIZ — ลองทายดูสิ! เว็บไหนเป็นอะไร (คลิกเพื่อเฉลย):</span>
             <button class="s4-quiz-btn" onclick="revealQuiz(this, 'site', '[Website] เว็บอ่านข่าว = Website')">01 เว็บอ่านข่าว</button>
             <button class="s4-quiz-btn" onclick="revealQuiz(this, 'app', '[Web App] Shopee ซื้อของ = Web App')">02 Shopee สั่งของ</button>
             <button class="s4-quiz-btn" onclick="revealQuiz(this, 'site', '[Website] บทความประวัติศาสตร์ = Website')">03 เว็บบทความ</button>
@@ -1064,12 +1067,12 @@
         <div class="s5-bottom-grid">
           <!-- ฝั่งซ้าย: จอแสดงผลจำลองตามสเต็ปที่คลิก 1 -> 2 -> 3 -->
           <div class="s5-preview-screen">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #141414; padding-bottom:10px;">
-              <span id="s5StepTitle" style="font-size:18px; font-weight:900; color:#141414;">ขั้นที่ 1: เขียนโค้ดในโปรแกรม Notepad</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--ios-separator); padding-bottom:10px;">
+              <span id="s5StepTitle" style="font-size:18px; font-weight:900; color:var(--ios-label, #141414);">ขั้นที่ 1: เขียนโค้ดในโปรแกรม Notepad</span>
               <span id="s5StepBadge" style="background:#141414; color:#fff; font-family:Consolas,monospace; font-size:12px; font-weight:800; padding:3px 10px; border-radius:10px;">Step 1 / 3</span>
             </div>
 
-            <div id="s5StepVisual" style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:14px 0; font-family:Consolas,monospace; font-size:16.5px; color:#141414;">
+            <div id="s5StepVisual" style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:14px 0; font-family:Consolas,monospace; font-size:16.5px; color:var(--ios-label, #141414);">
               <div style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.16); border-radius:12px; padding:14px;">
                 &lt;!DOCTYPE html&gt;<br>
                 &lt;html&gt;<br>
@@ -1080,7 +1083,7 @@
               </div>
             </div>
 
-            <div id="s5StepDesc" style="font-size:13.5px; color:#52524E; font-weight:600;">
+            <div id="s5StepDesc" style="font-size:13.5px; color:var(--ios-secondary, #6C6C70); font-weight:600;">
               คลิกที่กล่องขั้นตอนที่ 1, 2, 3 ด้านขวา เพื่อดูเส้นทางกว่าจะกลายเป็นหน้าเว็บ!
             </div>
           </div>
@@ -1253,7 +1256,7 @@
 
         <!-- ช่องจำลองการค้นหาโปรแกรม Notepad ใน Windows -->
         <div class="s7-search-demo">
-          <span style="font-family:Consolas,monospace;font-size:13px;font-weight:900;color:#52524E;">SEARCH //</span>
+          <span style="font-family:Consolas,monospace;font-size:13px;font-weight:900;color:var(--ios-secondary, #6C6C70);">SEARCH //</span>
           <input type="text" class="s7-search-input" value="Notepad" readonly />
           <button onclick="changeSlide(1)" style="background:#007AFF; color:#fff; border:0.5px solid rgba(60,60,67,0.16); box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:9px 18px; border-radius:12px; font-size:15px; font-weight:800; cursor:pointer; font-family:inherit;">
             เปิด Notepad แล้วไปดูโค้ดกัน ➔
@@ -1343,7 +1346,7 @@
 
           <!-- ฝั่งขวา: แสดงตำแหน่งจริงบนหน้าต่างเว็บเบราว์เซอร์เมื่อเอาเมาส์ชี้โค้ด -->
           <div class="s8-preview-card">
-            <div style="font-size:14.5px; font-weight:800; color:#141414; text-align:left;">
+            <div style="font-size:14.5px; font-weight:800; color:var(--ios-label, #141414); text-align:left;">
               HOVER // ลองเอาเมาส์ชี้ที่โค้ดแต่ละบรรทัด เพื่อดูตำแหน่งบนเว็บจริง
             </div>
 
@@ -1364,7 +1367,7 @@
               </div>
             </div>
 
-            <div id="s8ExplainBox" style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.16); border-left:4px solid #007AFF; border-radius:12px; padding:12px 14px; font-size:14px; color:#141414; line-height:1.5; min-height:68px; display:flex; align-items:center;">
+            <div id="s8ExplainBox" style="background:var(--ios-card); border:0.5px solid rgba(60,60,67,0.16); border-left:4px solid #007AFF; border-radius:12px; padding:12px 14px; font-size:14px; color:var(--ios-label, #141414); line-height:1.5; min-height:68px; display:flex; align-items:center;">
               แท็กใน HTML มักมาเป็นคู่เสมอ คือมี แท็กเปิด เช่น &lt;body&gt; และ แท็กปิด ที่มีเครื่องหมาย / เช่น &lt;/body&gt;
             </div>
           </div>
@@ -1385,7 +1388,7 @@
       <div class="s9-container">
         <div class="s9-top-bar">
           <div class="s9-header-pill">วิธีการ SAVE ไฟล์</div>
-          <div style="font-size:14px; color:#52524E; font-weight:700;">
+          <div style="font-size:14px; color:var(--ios-secondary, #6C6C70); font-weight:700;">
             คลิกที่แต่ละขั้นตอนเพื่อเน้นดูรายละเอียดบนจอ
           </div>
         </div>
@@ -1502,7 +1505,7 @@
                 </div>
                 <div class="s9-right-files">
                   <div style="font-size:10px; color:#a1a1aa; margin-bottom:8px;">Name</div>
-                  <div style="display:flex; align-items:center; gap:8px; background:#FFF0E8; border:0.5px solid rgba(60,60,67,0.16); padding:7px 10px; border-radius:10px; color:#141414; font-weight:800; font-size:13.5px;">
+                  <div style="display:flex; align-items:center; gap:8px; background:#FFF0E8; border:0.5px solid rgba(60,60,67,0.16); padding:7px 10px; border-radius:10px; color:var(--ios-label, #141414); font-weight:800; font-size:13.5px;">
                     <span style="font-family:Consolas,monospace;color:#007AFF;">[HTML]</span>
                     <span>index</span>
                   </div>
@@ -2022,7 +2025,7 @@
       if (step === 1) {
         title.innerText = 'ขั้นที่ 1: เขียนโค้ดในโปรแกรม Notepad';
         visual.innerHTML = `
-          <div style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.16); border-radius:12px; padding:14px; color:#141414;">
+          <div style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.16); border-radius:12px; padding:14px; color:var(--ios-label, #141414);">
             &lt;!DOCTYPE html&gt;<br>
             &lt;html&gt;<br>
             &lt;body&gt;<br>
@@ -2034,14 +2037,14 @@
         title.innerText = 'ขั้นที่ 2: บันทึกไฟล์เป็นนามสกุล .html';
         visual.innerHTML = `
           <div style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.16); border-left:5px solid #007AFF; border-radius:12px; padding:18px; text-align:left;">
-            <div style="font-size:14px; color:#52524E; margin-bottom:6px;">ตั้งชื่อไฟล์ในช่อง File name:</div>
-            <div style="font-size:26px; font-weight:900; color:#141414;">index.html</div>
+            <div style="font-size:14px; color:var(--ios-secondary, #6C6C70); margin-bottom:6px;">ตั้งชื่อไฟล์ในช่อง File name:</div>
+            <div style="font-size:26px; font-weight:900; color:var(--ios-label, #141414);">index.html</div>
           </div>`;
       } else {
         title.innerText = 'ขั้นที่ 3: ดับเบิลคลิกเปิดดูข้อความของเราบนเว็บเบราว์เซอร์!';
         visual.innerHTML = `
-          <div style="background:#ffffff; color:#141414; border:1px solid rgba(0,122,255,0.28); box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:12px; padding:18px; text-align:left;">
-            <div style="font-size:12px; color:#52524E; font-weight:700; margin-bottom:6px;">BROWSER // Google Chrome / Microsoft Edge</div>
+          <div style="background:#ffffff; color:var(--ios-label, #141414); border:1px solid rgba(0,122,255,0.28); box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:12px; padding:18px; text-align:left;">
+            <div style="font-size:12px; color:var(--ios-secondary, #6C6C70); font-weight:700; margin-bottom:6px;">BROWSER // Google Chrome / Microsoft Edge</div>
             <div style="font-size:24px; font-weight:900; color:#007AFF;">สวัสดี! นี่คือเว็บแรกของฉัน</div>
           </div>`;
       }

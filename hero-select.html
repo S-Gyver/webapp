@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>เลือกตัวละคร RoV ประจำตัว</title>
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    :root {
+      --ios-bg: #000000;
+      --ios-card: #1C1C1E;
+      --ios-fill: rgba(118, 118, 128, 0.24);
+      --ios-separator: rgba(255, 255, 255, 0.12);
+      --ios-label: #FFFFFF;
+      --ios-secondary: #AEAEB2;
+      --ios-blue: #0A84FF;
+    }
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #000000;
+      color: #FFFFFF;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Tahoma, sans-serif;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .mobile-header {
+      text-align: center;
+      margin-bottom: 16px;
+      padding: 12px 0;
+    }
+    .mobile-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+    .mobile-sub {
+      font-size: 13px;
+      color: #AEAEB2;
+    }
+    .room-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(10, 132, 255, 0.18);
+      color: #64D2FF;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-header">
+    <div class="mobile-title">🎮 เลือกตัวละคร RoV ของคุณ</div>
+    <div class="mobile-sub">แตะเลือก 1 ตัวละครประจำตัว (จะโชว์ขึ้นจอโปรเจกเตอร์ทันที!)</div>
+    <div class="room-badge" id="roomDisplayBadge">📡 เชื่อมต่อห้องฉายโปรเจกเตอร์แล้ว</div>
+  </div>
+
+  <div class="hero-board-card" style="border:none; padding:0; background:transparent;">
+    <!-- แถบตัวกรองและค้นหา -->
+    <div class="hero-filter-bar">
+      <div class="hero-filter-tabs">
+        <button type="button" class="hero-tab-btn active" onclick="filterHeroRole('all', this)">ทั้งหมด</button>
+        <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แครี่', this)">🏹 แครี่</button>
+        <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แอสซาซิน', this)">🗡️ แอสซาซิน</button>
+        <button type="button" class="hero-tab-btn" onclick="filterHeroRole('เมจ', this)">⚡ เมจ</button>
+        <button type="button" class="hero-tab-btn" onclick="filterHeroRole('ไฟต์เตอร์', this)">⚔️ ไฟต์เตอร์</button>
+        <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แทงค์', this)">🛡️ แทงค์</button>
+        <button type="button" class="hero-tab-btn" onclick="filterHeroRole('ซัพพอร์ต', this)">🌿 ซัพพอร์ต</button>
+      </div>
+      <div class="hero-search-wrap" style="width:100%; margin-top:8px;">
+        <input type="text" id="heroSearchInput" class="hero-search-input" placeholder="🔍 ค้นหาชื่อฮีโร่ เช่น Valhein, Violet..." oninput="onHeroSearch(this.value)">
+      </div>
+    </div>
+
+    <!-- ตารางการ์ดตัวละคร -->
+    <div class="hero-cards-grid" id="heroCardsGrid" style="max-height: calc(100vh - 220px);"></div>
+  </div>
+
+  <script>
+    const ROV_HERO_LIST = [
+  {
+    "id": "airi",
+    "name": "Airi",
+    "rawName": "Airi",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/fb8a12b0dccdaee733cb0df7479245a4538231199.jpeg",
+    "url": "https://www.rov.in.th/hero/airi"
+  },
+  {
+    "id": "aleister",
+    "name": "Aleister",
+    "rawName": "Aleister",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/865b1b90b0a5c0c961bf6e56beb47e2b368550319.jpg",
+    "url": "https://www.rov.in.th/hero/aleister"
+  },
+  {
+    "id": "alice",
+    "name": "Alice (อลิซ)",
+    "rawName": "Alice",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301180.png",
+    "url": "https://www.rov.in.th/hero/alice"
+  },
+  {
+    "id": "allain",
+    "name": "Allain (อัลเลน)",
+    "rawName": "Allain",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/0c8dc05e988fbd87b5d30b368b8008ec.jpg",
+    "url": "https://www.rov.in.th/hero/allain"
+  },
+  {
+    "id": "amily",
+    "name": "Amily",
+    "rawName": "Amily",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301930.png",
+    "url": "https://www.rov.in.th/hero/amily"
+  },
+  {
+    "id": "annette",
+    "name": "Annette (แอนเน็ตต์)",
+    "rawName": "Annette",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305190.png",
+    "url": "https://www.rov.in.th/hero/annette"
+  },
+  {
+    "id": "aoi",
+    "name": "Aoi (อาโออิ)",
+    "rawName": "Aoi",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/210fedabab9858d9a86a36a0e22fd0c2911013802.jpeg",
+    "url": "https://www.rov.in.th/hero/aoi"
+  },
+  {
+    "id": "arduin",
+    "name": "Arduin",
+    "rawName": "Arduin",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301260.png",
+    "url": "https://www.rov.in.th/hero/arduin"
+  },
+  {
+    "id": "arum",
+    "name": "Arum",
+    "rawName": "Arum",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301870.png",
+    "url": "https://www.rov.in.th/hero/arum"
+  },
+  {
+    "id": "astrid",
+    "name": "Astrid",
+    "rawName": "Astrid",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305020.png",
+    "url": "https://www.rov.in.th/hero/astrid"
+  },
+  {
+    "id": "ata",
+    "name": "Ata",
+    "rawName": "Ata",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/bc077a5ecf509b309fc06fbbae34d4a7.jpg",
+    "url": "https://www.rov.in.th/hero/ata"
+  },
+  {
+    "id": "aya",
+    "name": "Aya (อาย่า)",
+    "rawName": "Aya",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/d7eb3abf05ebf7c588efcd1c4426b6ea928761324.jpg",
+    "url": "https://www.rov.in.th/hero/aya"
+  },
+  {
+    "id": "azzenka",
+    "name": "Azzen'Ka",
+    "rawName": "Azzen'Ka",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301270.png",
+    "url": "https://www.rov.in.th/hero/azzenka"
+  },
+  {
+    "id": "baldum",
+    "name": "Baldum",
+    "rawName": "Baldum",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305050.png",
+    "url": "https://www.rov.in.th/hero/baldum"
+  },
+  {
+    "id": "bright",
+    "name": "Bright",
+    "rawName": "Bright",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/1df9f95f158eb4bf8e3b86bc1a852220.jpg",
+    "url": "https://www.rov.in.th/hero/bright"
+  },
+  {
+    "id": "butterfly",
+    "name": "Butterfly (บัตเตอร์ฟลาย)",
+    "rawName": "Butterfly",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/953686dacc7e2900a7c3e557f9a289a0804234356.jpeg",
+    "url": "https://www.rov.in.th/hero/butterfly"
+  },
+  {
+    "id": "capheny",
+    "name": "Capheny (คาเฟนี่)",
+    "rawName": "Capheny",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305240.png",
+    "url": "https://www.rov.in.th/hero/capheny"
+  },
+  {
+    "id": "celica",
+    "name": "Celica",
+    "rawName": "Celica",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/977f2da94839af7212b8071b2d4e25aa.jpg",
+    "url": "https://www.rov.in.th/hero/celica"
+  },
+  {
+    "id": "chaugnar",
+    "name": "Chaugnar",
+    "rawName": "Chaugnar",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301130.png",
+    "url": "https://www.rov.in.th/hero/chaugnar"
+  },
+  {
+    "id": "cresht",
+    "name": "Cresht",
+    "rawName": "Cresht",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301710.png",
+    "url": "https://www.rov.in.th/hero/cresht"
+  },
+  {
+    "id": "darcy",
+    "name": "D'Arcy",
+    "rawName": "D'Arcy",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305230.png",
+    "url": "https://www.rov.in.th/hero/darcy"
+  },
+  {
+    "id": "dextra",
+    "name": "Dextra",
+    "rawName": "Dextra",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/ecefc7e37ee6ebd911f20cb85e3cf114.jpg",
+    "url": "https://www.rov.in.th/hero/dextra"
+  },
+  {
+    "id": "diao-chan",
+    "name": "Diao chan",
+    "rawName": "Diao chan",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/2739ce8e4cba10bbbf586d9305c0bc6d278501387.png",
+    "url": "https://www.rov.in.th/hero/diao-chan"
+  },
+  {
+    "id": "dirak",
+    "name": "Dirak",
+    "rawName": "Dirak",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/5a0aa13473e99882dd2bc386e65a757a.jpg",
+    "url": "https://www.rov.in.th/hero/dirak"
+  },
+  {
+    "id": "elandorr",
+    "name": "Eland'orr",
+    "rawName": "Eland'orr",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/44644fdbed6c3d262d8d99d72fc88abd.jpg",
+    "url": "https://www.rov.in.th/hero/elandorr"
+  },
+  {
+    "id": "elsu",
+    "name": "Elsu (เอลสุ)",
+    "rawName": "Elsu",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301960.png",
+    "url": "https://www.rov.in.th/hero/elsu"
+  },
+  {
+    "id": "enzo",
+    "name": "Enzo",
+    "rawName": "Enzo",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/52082f355647d254c4b45a6eab022ef0194524062.jpeg",
+    "url": "https://www.rov.in.th/hero/enzo"
+  },
+  {
+    "id": "errol",
+    "name": "Errol",
+    "rawName": "Errol",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/9533ebf490c391b2db65bf079b4bf749.jpg",
+    "url": "https://www.rov.in.th/hero/errol"
+  },
+  {
+    "id": "fennik",
+    "name": "Fennik",
+    "rawName": "Fennik",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301730.png",
+    "url": "https://www.rov.in.th/hero/fennik"
+  },
+  {
+    "id": "florentino",
+    "name": "Florentino (ฟลอเรนติโน)",
+    "rawName": "Florentino",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305210.png",
+    "url": "https://www.rov.in.th/hero/florentino"
+  },
+  {
+    "id": "gildur",
+    "name": "Gildur (กิลเดอร์)",
+    "rawName": "Gildur",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301080.png",
+    "url": "https://www.rov.in.th/hero/gildur"
+  },
+  {
+    "id": "grakk",
+    "name": "Grakk",
+    "rawName": "Grakk",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301750.png",
+    "url": "https://www.rov.in.th/hero/grakk"
+  },
+  {
+    "id": "hayate",
+    "name": "Hayate (ฮายาเตะ)",
+    "rawName": "Hayate",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301320.png",
+    "url": "https://www.rov.in.th/hero/hayate"
+  },
+  {
+    "id": "iggy",
+    "name": "IGGY",
+    "rawName": "IGGY",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/76c762a4ceee074fe4459a483350dbe4258081001.jpeg",
+    "url": "https://www.rov.in.th/hero/iggy"
+  },
+  {
+    "id": "ignis",
+    "name": "Ignis (อิกนิส)",
+    "rawName": "Ignis",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301240.png",
+    "url": "https://www.rov.in.th/hero/ignis"
+  },
+  {
+    "id": "ilumia",
+    "name": "Illumia",
+    "rawName": "Illumia",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301360.png",
+    "url": "https://www.rov.in.th/hero/ilumia"
+  },
+  {
+    "id": "ishar",
+    "name": "Ishar",
+    "rawName": "Ishar",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/38234f18a68b8d881c3c40824e10482a.jpg",
+    "url": "https://www.rov.in.th/hero/ishar"
+  },
+  {
+    "id": "jinna",
+    "name": "Jinna",
+    "rawName": "Jinna",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301150.png",
+    "url": "https://www.rov.in.th/hero/jinna"
+  },
+  {
+    "id": "kahlii",
+    "name": "Kahlii",
+    "rawName": "Kahlii",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301100.png",
+    "url": "https://www.rov.in.th/hero/kahlii"
+  },
+  {
+    "id": "keera",
+    "name": "Keera (คีร่า)",
+    "rawName": "Keera",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/4c631eb81c40729aa258cc00774b2792.jpg",
+    "url": "https://www.rov.in.th/hero/keera"
+  },
+  {
+    "id": "kilgroth",
+    "name": "Kil'Groth",
+    "rawName": "Kil'Groth",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301390.png",
+    "url": "https://www.rov.in.th/hero/kilgroth"
+  },
+  {
+    "id": "kriknak",
+    "name": "Kriknak (คริกแนก)",
+    "rawName": "Kriknak",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301620.png",
+    "url": "https://www.rov.in.th/hero/kriknak"
+  },
+  {
+    "id": "krixi",
+    "name": "Krixi (คริกซี่)",
+    "rawName": "Krixi",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301060.png",
+    "url": "https://www.rov.in.th/hero/krixi"
+  },
+  {
+    "id": "krizzix",
+    "name": "Krizzix (กริซซิกซ์)",
+    "rawName": "Krizzix",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/c416277e6010025f3ad1b3a585291367.png",
+    "url": "https://www.rov.in.th/hero/krizzix"
+  },
+  {
+    "id": "lauriel",
+    "name": "Lauriel (ลอเรียล)",
+    "rawName": "Lauriel",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301410.png",
+    "url": "https://www.rov.in.th/hero/lauriel"
+  },
+  {
+    "id": "laville",
+    "name": "Laville (ลาวิลล์)",
+    "rawName": "Laville",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/c3e8a62d08efa403fe9749696b6bdafe.jpg",
+    "url": "https://www.rov.in.th/hero/laville"
+  },
+  {
+    "id": "liliana",
+    "name": "Liliana (ลิเลียน่า)",
+    "rawName": "Liliana",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305100.png",
+    "url": "https://www.rov.in.th/hero/liliana"
+  },
+  {
+    "id": "lindis",
+    "name": "Lindis",
+    "rawName": "Lindis",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301770.png",
+    "url": "https://www.rov.in.th/hero/lindis"
+  },
+  {
+    "id": "lorion",
+    "name": "Lorion",
+    "rawName": "Lorion",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/8bfeffe5e464f8862217c7305dbc52fe.jpg",
+    "url": "https://www.rov.in.th/hero/lorion"
+  },
+  {
+    "id": "lu-bu",
+    "name": "Lu Bu (ลิโป้)",
+    "rawName": "Lu Bu",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301280.png",
+    "url": "https://www.rov.in.th/hero/lu-bu"
+  },
+  {
+    "id": "lumburr",
+    "name": "Lumburr",
+    "rawName": "Lumburr",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301680.png",
+    "url": "https://www.rov.in.th/hero/lumburr"
+  },
+  {
+    "id": "maloch",
+    "name": "Maloch (มาลอค)",
+    "rawName": "Maloch",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301230.png",
+    "url": "https://www.rov.in.th/hero/maloch"
+  },
+  {
+    "id": "marja",
+    "name": "Marja",
+    "rawName": "Marja",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301210.png",
+    "url": "https://www.rov.in.th/hero/marja"
+  },
+  {
+    "id": "max",
+    "name": "Max",
+    "rawName": "Max",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301800.png",
+    "url": "https://www.rov.in.th/hero/max"
+  },
+  {
+    "id": "mganga",
+    "name": "Mganga",
+    "rawName": "Mganga",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301190.png",
+    "url": "https://www.rov.in.th/hero/mganga"
+  },
+  {
+    "id": "mina",
+    "name": "Mina (มิน่า)",
+    "rawName": "Mina",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301200.png",
+    "url": "https://www.rov.in.th/hero/mina"
+  },
+  {
+    "id": "moren",
+    "name": "Moren",
+    "rawName": "Moren",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301700.png",
+    "url": "https://www.rov.in.th/hero/moren"
+  },
+  {
+    "id": "mortos",
+    "name": "Mortos",
+    "rawName": "Mortos",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/14775da68e9b3427a5626cf04d9448bc688675385.jpg",
+    "url": "https://www.rov.in.th/hero/mortos"
+  },
+  {
+    "id": "murad",
+    "name": "Murad (มูราด)",
+    "rawName": "Murad",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301310.png",
+    "url": "https://www.rov.in.th/hero/murad"
+  },
+  {
+    "id": "nakroth",
+    "name": "Nakroth (นาครอท)",
+    "rawName": "Nakroth",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/0b1620c324e7800851b412a9439a689b122140483.jpeg",
+    "url": "https://www.rov.in.th/hero/nakroth"
+  },
+  {
+    "id": "natalya",
+    "name": "Natalya",
+    "rawName": "Natalya",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301420.png",
+    "url": "https://www.rov.in.th/hero/natalya"
+  },
+  {
+    "id": "omega",
+    "name": "Omega",
+    "rawName": "Omega",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301140.png",
+    "url": "https://www.rov.in.th/hero/omega"
+  },
+  {
+    "id": "omen",
+    "name": "Omen (โอเมน)",
+    "rawName": "Omen",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/74fee9655c49277cd28834c189574987.png",
+    "url": "https://www.rov.in.th/hero/omen"
+  },
+  {
+    "id": "ormarr",
+    "name": "Ormarr",
+    "rawName": "Ormarr",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301170.png",
+    "url": "https://www.rov.in.th/hero/ormarr"
+  },
+  {
+    "id": "paine",
+    "name": "Paine",
+    "rawName": "Paine",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/7f56b60892d0215f36f436e0b6d812fa.jpg",
+    "url": "https://www.rov.in.th/hero/paine"
+  },
+  {
+    "id": "preyta",
+    "name": "Preyta",
+    "rawName": "Preyta",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301480.png",
+    "url": "https://www.rov.in.th/hero/preyta"
+  },
+  {
+    "id": "qi",
+    "name": "Qi",
+    "rawName": "Qi",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305280.png",
+    "url": "https://www.rov.in.th/hero/qi"
+  },
+  {
+    "id": "quillen",
+    "name": "Quillen (ควิลเลน)",
+    "rawName": "Quillen",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305180.png",
+    "url": "https://www.rov.in.th/hero/quillen"
+  },
+  {
+    "id": "raz",
+    "name": "Raz (ราซ)",
+    "rawName": "Raz",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301570.png",
+    "url": "https://www.rov.in.th/hero/raz"
+  },
+  {
+    "id": "riktor",
+    "name": "Riktor (ริคเตอร์)",
+    "rawName": "Riktor",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305150.png",
+    "url": "https://www.rov.in.th/hero/riktor"
+  },
+  {
+    "id": "rouie",
+    "name": "Rouie",
+    "rawName": "Rouie",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/caea84b1bebac1a0f5f0b1d0c717c5ad.jpg",
+    "url": "https://www.rov.in.th/hero/rouie"
+  },
+  {
+    "id": "rourke",
+    "name": "Rourke",
+    "rawName": "Rourke",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305120.png",
+    "url": "https://www.rov.in.th/hero/rourke"
+  },
+  {
+    "id": "roxie",
+    "name": "Roxie",
+    "rawName": "Roxie",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/9d7b3043e93366865d62465b9a310f92580957575.jpg",
+    "url": "https://www.rov.in.th/hero/roxie"
+  },
+  {
+    "id": "ryoma",
+    "name": "Ryoma",
+    "rawName": "Ryoma",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301630.png",
+    "url": "https://www.rov.in.th/hero/ryoma"
+  },
+  {
+    "id": "sephera",
+    "name": "Sephera",
+    "rawName": "Sephera",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305270.png",
+    "url": "https://www.rov.in.th/hero/sephera"
+  },
+  {
+    "id": "sinestrea",
+    "name": "Sinestrea",
+    "rawName": "Sinestrea",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/d40b1c67247e69e1b2fd63ed44d9d7cd.jpg",
+    "url": "https://www.rov.in.th/hero/sinestrea"
+  },
+  {
+    "id": "skud",
+    "name": "Skud",
+    "rawName": "Skud",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301340.png",
+    "url": "https://www.rov.in.th/hero/skud"
+  },
+  {
+    "id": "slimz",
+    "name": "Slimz (สลิมซ์)",
+    "rawName": "Slimz",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301690.png",
+    "url": "https://www.rov.in.th/hero/slimz"
+  },
+  {
+    "id": "super-man",
+    "name": "Super man",
+    "rawName": "Super man",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301400.png",
+    "url": "https://www.rov.in.th/hero/super-man"
+  },
+  {
+    "id": "taara",
+    "name": "Taara (ทาร่า)",
+    "rawName": "Taara",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301440.png",
+    "url": "https://www.rov.in.th/hero/taara"
+  },
+  {
+    "id": "tachi",
+    "name": "Tachi",
+    "rawName": "Tachi",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/e6a658b1e3485aba22fd6e401700b4d0722633259.png",
+    "url": "https://www.rov.in.th/hero/tachi"
+  },
+  {
+    "id": "teemee",
+    "name": "TeeMee",
+    "rawName": "TeeMee",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301860.png",
+    "url": "https://www.rov.in.th/hero/teemee"
+  },
+  {
+    "id": "teeri",
+    "name": "Teeri",
+    "rawName": "Teeri",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/9e694302eee95cda70d5d7878f29859f604290561.jpg",
+    "url": "https://www.rov.in.th/hero/teeri"
+  },
+  {
+    "id": "telannas",
+    "name": "Tel'Annas (เทลแอนนาส)",
+    "rawName": "Tel'Annas",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/316aedd067a6891ec9262c4791048c4e002690156.jpg",
+    "url": "https://www.rov.in.th/hero/telannas"
+  },
+  {
+    "id": "thane",
+    "name": "Thane (เธน)",
+    "rawName": "Thane",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301350.png",
+    "url": "https://www.rov.in.th/hero/thane"
+  },
+  {
+    "id": "the-flash",
+    "name": "The Flash",
+    "rawName": "The Flash",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305070.png",
+    "url": "https://www.rov.in.th/hero/the-flash"
+  },
+  {
+    "id": "thorne",
+    "name": "Thorne (ธอร์น)",
+    "rawName": "Thorne",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/177b5dc323de1f131104bc3a61a30dc5.jpg",
+    "url": "https://www.rov.in.th/hero/thorne"
+  },
+  {
+    "id": "toro",
+    "name": "Toro (โทโร่)",
+    "rawName": "Toro",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301050.png",
+    "url": "https://www.rov.in.th/hero/toro"
+  },
+  {
+    "id": "tulen",
+    "name": "Tulen (ทูเลน)",
+    "rawName": "Tulen",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301900.png",
+    "url": "https://www.rov.in.th/hero/tulen"
+  },
+  {
+    "id": "valhein",
+    "name": "Valhein (แวนเฮน)",
+    "rawName": "Valhein",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301330.png",
+    "url": "https://www.rov.in.th/hero/valhein"
+  },
+  {
+    "id": "veera",
+    "name": "Veera (วีร่า)",
+    "rawName": "Veera",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/4596bab5ebaf35a3023239179b889122653464512.jpg",
+    "url": "https://www.rov.in.th/hero/veera"
+  },
+  {
+    "id": "veres",
+    "name": "Veres",
+    "rawName": "Veres",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305200.png",
+    "url": "https://www.rov.in.th/hero/veres"
+  },
+  {
+    "id": "violet",
+    "name": "Violet (ไวโอเล็ต)",
+    "rawName": "Violet",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/8c6c8393bd8e9b873eeb2028cc5ff239784341618.png",
+    "url": "https://www.rov.in.th/hero/violet"
+  },
+  {
+    "id": "volkath",
+    "name": "Volkath",
+    "rawName": "Volkath",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/0226a3b59534f7e097b31faf55719ffc.jpg",
+    "url": "https://www.rov.in.th/hero/volkath"
+  },
+  {
+    "id": "wiro",
+    "name": "Wiro",
+    "rawName": "Wiro",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301940.png",
+    "url": "https://www.rov.in.th/hero/wiro"
+  },
+  {
+    "id": "wisp",
+    "name": "Wisp",
+    "rawName": "Wisp",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305080.png",
+    "url": "https://www.rov.in.th/hero/wisp"
+  },
+  {
+    "id": "wonder-woman",
+    "name": "Wonder Woman",
+    "rawName": "Wonder Woman",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305040.png",
+    "url": "https://www.rov.in.th/hero/wonder-woman"
+  },
+  {
+    "id": "wukong",
+    "name": "WuKong",
+    "rawName": "WuKong",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/8e1736836bc737a5a9495cec55c1d64d.jpg",
+    "url": "https://www.rov.in.th/hero/wukong"
+  },
+  {
+    "id": "xeniel",
+    "name": "Xeniel",
+    "rawName": "Xeniel",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301490.png",
+    "url": "https://www.rov.in.th/hero/xeniel"
+  },
+  {
+    "id": "ybneth",
+    "name": "Y'bneth",
+    "rawName": "Y'bneth",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305090.png",
+    "url": "https://www.rov.in.th/hero/ybneth"
+  },
+  {
+    "id": "yan",
+    "name": "Yan",
+    "rawName": "Yan",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/e30adc9818a781b682c88a97ff830e00605372736.jpg",
+    "url": "https://www.rov.in.th/hero/yan"
+  },
+  {
+    "id": "yena",
+    "name": "Yena (เยน่า)",
+    "rawName": "Yena",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/5c5c460fe14e67f351782aa133fbb1d5432803963.jpeg",
+    "url": "https://www.rov.in.th/hero/yena"
+  },
+  {
+    "id": "yorn",
+    "name": "Yorn (ยอร์น)",
+    "rawName": "Yorn",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301120.png",
+    "url": "https://www.rov.in.th/hero/yorn"
+  },
+  {
+    "id": "yue",
+    "name": "Yue",
+    "rawName": "Yue",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/215047bd2e8615e7ca6758d94e65b053913347022.jpg",
+    "url": "https://www.rov.in.th/hero/yue"
+  },
+  {
+    "id": "zanis",
+    "name": "Zanis",
+    "rawName": "Zanis",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301290.png",
+    "url": "https://www.rov.in.th/hero/zanis"
+  },
+  {
+    "id": "zata",
+    "name": "Zata (ซาต้า)",
+    "rawName": "Zata",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/e6cdecc7664a50ccc8bdef6172479882.jpg",
+    "url": "https://www.rov.in.th/hero/zata"
+  },
+  {
+    "id": "zephys",
+    "name": "Zephys",
+    "rawName": "Zephys",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/a19d433210391d6be2774f3fa5a7cd21087807594.jpg",
+    "url": "https://www.rov.in.th/hero/zephys"
+  },
+  {
+    "id": "zill",
+    "name": "Zill (ซิลล์)",
+    "rawName": "Zill",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301460.png",
+    "url": "https://www.rov.in.th/hero/zill"
+  },
+  {
+    "id": "zip",
+    "name": "Zip",
+    "rawName": "Zip",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/5248fb3ed974b26ee5a0548f4a4c7bdb604470912.jpeg",
+    "url": "https://www.rov.in.th/hero/zip"
+  },
+  {
+    "id": "zuka",
+    "name": "Zuka",
+    "rawName": "Zuka",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305030.png",
+    "url": "https://www.rov.in.th/hero/zuka"
+  }
+];
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomId = urlParams.get('room') || localStorage.getItem('wc_rov_live_room_id') || 'rov_room_2026';
+    let currentHeroRoleFilter = 'all';
+    let currentHeroSearchQuery = '';
+    let localClaims = {};
+
+    function getHeroClaims() {
+      try {
+        const d = localStorage.getItem('wc_rov_hero_claims');
+        return d ? JSON.parse(d) : localClaims;
+      } catch(e) { return localClaims; }
+    }
+    function saveHeroClaims(c) {
+      localClaims = c;
+      try { localStorage.setItem('wc_rov_hero_claims', JSON.stringify(c)); } catch(e) {}
+    }
+
+    function renderHeroGrid() {
+      const grid = document.getElementById('heroCardsGrid');
+      if (!grid) return;
+      const claims = getHeroClaims();
+      const q = currentHeroSearchQuery.toLowerCase().trim();
+
+      const filtered = ROV_HERO_LIST.filter(hero => {
+        const matchRole = currentHeroRoleFilter === 'all' || hero.role === currentHeroRoleFilter;
+        const matchSearch = !q || hero.name.toLowerCase().includes(q) || hero.id.toLowerCase().includes(q);
+        return matchRole && matchSearch;
+      });
+
+      grid.innerHTML = filtered.map(hero => {
+        const owner = claims[hero.id];
+        const isClaimed = Boolean(owner);
+        return `
+          <div class="hero-card-item ${isClaimed ? 'claimed' : 'available'}" onclick="clickHeroCard('${hero.id}')">
+            <div class="hero-avatar-wrap">
+              <img src="${hero.image}" alt="${hero.name}" class="hero-avatar-img" loading="lazy" onerror="this.src='images/valhein.png'">
+              <span class="hero-role-badge role-${hero.roleEn}">${hero.icon} ${hero.role}</span>
+              ${isClaimed ? '<span class="hero-lock-badge">🔒 จองแล้ว</span>' : ''}
+            </div>
+            <div class="hero-card-info">
+              <div class="hero-name-label">${hero.name}</div>
+              <div class="hero-owner-label">
+                ${isClaimed ? '👤 <b>' + escapeHtml(owner) + '</b>' : '<span class="tap-to-pick">แตะเลือกตัวนี้ ✨</span>'}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+      });
+    }
+
+    function filterHeroRole(role, btn) {
+      currentHeroRoleFilter = role;
+      document.querySelectorAll('.hero-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderHeroGrid();
+    }
+
+    function onHeroSearch(val) {
+      currentHeroSearchQuery = val || '';
+      renderHeroGrid();
+    }
+
+    function closeCustomModal() {
+      const el = document.getElementById('__iosCustomModal');
+      if (el) el.remove();
+    }
+
+    function clickHeroCard(heroId) {
+      const hero = ROV_HERO_LIST.find(h => h.id === heroId);
+      if (!hero) return;
+      const claims = getHeroClaims();
+
+      if (claims[heroId]) {
+        alert('ตัวละคร ' + hero.name + ' ถูกจองโดย ' + claims[heroId] + ' แล้วครับ ลองเลือกตัวอื่นดูนะ!');
+        return;
+      }
+
+      closeCustomModal();
+      const overlay = document.createElement('div');
+      overlay.id = '__iosCustomModal';
+      overlay.className = 'ios-custom-overlay';
+      overlay.innerHTML = `
+        <div class="ios-custom-card">
+          <img src="${hero.image}" alt="${hero.name}" class="ios-modal-hero-img" onerror="this.src='images/valhein.png'">
+          <span class="ios-modal-role-pill">${hero.icon} ${hero.role}</span>
+          <div class="ios-modal-title">${hero.name}</div>
+          <div class="ios-modal-sub">พิมพ์ชื่อหรือชื่อเล่นของคุณ (เพื่อส่งขึ้นจอโปรเจกเตอร์):</div>
+          
+          <input type="text" id="__heroInputName" class="ios-modal-input" placeholder="เช่น น้องกานต์ ม.1/2" maxlength="30" autocomplete="off">
+          
+          <div class="ios-modal-btn-row">
+            <button type="button" class="ios-modal-btn btn-cancel" onclick="closeCustomModal()">ยกเลิก</button>
+            <button type="button" id="__heroSubmitBtn" class="ios-modal-btn btn-confirm">✨ ยืนยันการจอง</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      const input = document.getElementById('__heroInputName');
+      const submitBtn = document.getElementById('__heroSubmitBtn');
+      setTimeout(() => input.focus(), 60);
+
+      function doSubmit() {
+        const studentName = input.value.trim();
+        if (!studentName) {
+          input.focus();
+          return;
+        }
+        closeCustomModal();
+        claims[heroId] = studentName;
+        saveHeroClaims(claims);
+        renderHeroGrid();
+
+        // ส่งสัญญาณแบบ Realtime ไปยังจอโปรเจกเตอร์ของครูทันที!
+        try {
+          fetch('https://ntfy.sh/' + roomId, {
+            method: 'POST',
+            body: JSON.stringify({ heroId, studentName })
+          }).catch(() => {});
+        } catch(e) {}
+
+        alert('🎉 ล็อกตัวละคร ' + hero.name + ' สำเร็จแล้ว! ดูที่จอโปรเจกเตอร์ได้เลย!');
+      }
+
+      submitBtn.onclick = doSubmit;
+      input.onkeydown = (e) => { if (e.key === 'Enter') doSubmit(); };
+      overlay.onclick = (e) => { if (e.target === overlay) closeCustomModal(); };
+    }
+
+    // ฟังการอัปเดตจากจอโปรเจกเตอร์
+    try {
+      const sse = new EventSource('https://ntfy.sh/' + roomId + '/sse');
+      sse.onmessage = function(e) {
+        try {
+          const d = JSON.parse(e.data);
+          if (d && d.message) {
+            const p = JSON.parse(d.message);
+            if (p && p.heroId && p.studentName) {
+              const c = getHeroClaims();
+              c[p.heroId] = p.studentName;
+              saveHeroClaims(c);
+              renderHeroGrid();
+            }
+          }
+        } catch(err) {}
+      };
+    } catch(e) {}
+
+    renderHeroGrid();
+  </script>
+</body>
+</html>

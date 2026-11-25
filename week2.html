@@ -942,6 +942,9 @@
       .slide { max-width: 1440px; max-height: min(840px, calc(100vh - 150px)); }
     }
   </style>
+  <!-- ระบบสลับโหมด มืด / สว่าง (iOS Theme) -->
+  <link rel="stylesheet" href="theme.css">
+  <script src="theme.js"></script>
 </head>
 <body>
 
@@ -949,7 +952,7 @@
   <header class="topbar">
     <div class="topbar-left">
       <a href="index.html" class="top-btn" title="กลับหน้าแรก">← <span class="btn-text-hide">หน้าแรก</span></a>
-      <span class="slide-title-indicator" id="slideCounterText">สไลด์ 1 / 9</span>
+      <span class="slide-title-indicator" id="slideCounterText">สไลด์ 1 / 10</span>
     </div>
     <div class="topbar-right">
       <a href="week1.html" class="top-btn top-btn-blue" title="ดูบทเรียนสัปดาห์ที่ 1">W01 <span class="btn-text-hide">Week 1</span></a>
@@ -1058,10 +1061,10 @@
                 <span class="m-dot m-red"></span>
                 <span class="m-dot m-yellow"></span>
                 <span class="m-dot m-green"></span>
-                <span style="font-size:11px; color:#52524E; font-family:Consolas,monospace; font-weight:700; margin-left:8px;">rov-battle-ui.html</span>
+                <span style="font-size:11px; color:var(--ios-secondary, #6C6C70); font-family:Consolas,monospace; font-weight:700; margin-left:8px;">rov-battle-ui.html</span>
               </div>
               <div class="mock-browser-body">
-                <div style="font-size:20px; font-weight:900; color:#141414;">RoV Battle UI — Valhein</div>
+                <div style="font-size:20px; font-weight:900; color:var(--ios-label, #141414);">RoV Battle UI — Valhein</div>
                 <!-- หลอดเลือด HP -->
                 <div style="width:100%; max-width:280px; background:#E5E5EA; border-radius:999px; height:12px; overflow:hidden; position:relative;">
                   <div style="width:100%; height:100%; background:#34C759; border-radius:999px;"></div>
@@ -1073,7 +1076,7 @@
                   <button class="interactive-pulse-btn" style="background:#007AFF; color:#FFFFFF; padding:7px 14px; font-size:13px;" onclick="fireRovSkill(2)">สกิล 2</button>
                   <button class="interactive-pulse-btn" style="background:#FF3B30; color:#FFFFFF; padding:7px 14px; font-size:13px;" onclick="fireRovSkill(3)">อัลติเมต</button>
                 </div>
-                <div id="frontendSkillMsg" style="font-size:12.5px; color:#52524E; font-weight:700; min-height:18px;">ลองกดปุ่มสกิลด้านบน เพื่อสั่งการหน้า Frontend!</div>
+                <div id="frontendSkillMsg" style="font-size:12.5px; color:var(--ios-secondary, #6C6C70); font-weight:700; min-height:18px;">ลองกดปุ่มสกิลด้านบน เพื่อสั่งการหน้า Frontend!</div>
               </div>
             </div>
           </div>
@@ -1082,7 +1085,7 @@
 
       <div class="slide-footer-strip">
         <span>01 // Frontend = หน้าจอการเล่นของ RoV ที่ผู้เล่นมองเห็นและกดสัมผัสได้จริง</span>
-        <span>สไลด์ 2 / 9</span>
+        <span>สไลด์ 2 / 10</span>
       </div>
     </section>
 
@@ -1129,14 +1132,14 @@
               <div id="backendLogText" style="color:#1F6E43; font-weight:700;">[READY] รอคำสั่งยิงสกิลจากผู้เล่น...</div>
             </div>
             <button class="interactive-pulse-btn" style="margin-top:12px; font-size:13.5px;" onclick="calcRovDamage()">สั่งยิงสกิล (ทดสอบคำนวณหลังบ้าน) →</button>
-            <div style="font-size:12px; color:#52524E; margin-top:8px;">Backend จะคิดเลขคำนวณดาเมจให้ทันทีในเสี้ยววินาที!</div>
+            <div style="font-size:12px; color:var(--ios-secondary, #6C6C70); margin-top:8px;">Backend จะคิดเลขคำนวณดาเมจให้ทันทีในเสี้ยววินาที!</div>
           </div>
         </div>
       </div>
 
       <div class="slide-footer-strip">
         <span>02 // Backend = สมองกลคำนวณดาเมจและกฎของเกม RoV ที่ซ่อนอยู่หลังบ้าน</span>
-        <span>สไลด์ 3 / 9</span>
+        <span>สไลด์ 3 / 10</span>
       </div>
     </section>
 
@@ -1203,7 +1206,7 @@
 
       <div class="slide-footer-strip">
         <span>03 // Database = ตู้เซฟบันทึกสกิน แรงก์ และข้อมูลผู้เล่น RoV ไว้อย่างปลอดภัย</span>
-        <span>สไลด์ 4 / 9</span>
+        <span>สไลด์ 4 / 10</span>
       </div>
     </section>
 
@@ -1247,22 +1250,110 @@
             <div style="font-family:Consolas,monospace; font-size:12.5px; font-weight:800; color:#007AFF; margin-bottom:8px; letter-spacing:0.04em;">LIVE // GARENA ROV SERVER (DEPLOYMENT)</div>
             <div style="background:#FFFFFF; border:0.5px solid rgba(60,60,67,0.14); border-radius:14px; padding:14px 16px; width:100%; text-align:left; font-family:Consolas,monospace; font-size:12.5px; color:#1C1C1E; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
               <div style="color:#1F6E43; font-weight:800; margin-bottom:4px;">[ONLINE] Server Status: ONLINE (Ping 12ms)</div>
-              <div style="color:#141414;">พบห้องแข่งขัน 5v5 แล้ว! (10/10 ผู้เล่นพร้อม)</div>
+              <div style="color:var(--ios-label, #141414);">พบห้องแข่งขัน 5v5 แล้ว! (10/10 ผู้เล่นพร้อม)</div>
               <div style="margin-top:10px; background:#F2F2F7; padding:7px 12px; border-radius:10px; color:#007AFF; font-weight:700;">
                 https://user.github.io/rov
               </div>
             </div>
             <button class="interactive-pulse-btn" style="margin-top:12px; font-size:13.5px;" onclick="shareRovLink()">ทดสอบแชร์ลิงก์ให้เพื่อน →</button>
-            <div style="font-size:12px; color:#52524E; margin-top:6px;">Deploy แล้วใครๆ ก็เปิดเว็บเราได้จากทั่วโลก!</div>
+            <div style="font-size:12px; color:var(--ios-secondary, #6C6C70); margin-top:6px;">Deploy แล้วใครๆ ก็เปิดเว็บเราได้จากทั่วโลก!</div>
           </div>
         </div>
       </div>
 
       <div class="slide-footer-strip">
         <span>04 // Deployment = การเปิดเซิร์ฟเวอร์ออนไลน์ให้ทุกคนเชื่อมต่อเข้ามาเล่นด้วยกัน</span>
-        <span>สไลด์ 5 / 9</span>
+        <span>สไลด์ 5 / 10</span>
       </div>
     </section>
+
+    <!-- ==========================================
+         สไลด์ที่ 6 (แทรกใหม่): สแกนเลือกตัวละคร RoV ประจำตัว (ไม่ซ้ำกัน!)
+    ========================================== -->
+    <section class="slide">
+      <div class="glow-orb-1"></div>
+      <div class="glow-orb-2"></div>
+
+      <div class="concept-container" style="max-width:1200px;">
+        <div class="concept-header-bar">
+          <span class="concept-tag tag-orange">CHOOSE YOUR HERO // ภารกิจจับจองตัวละคร</span>
+          <h2 class="concept-title">สแกนเลือกตัวละคร RoV ของตัวเอง (1 คนต่อ 1 ตัวละคร ไม่ซ้ำกัน!)</h2>
+          <p style="font-size:14px; color:var(--ios-secondary, #6C6C70); margin-top:4px;">
+            เปิดกล้องมือถือแล้วสแกน QR Code เพื่อล็อกตัวละครฮีโร่ที่จะใช้สร้างหน้าเว็บไซต์ในวันนี้ หรือเลือกล็อกตัวละครบนกระดานด้านล่างได้ทันที!
+          </p>
+        </div>
+
+        <div class="hero-selection-layout">
+          <!-- ฝั่งซ้าย: QR Code สแกนผ่านมือถือ -->
+          <div class="hero-qr-card">
+            <div class="hero-qr-header">
+              <span class="qr-pulse-dot"></span>
+              <span style="font-weight:800; font-size:14.5px; color:var(--ios-label);">สแกนด้วยกล้องมือถือ</span>
+            </div>
+            
+            <div class="hero-qr-frame">
+              <img id="heroQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fwww.rov.in.th%2Fhero" alt="QR Code เลือกตัวละคร RoV" width="190" height="190">
+            </div>
+
+            <div class="hero-qr-actions">
+              <a id="heroQrLink" href="https://www.rov.in.th/hero" target="_blank" class="hero-qr-btn primary">
+                🌐 เปิดเว็บทางการ RoV (rov.in.th/hero)
+              </a>
+              <button type="button" class="hero-qr-btn secondary" onclick="changeHeroQrUrl()">
+                ✏️ แก้ไขลิงก์ QR Code
+              </button>
+            </div>
+
+            <div class="hero-qr-tip">
+              💡 ครูสามารถกดปุ่ม <b>"แก้ไขลิงก์"</b> เพื่อใส่ลิงก์ Google Form หรือ Google Sheet ของห้องเรียนได้ทันที
+            </div>
+          </div>
+
+          <!-- ฝั่งขวา: กระดานตัวละคร RoV สด (กดล็อกตัวละครบนจอ ไม่ให้ซ้ำกัน) -->
+          <div class="hero-board-card">
+            <div class="hero-board-toolbar">
+              <div class="hero-board-status">
+                <span id="heroCountBadge" class="hero-counter-badge">เลือกแล้ว <b id="claimedCount">0</b> / <span id="totalHeroesCount">110</span> ตัว</span>
+                <span class="hero-board-hint">แตะที่การ์ดตัวละครเพื่อพิมพ์ชื่อจอง</span>
+              </div>
+              <div class="hero-board-actions">
+                <button type="button" class="hero-board-btn view-claimed" onclick="openClaimedListModal()">📋 ดูตัวละครที่เลือกแล้ว (<span id="claimedBtnCount">0</span>)</button>
+                <button type="button" class="hero-board-btn random" onclick="randomClaimHero()">🎲 สุ่มตัวละครให้ฉัน</button>
+                <button type="button" class="hero-board-btn reset" onclick="resetAllHeroClaims()">↺ รีเซ็ตทั้งหมด</button>
+              </div>
+            </div>
+            
+            <!-- แถบตัวกรองสายและช่องค้นหา -->
+            <div class="hero-filter-bar">
+              <div class="hero-filter-tabs">
+                <button type="button" class="hero-tab-btn active" onclick="filterHeroRole('all', this)">ทั้งหมด</button>
+                <button type="button" class="hero-tab-btn claimed-tab-btn" onclick="filterHeroRole('claimed', this)">🔒 ที่เลือกแล้ว (<span id="claimedTabCount">0</span>)</button>
+                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แครี่', this)">🏹 แครี่</button>
+                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แอสซาซิน', this)">🗡️ แอสซาซิน</button>
+                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('เมจ', this)">⚡ เมจ</button>
+                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('ไฟต์เตอร์', this)">⚔️ ไฟต์เตอร์</button>
+                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แทงค์', this)">🛡️ แทงค์</button>
+                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('ซัพพอร์ต', this)">🌿 ซัพพอร์ต</button>
+              </div>
+              <div class="hero-search-wrap">
+                <input type="text" id="heroSearchInput" class="hero-search-input" placeholder="🔍 ค้นหาชื่อฮีโร่ เช่น Valhein..." oninput="onHeroSearch(this.value)">
+              </div>
+            </div>
+
+            <!-- หมวดหมู่และรายชื่อตัวละคร -->
+            <div class="hero-cards-grid" id="heroCardsGrid">
+              <!-- ตัวละครจะถูกสร้างโดยอัตโนมัติผ่าน JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer-strip">
+        <span>06 // HERO SELECTION = ภารกิจจับจองตัวละครประจำตัว เพื่อเตรียมเสกหน้าเว็บในสไลด์ถัดไป</span>
+        <span>สไลด์ 6 / 10</span>
+      </div>
+    </section>
+
 
     <!-- ==========================================
          สไลด์ที่ 6: เรามาเริ่มใช้ HTML และ CSS กันเถอะ
@@ -1335,11 +1426,11 @@
                   <button id="s6SolutionBtn" class="s6-solution-btn" onclick="toggleS6Solution()">ดูเฉลย</button>
                 </div>
 
-                <div style="text-align: left; font-size: 17.5px; font-weight: 900; color: #141414; margin: 2px 0 4px 0;">
+                <div style="text-align: left; font-size: 17.5px; font-weight: 900; color: var(--ios-label, #141414); margin: 2px 0 4px 0;">
                   เสกหน้าเว็บฮีโร่ RoV ตัวแรก!
                 </div>
 
-                <div class="s6-mission-list" style="padding-left: 14px; font-size: 14.5px; color: #141414; line-height: 1.6;">
+                <div class="s6-mission-list" style="padding-left: 14px; font-size: 14.5px; color: var(--ios-label, #141414); line-height: 1.6;">
                   <div>1. &nbsp;ชื่อตัว ละคร ROV ในดวงใจ 1 ตัว</div>
                   <div>2. &nbsp;title bar เป็นชื่อตัวละคร นั้นๆ</div>
                 </div>
@@ -1368,7 +1459,7 @@
 
       <div class="slide-footer-strip">
         <span>NOTE // ในสัปดาห์นี้ เราจะเริ่มเขียนโครงสร้าง HTML ก่อน แล้วค่อยตามด้วย CSS แต่งสีในสไลด์ถัดไป</span>
-        <span>สไลด์ 6 / 9</span>
+        <span>สไลด์ 7 / 10</span>
       </div>
     </section>
 
@@ -1452,7 +1543,7 @@
                 <button id="s7SolutionBtn" class="s6-solution-btn" onclick="toggleS7Solution()">ดูโค้ดเฉลย</button>
               </div>
 
-              <div class="s6-mission-list" style="padding-left: 6px; font-size: 14.5px; color: #141414; line-height: 1.6; margin: 2px 0;">
+              <div class="s6-mission-list" style="padding-left: 6px; font-size: 14.5px; color: var(--ios-label, #141414); line-height: 1.6; margin: 2px 0;">
                 <div>1. &nbsp;เพิ่ม <b>วลีประจำตัว / คำคมตัวละคร</b> ของตัวละครนั้นๆ</div>
                 <div>2. &nbsp;เปลี่ยน <b>สี</b> และ <b>ขนาด</b> ที่แตกต่างออกไป</div>
               </div>
@@ -1480,7 +1571,7 @@
 
       <div class="slide-footer-strip">
         <span>NOTE // ฝั่งซ้ายคือโค้ด CSS &amp; HTML ที่ใช้สั่งการ | ฝั่งขวาคือผลลัพธ์หน้าเว็บ &amp; ภารกิจท้าประลอง</span>
-        <span>สไลด์ 7 / 9</span>
+        <span>สไลด์ 8 / 10</span>
       </div>
     </section>
 
@@ -1575,7 +1666,7 @@
                 <button id="s8SolutionBtn" class="s6-solution-btn" onclick="toggleS8Solution()">ดูโค้ดตัวอย่าง</button>
               </div>
 
-              <div class="s6-mission-list" style="padding-left: 6px; font-size: 14px; color: #141414; line-height: 1.55; margin: 2px 0;">
+              <div class="s6-mission-list" style="padding-left: 6px; font-size: 14px; color: var(--ios-label, #141414); line-height: 1.55; margin: 2px 0;">
                 <div>1. &nbsp;สร้างโฟลเดอร์ชื่อ <b>images</b> แล้วนำรูปฮีโร่ไปวางไว้ข้างใน</div>
                 <div>2. &nbsp;ใช้แท็ก <b>&lt;img src="images/ชื่อรูป.png"&gt;</b> แทรกรูปลงหน้าเว็บ</div>
                 <div>3. &nbsp;ใช้ CSS ปรับขนาดรูปด้วย <b>img { width: 220px; }</b> ให้สวยงาม</div>
@@ -1604,7 +1695,7 @@
 
       <div class="slide-footer-strip">
         <span>NOTE // แทรกรูปภาพด้วยแท็ก &lt;img src="images/..."&gt; และปรับขนาดความกว้างด้วย CSS img { width: ...; }</span>
-        <span>สไลด์ 8 / 9</span>
+        <span>สไลด์ 9 / 10</span>
       </div>
     </section>
 
@@ -1707,7 +1798,7 @@
                 <button id="s9SolutionBtn" class="s6-solution-btn" onclick="toggleS9Solution()">ดูโค้ดตัวอย่าง</button>
               </div>
 
-              <div class="s6-mission-list" style="padding-left: 6px; font-size: 13.5px; color: #141414; line-height: 1.5; margin: 2px 0;">
+              <div class="s6-mission-list" style="padding-left: 6px; font-size: 13.5px; color: var(--ios-label, #141414); line-height: 1.5; margin: 2px 0;">
                 <div>1. &nbsp;ค้นหารูปภาพบนเว็บ ➡️ <b>คลิกขวาที่รูป</b> ➡️ เลือก <b>"คัดลอกที่อยู่รูปภาพ (Copy image address)"</b></div>
                 <div>2. &nbsp;นำลิงก์ URL มาวางในแท็ก <b>&lt;img src="https://..."&gt;</b> ไว้ใต้แท็ก &lt;p&gt; คำคม</div>
                 <div>3. &nbsp;กำหนดคลาส <b>.logo-img { width: 120px; }</b> เพื่อปรับขนาดโลโก้ให้พอดี</div>
@@ -1736,7 +1827,7 @@
 
       <div class="slide-footer-strip">
         <span>NOTE // ดึงรูปภาพจากอินเทอร์เน็ตได้ทันทีโดยไม่ต้องโหลดลงเครื่อง ด้วยการใส่ลิงก์ URL ในแท็ก &lt;img src="https://..."&gt;</span>
-        <span>สไลด์ 9 / 9</span>
+        <span>สไลด์ 10 / 10</span>
       </div>
     </section>
 
@@ -1936,6 +2027,7 @@
       overlay.id = '__editorial_modal';
       overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.32);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px;';
       const box = document.createElement('div');
+      box.className = 'ios-modal-box';
       box.style.cssText = 'background:rgba(255,255,255,0.94);backdrop-filter:saturate(180%) blur(20px);color:#1C1C1E;max-width:310px;width:100%;border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,0.18);text-align:center;overflow:hidden;';
       box.innerHTML = `
         <div style="padding:20px 18px 16px;">
@@ -2638,5 +2730,1635 @@
     updateHeroPlayground();
     updateS6TimerDisplay();
   </script>
+<script>
+
+    /* =========================================================
+       ระบบสแกนและเลือกล็อกตัวละคร RoV (ภาพทางการ 110 ตัวจาก rov.in.th)
+    ========================================================= */
+    const ROV_HERO_LIST = [
+  {
+    "id": "airi",
+    "name": "Airi",
+    "rawName": "Airi",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/fb8a12b0dccdaee733cb0df7479245a4538231199.jpeg",
+    "url": "https://www.rov.in.th/hero/airi"
+  },
+  {
+    "id": "aleister",
+    "name": "Aleister",
+    "rawName": "Aleister",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/865b1b90b0a5c0c961bf6e56beb47e2b368550319.jpg",
+    "url": "https://www.rov.in.th/hero/aleister"
+  },
+  {
+    "id": "alice",
+    "name": "Alice (อลิซ)",
+    "rawName": "Alice",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301180.png",
+    "url": "https://www.rov.in.th/hero/alice"
+  },
+  {
+    "id": "allain",
+    "name": "Allain (อัลเลน)",
+    "rawName": "Allain",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/0c8dc05e988fbd87b5d30b368b8008ec.jpg",
+    "url": "https://www.rov.in.th/hero/allain"
+  },
+  {
+    "id": "amily",
+    "name": "Amily",
+    "rawName": "Amily",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301930.png",
+    "url": "https://www.rov.in.th/hero/amily"
+  },
+  {
+    "id": "annette",
+    "name": "Annette (แอนเน็ตต์)",
+    "rawName": "Annette",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305190.png",
+    "url": "https://www.rov.in.th/hero/annette"
+  },
+  {
+    "id": "aoi",
+    "name": "Aoi (อาโออิ)",
+    "rawName": "Aoi",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/210fedabab9858d9a86a36a0e22fd0c2911013802.jpeg",
+    "url": "https://www.rov.in.th/hero/aoi"
+  },
+  {
+    "id": "arduin",
+    "name": "Arduin",
+    "rawName": "Arduin",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301260.png",
+    "url": "https://www.rov.in.th/hero/arduin"
+  },
+  {
+    "id": "arum",
+    "name": "Arum",
+    "rawName": "Arum",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301870.png",
+    "url": "https://www.rov.in.th/hero/arum"
+  },
+  {
+    "id": "astrid",
+    "name": "Astrid",
+    "rawName": "Astrid",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305020.png",
+    "url": "https://www.rov.in.th/hero/astrid"
+  },
+  {
+    "id": "ata",
+    "name": "Ata",
+    "rawName": "Ata",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/bc077a5ecf509b309fc06fbbae34d4a7.jpg",
+    "url": "https://www.rov.in.th/hero/ata"
+  },
+  {
+    "id": "aya",
+    "name": "Aya (อาย่า)",
+    "rawName": "Aya",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/d7eb3abf05ebf7c588efcd1c4426b6ea928761324.jpg",
+    "url": "https://www.rov.in.th/hero/aya"
+  },
+  {
+    "id": "azzenka",
+    "name": "Azzen'Ka",
+    "rawName": "Azzen'Ka",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301270.png",
+    "url": "https://www.rov.in.th/hero/azzenka"
+  },
+  {
+    "id": "baldum",
+    "name": "Baldum",
+    "rawName": "Baldum",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305050.png",
+    "url": "https://www.rov.in.th/hero/baldum"
+  },
+  {
+    "id": "bright",
+    "name": "Bright",
+    "rawName": "Bright",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/1df9f95f158eb4bf8e3b86bc1a852220.jpg",
+    "url": "https://www.rov.in.th/hero/bright"
+  },
+  {
+    "id": "butterfly",
+    "name": "Butterfly (บัตเตอร์ฟลาย)",
+    "rawName": "Butterfly",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/953686dacc7e2900a7c3e557f9a289a0804234356.jpeg",
+    "url": "https://www.rov.in.th/hero/butterfly"
+  },
+  {
+    "id": "capheny",
+    "name": "Capheny (คาเฟนี่)",
+    "rawName": "Capheny",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305240.png",
+    "url": "https://www.rov.in.th/hero/capheny"
+  },
+  {
+    "id": "celica",
+    "name": "Celica",
+    "rawName": "Celica",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/977f2da94839af7212b8071b2d4e25aa.jpg",
+    "url": "https://www.rov.in.th/hero/celica"
+  },
+  {
+    "id": "chaugnar",
+    "name": "Chaugnar",
+    "rawName": "Chaugnar",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301130.png",
+    "url": "https://www.rov.in.th/hero/chaugnar"
+  },
+  {
+    "id": "cresht",
+    "name": "Cresht",
+    "rawName": "Cresht",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301710.png",
+    "url": "https://www.rov.in.th/hero/cresht"
+  },
+  {
+    "id": "darcy",
+    "name": "D'Arcy",
+    "rawName": "D'Arcy",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305230.png",
+    "url": "https://www.rov.in.th/hero/darcy"
+  },
+  {
+    "id": "dextra",
+    "name": "Dextra",
+    "rawName": "Dextra",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/ecefc7e37ee6ebd911f20cb85e3cf114.jpg",
+    "url": "https://www.rov.in.th/hero/dextra"
+  },
+  {
+    "id": "diao-chan",
+    "name": "Diao chan",
+    "rawName": "Diao chan",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/2739ce8e4cba10bbbf586d9305c0bc6d278501387.png",
+    "url": "https://www.rov.in.th/hero/diao-chan"
+  },
+  {
+    "id": "dirak",
+    "name": "Dirak",
+    "rawName": "Dirak",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/5a0aa13473e99882dd2bc386e65a757a.jpg",
+    "url": "https://www.rov.in.th/hero/dirak"
+  },
+  {
+    "id": "elandorr",
+    "name": "Eland'orr",
+    "rawName": "Eland'orr",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/44644fdbed6c3d262d8d99d72fc88abd.jpg",
+    "url": "https://www.rov.in.th/hero/elandorr"
+  },
+  {
+    "id": "elsu",
+    "name": "Elsu (เอลสุ)",
+    "rawName": "Elsu",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301960.png",
+    "url": "https://www.rov.in.th/hero/elsu"
+  },
+  {
+    "id": "enzo",
+    "name": "Enzo",
+    "rawName": "Enzo",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/52082f355647d254c4b45a6eab022ef0194524062.jpeg",
+    "url": "https://www.rov.in.th/hero/enzo"
+  },
+  {
+    "id": "errol",
+    "name": "Errol",
+    "rawName": "Errol",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/9533ebf490c391b2db65bf079b4bf749.jpg",
+    "url": "https://www.rov.in.th/hero/errol"
+  },
+  {
+    "id": "fennik",
+    "name": "Fennik",
+    "rawName": "Fennik",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301730.png",
+    "url": "https://www.rov.in.th/hero/fennik"
+  },
+  {
+    "id": "florentino",
+    "name": "Florentino (ฟลอเรนติโน)",
+    "rawName": "Florentino",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305210.png",
+    "url": "https://www.rov.in.th/hero/florentino"
+  },
+  {
+    "id": "gildur",
+    "name": "Gildur (กิลเดอร์)",
+    "rawName": "Gildur",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301080.png",
+    "url": "https://www.rov.in.th/hero/gildur"
+  },
+  {
+    "id": "grakk",
+    "name": "Grakk",
+    "rawName": "Grakk",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301750.png",
+    "url": "https://www.rov.in.th/hero/grakk"
+  },
+  {
+    "id": "hayate",
+    "name": "Hayate (ฮายาเตะ)",
+    "rawName": "Hayate",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301320.png",
+    "url": "https://www.rov.in.th/hero/hayate"
+  },
+  {
+    "id": "iggy",
+    "name": "IGGY",
+    "rawName": "IGGY",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/76c762a4ceee074fe4459a483350dbe4258081001.jpeg",
+    "url": "https://www.rov.in.th/hero/iggy"
+  },
+  {
+    "id": "ignis",
+    "name": "Ignis (อิกนิส)",
+    "rawName": "Ignis",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301240.png",
+    "url": "https://www.rov.in.th/hero/ignis"
+  },
+  {
+    "id": "ilumia",
+    "name": "Illumia",
+    "rawName": "Illumia",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301360.png",
+    "url": "https://www.rov.in.th/hero/ilumia"
+  },
+  {
+    "id": "ishar",
+    "name": "Ishar",
+    "rawName": "Ishar",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/38234f18a68b8d881c3c40824e10482a.jpg",
+    "url": "https://www.rov.in.th/hero/ishar"
+  },
+  {
+    "id": "jinna",
+    "name": "Jinna",
+    "rawName": "Jinna",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301150.png",
+    "url": "https://www.rov.in.th/hero/jinna"
+  },
+  {
+    "id": "kahlii",
+    "name": "Kahlii",
+    "rawName": "Kahlii",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301100.png",
+    "url": "https://www.rov.in.th/hero/kahlii"
+  },
+  {
+    "id": "keera",
+    "name": "Keera (คีร่า)",
+    "rawName": "Keera",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/4c631eb81c40729aa258cc00774b2792.jpg",
+    "url": "https://www.rov.in.th/hero/keera"
+  },
+  {
+    "id": "kilgroth",
+    "name": "Kil'Groth",
+    "rawName": "Kil'Groth",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301390.png",
+    "url": "https://www.rov.in.th/hero/kilgroth"
+  },
+  {
+    "id": "kriknak",
+    "name": "Kriknak (คริกแนก)",
+    "rawName": "Kriknak",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301620.png",
+    "url": "https://www.rov.in.th/hero/kriknak"
+  },
+  {
+    "id": "krixi",
+    "name": "Krixi (คริกซี่)",
+    "rawName": "Krixi",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301060.png",
+    "url": "https://www.rov.in.th/hero/krixi"
+  },
+  {
+    "id": "krizzix",
+    "name": "Krizzix (กริซซิกซ์)",
+    "rawName": "Krizzix",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/c416277e6010025f3ad1b3a585291367.png",
+    "url": "https://www.rov.in.th/hero/krizzix"
+  },
+  {
+    "id": "lauriel",
+    "name": "Lauriel (ลอเรียล)",
+    "rawName": "Lauriel",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301410.png",
+    "url": "https://www.rov.in.th/hero/lauriel"
+  },
+  {
+    "id": "laville",
+    "name": "Laville (ลาวิลล์)",
+    "rawName": "Laville",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/c3e8a62d08efa403fe9749696b6bdafe.jpg",
+    "url": "https://www.rov.in.th/hero/laville"
+  },
+  {
+    "id": "liliana",
+    "name": "Liliana (ลิเลียน่า)",
+    "rawName": "Liliana",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305100.png",
+    "url": "https://www.rov.in.th/hero/liliana"
+  },
+  {
+    "id": "lindis",
+    "name": "Lindis",
+    "rawName": "Lindis",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301770.png",
+    "url": "https://www.rov.in.th/hero/lindis"
+  },
+  {
+    "id": "lorion",
+    "name": "Lorion",
+    "rawName": "Lorion",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/8bfeffe5e464f8862217c7305dbc52fe.jpg",
+    "url": "https://www.rov.in.th/hero/lorion"
+  },
+  {
+    "id": "lu-bu",
+    "name": "Lu Bu (ลิโป้)",
+    "rawName": "Lu Bu",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301280.png",
+    "url": "https://www.rov.in.th/hero/lu-bu"
+  },
+  {
+    "id": "lumburr",
+    "name": "Lumburr",
+    "rawName": "Lumburr",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301680.png",
+    "url": "https://www.rov.in.th/hero/lumburr"
+  },
+  {
+    "id": "maloch",
+    "name": "Maloch (มาลอค)",
+    "rawName": "Maloch",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301230.png",
+    "url": "https://www.rov.in.th/hero/maloch"
+  },
+  {
+    "id": "marja",
+    "name": "Marja",
+    "rawName": "Marja",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301210.png",
+    "url": "https://www.rov.in.th/hero/marja"
+  },
+  {
+    "id": "max",
+    "name": "Max",
+    "rawName": "Max",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301800.png",
+    "url": "https://www.rov.in.th/hero/max"
+  },
+  {
+    "id": "mganga",
+    "name": "Mganga",
+    "rawName": "Mganga",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301190.png",
+    "url": "https://www.rov.in.th/hero/mganga"
+  },
+  {
+    "id": "mina",
+    "name": "Mina (มิน่า)",
+    "rawName": "Mina",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301200.png",
+    "url": "https://www.rov.in.th/hero/mina"
+  },
+  {
+    "id": "moren",
+    "name": "Moren",
+    "rawName": "Moren",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301700.png",
+    "url": "https://www.rov.in.th/hero/moren"
+  },
+  {
+    "id": "mortos",
+    "name": "Mortos",
+    "rawName": "Mortos",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/14775da68e9b3427a5626cf04d9448bc688675385.jpg",
+    "url": "https://www.rov.in.th/hero/mortos"
+  },
+  {
+    "id": "murad",
+    "name": "Murad (มูราด)",
+    "rawName": "Murad",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301310.png",
+    "url": "https://www.rov.in.th/hero/murad"
+  },
+  {
+    "id": "nakroth",
+    "name": "Nakroth (นาครอท)",
+    "rawName": "Nakroth",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/0b1620c324e7800851b412a9439a689b122140483.jpeg",
+    "url": "https://www.rov.in.th/hero/nakroth"
+  },
+  {
+    "id": "natalya",
+    "name": "Natalya",
+    "rawName": "Natalya",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301420.png",
+    "url": "https://www.rov.in.th/hero/natalya"
+  },
+  {
+    "id": "omega",
+    "name": "Omega",
+    "rawName": "Omega",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301140.png",
+    "url": "https://www.rov.in.th/hero/omega"
+  },
+  {
+    "id": "omen",
+    "name": "Omen (โอเมน)",
+    "rawName": "Omen",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/74fee9655c49277cd28834c189574987.png",
+    "url": "https://www.rov.in.th/hero/omen"
+  },
+  {
+    "id": "ormarr",
+    "name": "Ormarr",
+    "rawName": "Ormarr",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301170.png",
+    "url": "https://www.rov.in.th/hero/ormarr"
+  },
+  {
+    "id": "paine",
+    "name": "Paine",
+    "rawName": "Paine",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/7f56b60892d0215f36f436e0b6d812fa.jpg",
+    "url": "https://www.rov.in.th/hero/paine"
+  },
+  {
+    "id": "preyta",
+    "name": "Preyta",
+    "rawName": "Preyta",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301480.png",
+    "url": "https://www.rov.in.th/hero/preyta"
+  },
+  {
+    "id": "qi",
+    "name": "Qi",
+    "rawName": "Qi",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305280.png",
+    "url": "https://www.rov.in.th/hero/qi"
+  },
+  {
+    "id": "quillen",
+    "name": "Quillen (ควิลเลน)",
+    "rawName": "Quillen",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305180.png",
+    "url": "https://www.rov.in.th/hero/quillen"
+  },
+  {
+    "id": "raz",
+    "name": "Raz (ราซ)",
+    "rawName": "Raz",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301570.png",
+    "url": "https://www.rov.in.th/hero/raz"
+  },
+  {
+    "id": "riktor",
+    "name": "Riktor (ริคเตอร์)",
+    "rawName": "Riktor",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305150.png",
+    "url": "https://www.rov.in.th/hero/riktor"
+  },
+  {
+    "id": "rouie",
+    "name": "Rouie",
+    "rawName": "Rouie",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/caea84b1bebac1a0f5f0b1d0c717c5ad.jpg",
+    "url": "https://www.rov.in.th/hero/rouie"
+  },
+  {
+    "id": "rourke",
+    "name": "Rourke",
+    "rawName": "Rourke",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305120.png",
+    "url": "https://www.rov.in.th/hero/rourke"
+  },
+  {
+    "id": "roxie",
+    "name": "Roxie",
+    "rawName": "Roxie",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/9d7b3043e93366865d62465b9a310f92580957575.jpg",
+    "url": "https://www.rov.in.th/hero/roxie"
+  },
+  {
+    "id": "ryoma",
+    "name": "Ryoma",
+    "rawName": "Ryoma",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301630.png",
+    "url": "https://www.rov.in.th/hero/ryoma"
+  },
+  {
+    "id": "sephera",
+    "name": "Sephera",
+    "rawName": "Sephera",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305270.png",
+    "url": "https://www.rov.in.th/hero/sephera"
+  },
+  {
+    "id": "sinestrea",
+    "name": "Sinestrea",
+    "rawName": "Sinestrea",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/d40b1c67247e69e1b2fd63ed44d9d7cd.jpg",
+    "url": "https://www.rov.in.th/hero/sinestrea"
+  },
+  {
+    "id": "skud",
+    "name": "Skud",
+    "rawName": "Skud",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301340.png",
+    "url": "https://www.rov.in.th/hero/skud"
+  },
+  {
+    "id": "slimz",
+    "name": "Slimz (สลิมซ์)",
+    "rawName": "Slimz",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301690.png",
+    "url": "https://www.rov.in.th/hero/slimz"
+  },
+  {
+    "id": "super-man",
+    "name": "Super man",
+    "rawName": "Super man",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301400.png",
+    "url": "https://www.rov.in.th/hero/super-man"
+  },
+  {
+    "id": "taara",
+    "name": "Taara (ทาร่า)",
+    "rawName": "Taara",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301440.png",
+    "url": "https://www.rov.in.th/hero/taara"
+  },
+  {
+    "id": "tachi",
+    "name": "Tachi",
+    "rawName": "Tachi",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/e6a658b1e3485aba22fd6e401700b4d0722633259.png",
+    "url": "https://www.rov.in.th/hero/tachi"
+  },
+  {
+    "id": "teemee",
+    "name": "TeeMee",
+    "rawName": "TeeMee",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301860.png",
+    "url": "https://www.rov.in.th/hero/teemee"
+  },
+  {
+    "id": "teeri",
+    "name": "Teeri",
+    "rawName": "Teeri",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/9e694302eee95cda70d5d7878f29859f604290561.jpg",
+    "url": "https://www.rov.in.th/hero/teeri"
+  },
+  {
+    "id": "telannas",
+    "name": "Tel'Annas (เทลแอนนาส)",
+    "rawName": "Tel'Annas",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/316aedd067a6891ec9262c4791048c4e002690156.jpg",
+    "url": "https://www.rov.in.th/hero/telannas"
+  },
+  {
+    "id": "thane",
+    "name": "Thane (เธน)",
+    "rawName": "Thane",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301350.png",
+    "url": "https://www.rov.in.th/hero/thane"
+  },
+  {
+    "id": "the-flash",
+    "name": "The Flash",
+    "rawName": "The Flash",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305070.png",
+    "url": "https://www.rov.in.th/hero/the-flash"
+  },
+  {
+    "id": "thorne",
+    "name": "Thorne (ธอร์น)",
+    "rawName": "Thorne",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/177b5dc323de1f131104bc3a61a30dc5.jpg",
+    "url": "https://www.rov.in.th/hero/thorne"
+  },
+  {
+    "id": "toro",
+    "name": "Toro (โทโร่)",
+    "rawName": "Toro",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301050.png",
+    "url": "https://www.rov.in.th/hero/toro"
+  },
+  {
+    "id": "tulen",
+    "name": "Tulen (ทูเลน)",
+    "rawName": "Tulen",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301900.png",
+    "url": "https://www.rov.in.th/hero/tulen"
+  },
+  {
+    "id": "valhein",
+    "name": "Valhein (แวนเฮน)",
+    "rawName": "Valhein",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301330.png",
+    "url": "https://www.rov.in.th/hero/valhein"
+  },
+  {
+    "id": "veera",
+    "name": "Veera (วีร่า)",
+    "rawName": "Veera",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/4596bab5ebaf35a3023239179b889122653464512.jpg",
+    "url": "https://www.rov.in.th/hero/veera"
+  },
+  {
+    "id": "veres",
+    "name": "Veres",
+    "rawName": "Veres",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305200.png",
+    "url": "https://www.rov.in.th/hero/veres"
+  },
+  {
+    "id": "violet",
+    "name": "Violet (ไวโอเล็ต)",
+    "rawName": "Violet",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/8c6c8393bd8e9b873eeb2028cc5ff239784341618.png",
+    "url": "https://www.rov.in.th/hero/violet"
+  },
+  {
+    "id": "volkath",
+    "name": "Volkath",
+    "rawName": "Volkath",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/0226a3b59534f7e097b31faf55719ffc.jpg",
+    "url": "https://www.rov.in.th/hero/volkath"
+  },
+  {
+    "id": "wiro",
+    "name": "Wiro",
+    "rawName": "Wiro",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301940.png",
+    "url": "https://www.rov.in.th/hero/wiro"
+  },
+  {
+    "id": "wisp",
+    "name": "Wisp",
+    "rawName": "Wisp",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305080.png",
+    "url": "https://www.rov.in.th/hero/wisp"
+  },
+  {
+    "id": "wonder-woman",
+    "name": "Wonder Woman",
+    "rawName": "Wonder Woman",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305040.png",
+    "url": "https://www.rov.in.th/hero/wonder-woman"
+  },
+  {
+    "id": "wukong",
+    "name": "WuKong",
+    "rawName": "WuKong",
+    "role": "แอสซาซิน",
+    "roleEn": "Assassin",
+    "icon": "🗡️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/8e1736836bc737a5a9495cec55c1d64d.jpg",
+    "url": "https://www.rov.in.th/hero/wukong"
+  },
+  {
+    "id": "xeniel",
+    "name": "Xeniel",
+    "rawName": "Xeniel",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301490.png",
+    "url": "https://www.rov.in.th/hero/xeniel"
+  },
+  {
+    "id": "ybneth",
+    "name": "Y'bneth",
+    "rawName": "Y'bneth",
+    "role": "แทงค์",
+    "roleEn": "Tank",
+    "icon": "🛡️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305090.png",
+    "url": "https://www.rov.in.th/hero/ybneth"
+  },
+  {
+    "id": "yan",
+    "name": "Yan",
+    "rawName": "Yan",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/e30adc9818a781b682c88a97ff830e00605372736.jpg",
+    "url": "https://www.rov.in.th/hero/yan"
+  },
+  {
+    "id": "yena",
+    "name": "Yena (เยน่า)",
+    "rawName": "Yena",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/5c5c460fe14e67f351782aa133fbb1d5432803963.jpeg",
+    "url": "https://www.rov.in.th/hero/yena"
+  },
+  {
+    "id": "yorn",
+    "name": "Yorn (ยอร์น)",
+    "rawName": "Yorn",
+    "role": "Carry",
+    "roleEn": "Carry",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301120.png",
+    "url": "https://www.rov.in.th/hero/yorn"
+  },
+  {
+    "id": "yue",
+    "name": "Yue",
+    "rawName": "Yue",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/215047bd2e8615e7ca6758d94e65b053913347022.jpg",
+    "url": "https://www.rov.in.th/hero/yue"
+  },
+  {
+    "id": "zanis",
+    "name": "Zanis",
+    "rawName": "Zanis",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301290.png",
+    "url": "https://www.rov.in.th/hero/zanis"
+  },
+  {
+    "id": "zata",
+    "name": "Zata (ซาต้า)",
+    "rawName": "Zata",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/e6cdecc7664a50ccc8bdef6172479882.jpg",
+    "url": "https://www.rov.in.th/hero/zata"
+  },
+  {
+    "id": "zephys",
+    "name": "Zephys",
+    "rawName": "Zephys",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/a19d433210391d6be2774f3fa5a7cd21087807594.jpg",
+    "url": "https://www.rov.in.th/hero/zephys"
+  },
+  {
+    "id": "zill",
+    "name": "Zill (ซิลล์)",
+    "rawName": "Zill",
+    "role": "เมจ",
+    "roleEn": "Mage",
+    "icon": "⚡",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/301460.png",
+    "url": "https://www.rov.in.th/hero/zill"
+  },
+  {
+    "id": "zip",
+    "name": "Zip",
+    "rawName": "Zip",
+    "role": "ซัพพอร์ต",
+    "roleEn": "Support",
+    "icon": "🌿",
+    "image": "https://cdn-webth.garenanow.com/webth/cdn/gth/rov/non-events/official/5248fb3ed974b26ee5a0548f4a4c7bdb604470912.jpeg",
+    "url": "https://www.rov.in.th/hero/zip"
+  },
+  {
+    "id": "zuka",
+    "name": "Zuka",
+    "rawName": "Zuka",
+    "role": "ไฟต์เตอร์",
+    "roleEn": "Fighter",
+    "icon": "⚔️",
+    "image": "https://cdn-webth.garenanow.com/mgames/kgcenter/th/Art_Resources/UI/Dynamic/Icon/305030.png",
+    "url": "https://www.rov.in.th/hero/zuka"
+  }
+];
+
+    const ROV_STORAGE_KEY = 'wc_rov_hero_claims';
+    const ROV_QR_KEY = 'wc_rov_qr_url';
+    let currentHeroRoleFilter = 'all';
+    let currentHeroSearchQuery = '';
+
+    function getHeroClaims() {
+      try {
+        const data = localStorage.getItem(ROV_STORAGE_KEY);
+        return data ? JSON.parse(data) : {};
+      } catch (e) { return {}; }
+    }
+
+    function saveHeroClaims(claims) {
+      try { localStorage.setItem(ROV_STORAGE_KEY, JSON.stringify(claims)); } catch (e) {}
+    }
+
+    function renderHeroGrid() {
+      const grid = document.getElementById('heroCardsGrid');
+      if (!grid) return;
+      const claims = getHeroClaims();
+      const claimedKeys = Object.keys(claims);
+
+      const countEl = document.getElementById('claimedCount');
+      if (countEl) countEl.innerText = claimedKeys.length;
+
+      const totalEl = document.getElementById('totalHeroesCount');
+      if (totalEl) totalEl.innerText = ROV_HERO_LIST.length;
+
+      const btnCountEl = document.getElementById('claimedBtnCount');
+      if (btnCountEl) btnCountEl.innerText = claimedKeys.length;
+
+      const tabCountEl = document.getElementById('claimedTabCount');
+      if (tabCountEl) tabCountEl.innerText = claimedKeys.length;
+
+      const q = currentHeroSearchQuery.toLowerCase().trim();
+      const filtered = ROV_HERO_LIST.filter(hero => {
+        let matchRole = false;
+        if (currentHeroRoleFilter === 'all') matchRole = true;
+        else if (currentHeroRoleFilter === 'claimed') matchRole = Boolean(claims[hero.id]);
+        else matchRole = hero.role === currentHeroRoleFilter;
+
+        const matchSearch = !q || hero.name.toLowerCase().includes(q) || hero.id.toLowerCase().includes(q) || (claims[hero.id] && claims[hero.id].toLowerCase().includes(q));
+        return matchRole && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1 / -1; text-align:center; padding:36px 16px; color:var(--ios-secondary); font-size:14px;">ไม่พบตัวละครที่ค้นหา ลองเปลี่ยนคำค้นหาดูนะครับ ✨</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(hero => {
+        const owner = claims[hero.id];
+        const isClaimed = Boolean(owner);
+        return `
+          <div class="hero-card-item ${isClaimed ? 'claimed' : 'available'}" onclick="clickHeroCard('${hero.id}')">
+            <div class="hero-avatar-wrap">
+              <img src="${hero.image}" alt="${hero.name}" class="hero-avatar-img" loading="lazy" onerror="this.src='images/valhein.png'">
+              <span class="hero-role-badge role-${hero.roleEn}">${hero.icon} ${hero.role}</span>
+              ${isClaimed ? '<span class="hero-lock-badge">🔒 จองแล้ว</span>' : ''}
+            </div>
+            <div class="hero-card-info">
+              <div class="hero-name-label" title="${hero.name}">${hero.name}</div>
+              <div class="hero-owner-label">
+                ${isClaimed ? '👤 <b>' + escapeHtml(owner) + '</b>' : '<span class="tap-to-pick">แตะเพื่อเลือกตัวนี้ ✨</span>'}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+      });
+    }
+
+    function filterHeroRole(role, btn) {
+      currentHeroRoleFilter = role;
+      document.querySelectorAll('.hero-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderHeroGrid();
+    }
+
+    function onHeroSearch(val) {
+      currentHeroSearchQuery = val || '';
+      renderHeroGrid();
+    }
+
+    /* ===== ระบบ Custom Pop-up สไตล์ iOS สำหรับเลือกตัวละคร ===== */
+    
+    /* ===== หน้าต่างแสดงสรุปรายชื่อตัวละครที่ถูกเลือกแล้ว ===== */
+    
+    /* =========================================================
+       ระบบโชว์ตัวละครฮีโร่เต็มจอโปรเจกเตอร์ (Champion Lock-In Splash)
+    ========================================================= */
+    function playHeroLockSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+        const notes = [261.63, 329.63, 392.00, 523.25, 659.25]; // C4, E4, G4, C5, E5
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = idx === notes.length - 1 ? 'sine' : 'triangle';
+          const startTime = ctx.currentTime + idx * 0.07;
+          osc.frequency.setValueAtTime(freq, startTime);
+          gain.gain.setValueAtTime(0, startTime);
+          gain.gain.linearRampToValueAtTime(0.24, startTime + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.7);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(startTime);
+          osc.stop(startTime + 0.75);
+        });
+      } catch (e) {}
+    }
+
+    function triggerChampionLockInSplash(hero, studentName) {
+      if (!hero) return;
+      playHeroLockSound();
+
+      // ปิด modal เดิมถ้ามี
+      const old = document.getElementById('__rovChampionSplashOverlay');
+      if (old) old.remove();
+
+      const overlay = document.createElement('div');
+      overlay.id = '__rovChampionSplashOverlay';
+      overlay.className = 'rov-splash-overlay';
+      overlay.innerHTML = `
+        <div class="rov-splash-backdrop"></div>
+        <div class="rov-splash-card">
+          <div class="rov-splash-header-tag">⚡ CHAMPION LOCKED IN! ⚡</div>
+          <div class="rov-splash-img-wrap">
+            <img src="${hero.image}" alt="${hero.name}" class="rov-splash-hero-img" onerror="this.src='images/valhein.png'">
+            <div class="rov-splash-glow"></div>
+          </div>
+          <div class="rov-splash-role">${hero.icon} ${hero.role}</div>
+          <div class="rov-splash-title">${hero.name}</div>
+          <div class="rov-splash-player-pill">
+            <span>🎮 ผู้เล่น:</span>
+            <b>${escapeHtml(studentName)}</b>
+          </div>
+          <div class="rov-splash-tip">แตะที่ใดก็ได้เพื่อปิด หรือจะปิดเองอัตโนมัติใน 3.5 วินาที</div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      const timer = setTimeout(() => closeSplash(), 3800);
+      function closeSplash() {
+        clearTimeout(timer);
+        overlay.classList.add('closing');
+        setTimeout(() => overlay.remove(), 260);
+      }
+      overlay.onclick = closeSplash;
+    }
+
+    /* ===== เชื่อมต่อระบบ Live Sync ข้ามอุปกรณ์ (มือถือเด็ก ➡️ จอโปรเจกเตอร์) ===== */
+    const LIVE_ROOM_KEY = 'wc_rov_live_room_id';
+    function getLiveRoomId() {
+      let r = localStorage.getItem(LIVE_ROOM_KEY);
+      if (!r) {
+        r = 'rov_room_' + Math.floor(1000 + Math.random() * 9000);
+        localStorage.setItem(LIVE_ROOM_KEY, r);
+      }
+      return r;
+    }
+
+    function initProjectorLiveSync() {
+      const roomId = getLiveRoomId();
+      try {
+        const sseUrl = 'https://ntfy.sh/' + roomId + '/sse';
+        const eventSource = new EventSource(sseUrl);
+        eventSource.onmessage = function(event) {
+          try {
+            const data = JSON.parse(event.data);
+            if (data && data.message) {
+              const payload = JSON.parse(data.message);
+              if (payload && payload.heroId && payload.studentName) {
+                const claims = getHeroClaims();
+                claims[payload.heroId] = payload.studentName;
+                saveHeroClaims(claims);
+                renderHeroGrid();
+
+                const hero = ROV_HERO_LIST.find(h => h.id === payload.heroId);
+                if (hero) {
+                  triggerChampionLockInSplash(hero, payload.studentName);
+                }
+              }
+            }
+          } catch (e) {}
+        };
+      } catch (e) {}
+    }
+
+    function openClaimedListModal(newHeroId) {
+      closeCustomModal();
+      const claims = getHeroClaims();
+      const claimedKeys = Object.keys(claims);
+
+      const claimedHeroes = claimedKeys.map(id => {
+        const hero = ROV_HERO_LIST.find(h => h.id === id);
+        return hero ? { ...hero, owner: claims[id], isNew: hero.id === newHeroId } : null;
+      }).filter(Boolean);
+
+      // เรียงให้ตัวที่เพิ่งเลือกมาอยู่บนสุด
+      if (newHeroId) {
+        claimedHeroes.sort((a, b) => (b.id === newHeroId ? 1 : 0) - (a.id === newHeroId ? 1 : 0));
+      }
+
+      const newHero = newHeroId ? ROV_HERO_LIST.find(h => h.id === newHeroId) : null;
+      const overlay = document.createElement('div');
+      overlay.id = '__iosCustomModal';
+      overlay.className = 'ios-custom-overlay';
+
+      let listHtml = '';
+      if (claimedHeroes.length === 0) {
+        listHtml = `
+          <div style="text-align:center; padding:40px 20px; color:var(--ios-secondary);">
+            <div style="font-size:42px; margin-bottom:8px;">🎯</div>
+            <div style="font-size:16px; font-weight:800; color:var(--ios-label); margin-bottom:4px;">ยังไม่มีใครเลือกล็อกตัวละคร</div>
+            <div style="font-size:13px;">แตะที่การ์ดฮีโร่บนกระดาน เพื่อเป็นคนแรกที่เลือกล็อกตัวละครได้เลย!</div>
+          </div>
+        `;
+      } else {
+        listHtml = claimedHeroes.map((hero, idx) => `
+          <div class="claimed-row-item ${hero.isNew ? 'newly-claimed' : ''}">
+            <div class="claimed-row-left">
+              <span class="claimed-row-num">${idx + 1}</span>
+              <img src="${hero.image}" alt="${hero.name}" class="claimed-row-avatar" onerror="this.src='images/valhein.png'">
+              <div>
+                <div class="claimed-row-name">${hero.name} ${hero.isNew ? '<span class="new-tag">✨ เพิ่งเลือก</span>' : ''}</div>
+                <div class="claimed-row-role">${hero.icon} ${hero.role}</div>
+              </div>
+            </div>
+            <div class="claimed-row-right">
+              <span class="claimed-owner-badge">👤 ${escapeHtml(hero.owner)}</span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const successBanner = newHero ? `
+        <div class="claimed-success-banner">
+          <span style="font-size:22px;">🎉</span>
+          <div style="text-align:left;">
+            <b style="color:#34C759; font-size:14px;">ล็อกตัวละครสำเร็จ!</b>
+            <div style="font-size:12.5px; color:var(--ios-label);">${newHero.name} ➡️ <b>${escapeHtml(claims[newHeroId])}</b></div>
+          </div>
+        </div>
+      ` : '';
+
+      overlay.innerHTML = `
+        <div class="ios-custom-card claimed-list-card">
+          <div class="claimed-modal-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-size:24px;">📋</span>
+              <div style="text-align:left;">
+                <div class="ios-modal-title" style="margin:0; font-size:18px;">ตัวละครที่ถูกเลือกแล้ว</div>
+                <div style="font-size:12.5px; color:var(--ios-secondary);">เลือกไปแล้ว ${claimedHeroes.length} จาก ${ROV_HERO_LIST.length} ตัว</div>
+              </div>
+            </div>
+            <button type="button" class="claimed-modal-close-btn" onclick="closeCustomModal()">✕</button>
+          </div>
+
+          ${successBanner}
+
+          <div class="claimed-list-scroll">
+            ${listHtml}
+          </div>
+
+          <div class="ios-modal-btn-row" style="margin-top:14px;">
+            ${claimedHeroes.length > 0 ? '<button type="button" class="ios-modal-btn btn-cancel" onclick="copyClaimedRoster()">📋 คัดลอกรายชื่อทั้งหมด</button>' : ''}
+            <button type="button" class="ios-modal-btn btn-confirm" onclick="closeCustomModal()">ปิดหน้าต่าง</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+      overlay.onclick = (e) => { if (e.target === overlay) closeCustomModal(); };
+    }
+
+    function copyClaimedRoster() {
+      const claims = getHeroClaims();
+      const claimedKeys = Object.keys(claims);
+      if (claimedKeys.length === 0) return;
+
+      const lines = claimedKeys.map((id, idx) => {
+        const hero = ROV_HERO_LIST.find(h => h.id === id);
+        return `${idx + 1}. ${hero ? hero.name : id} -> ${claims[id]}`;
+      });
+
+      const text = 'รายชื่อตัวละคร RoV ที่นักเรียนเลือก:\n' + lines.join('\n');
+      navigator.clipboard.writeText(text).then(() => {
+        alert('คัดลอกรายชื่อทั้งหมดเรียบร้อยแล้วครับ! สามารถนำไปวางลง Google Sheets หรือส่งให้ครูได้เลย');
+      }).catch(() => {
+        alert(text);
+      });
+    }
+
+    function closeCustomModal() {
+      const el = document.getElementById('__iosCustomModal');
+      if (el) el.remove();
+    }
+
+    function showHeroClaimModal(hero, onConfirm) {
+      closeCustomModal();
+      const overlay = document.createElement('div');
+      overlay.id = '__iosCustomModal';
+      overlay.className = 'ios-custom-overlay';
+      overlay.innerHTML = `
+        <div class="ios-custom-card">
+          <img src="${hero.image}" alt="${hero.name}" class="ios-modal-hero-img" onerror="this.src='images/valhein.png'">
+          <span class="ios-modal-role-pill">${hero.icon} ${hero.role}</span>
+          <div class="ios-modal-title">${hero.name}</div>
+          <div class="ios-modal-sub">กรุณาพิมพ์ชื่อหรือชื่อเล่นของคุณ เพื่อล็อกตัวละครนี้ (ไม่ให้เพื่อนเลือกซ้ำ):</div>
+          
+          <input type="text" id="__heroInputName" class="ios-modal-input" placeholder="เช่น ญอหญิง ม.0/0" maxlength="30" autocomplete="off">
+          
+          <div class="ios-modal-btn-row">
+            <button type="button" class="ios-modal-btn btn-cancel" onclick="closeCustomModal()">ยกเลิก</button>
+            <button type="button" id="__heroSubmitBtn" class="ios-modal-btn btn-confirm">✨ ยืนยันการจอง</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      const input = document.getElementById('__heroInputName');
+      const submitBtn = document.getElementById('__heroSubmitBtn');
+      setTimeout(() => input.focus(), 50);
+
+      function doSubmit() {
+        const val = input.value.trim();
+        if (!val) {
+          input.focus();
+          input.style.borderColor = '#FF3B30';
+          return;
+        }
+        closeCustomModal();
+        if (onConfirm) onConfirm(val);
+      }
+
+      submitBtn.onclick = doSubmit;
+      input.onkeydown = (e) => { if (e.key === 'Enter') doSubmit(); };
+      overlay.onclick = (e) => { if (e.target === overlay) closeCustomModal(); };
+    }
+
+    function showHeroClaimedModal(hero, owner, onRelease) {
+      closeCustomModal();
+      const overlay = document.createElement('div');
+      overlay.id = '__iosCustomModal';
+      overlay.className = 'ios-custom-overlay';
+      overlay.innerHTML = `
+        <div class="ios-custom-card">
+          <img src="${hero.image}" alt="${hero.name}" class="ios-modal-hero-img" onerror="this.src='images/valhein.png'">
+          <span class="ios-modal-role-pill">${hero.icon} ${hero.role}</span>
+          <div class="ios-modal-title">${hero.name}</div>
+          <div class="ios-modal-claimed-badge">🔒 มีผู้จองแล้วโดย: <b>${escapeHtml(owner)}</b></div>
+          <div class="ios-modal-sub">ตัวละครนี้ถูกเลือกไว้แล้ว หากต้องการเปิดให้เพื่อนคนอื่นเลือก สามารถกดยกเลิกการจองได้ครับ</div>
+          
+          <div class="ios-modal-btn-row">
+            <button type="button" class="ios-modal-btn btn-cancel" onclick="closeCustomModal()">ปิดหน้าต่าง</button>
+            <button type="button" id="__heroReleaseBtn" class="ios-modal-btn btn-danger">🔓 ยกเลิกการจอง</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      document.getElementById('__heroReleaseBtn').onclick = () => {
+        closeCustomModal();
+        if (onRelease) onRelease();
+      };
+      overlay.onclick = (e) => { if (e.target === overlay) closeCustomModal(); };
+    }
+
+    function showCustomPromptModal(title, sub, defaultValue, placeholder, onConfirm) {
+      closeCustomModal();
+      const overlay = document.createElement('div');
+      overlay.id = '__iosCustomModal';
+      overlay.className = 'ios-custom-overlay';
+      overlay.innerHTML = `
+        <div class="ios-custom-card">
+          <div style="font-size:32px; margin-bottom:8px;">✏️</div>
+          <div class="ios-modal-title">${title}</div>
+          <div class="ios-modal-sub">${sub}</div>
+          
+          <input type="text" id="__promptInput" class="ios-modal-input" value="${escapeHtml(defaultValue || '')}" placeholder="${escapeHtml(placeholder || '')}" autocomplete="off">
+          
+          <div class="ios-modal-btn-row">
+            <button type="button" class="ios-modal-btn btn-cancel" onclick="closeCustomModal()">ยกเลิก</button>
+            <button type="button" id="__promptConfirmBtn" class="ios-modal-btn btn-confirm">บันทึก</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      const input = document.getElementById('__promptInput');
+      const btn = document.getElementById('__promptConfirmBtn');
+      setTimeout(() => { input.focus(); input.select(); }, 50);
+
+      function doSubmit() {
+        const val = input.value.trim();
+        closeCustomModal();
+        if (onConfirm && val) onConfirm(val);
+      }
+
+      btn.onclick = doSubmit;
+      input.onkeydown = (e) => { if (e.key === 'Enter') doSubmit(); };
+      overlay.onclick = (e) => { if (e.target === overlay) closeCustomModal(); };
+    }
+
+    function showCustomConfirmModal(title, sub, confirmText, isDanger, onConfirm) {
+      closeCustomModal();
+      const overlay = document.createElement('div');
+      overlay.id = '__iosCustomModal';
+      overlay.className = 'ios-custom-overlay';
+      overlay.innerHTML = `
+        <div class="ios-custom-card">
+          <div style="font-size:34px; margin-bottom:8px;">${isDanger ? '⚠️' : '❓'}</div>
+          <div class="ios-modal-title">${title}</div>
+          <div class="ios-modal-sub">${sub}</div>
+          
+          <div class="ios-modal-btn-row">
+            <button type="button" class="ios-modal-btn btn-cancel" onclick="closeCustomModal()">ยกเลิก</button>
+            <button type="button" id="__confirmBtnAction" class="ios-modal-btn ${isDanger ? 'btn-danger' : 'btn-confirm'}">${confirmText}</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      document.getElementById('__confirmBtnAction').onclick = () => {
+        closeCustomModal();
+        if (onConfirm) onConfirm();
+      };
+      overlay.onclick = (e) => { if (e.target === overlay) closeCustomModal(); };
+    }
+
+    function clickHeroCard(heroId) {
+      const hero = ROV_HERO_LIST.find(h => h.id === heroId);
+      if (!hero) return;
+      const claims = getHeroClaims();
+
+      if (claims[heroId]) {
+        // มีคนจองแล้ว -> เปิด modal แจ้งเตือนสวยๆ
+        showHeroClaimedModal(hero, claims[heroId], () => {
+          delete claims[heroId];
+          saveHeroClaims(claims);
+          renderHeroGrid();
+        });
+        return;
+      }
+
+      // ยังว่างอยู่ -> เปิด modal พิมพ์ชื่อสวยๆ
+      showHeroClaimModal(hero, (studentName) => {
+        claims[heroId] = studentName;
+        saveHeroClaims(claims);
+        renderHeroGrid();
+        // โชว์แอนิเมชันเต็มจอโปรเจกเตอร์สุดอลังการทันที!
+        triggerChampionLockInSplash(hero, studentName);
+      });
+    }
+
+    function randomClaimHero() {
+      const claims = getHeroClaims();
+      const freeHeroes = ROV_HERO_LIST.filter(h => !claims[h.id]);
+      if (freeHeroes.length === 0) {
+        showCustomConfirmModal('เลือกครบทุกตัวแล้ว!', 'ตัวละครทั้งหมด 110 ตัวถูกเลือกครบหมดแล้วครับ', 'รับทราบ', false, null);
+        return;
+      }
+      const randomHero = freeHeroes[Math.floor(Math.random() * freeHeroes.length)];
+      showHeroClaimModal(randomHero, (studentName) => {
+        claims[randomHero.id] = studentName;
+        saveHeroClaims(claims);
+        renderHeroGrid();
+        // โชว์แอนิเมชันเต็มจอโปรเจกเตอร์สุดอลังการทันที!
+        triggerChampionLockInSplash(randomHero, studentName);
+      });
+    }
+
+    function resetAllHeroClaims() {
+      showCustomConfirmModal(
+        'รีเซ็ตการเลือกทั้งหมด?',
+        'คุณแน่ใจหรือไม่ว่าต้องการล้างข้อมูลการจองตัวละครทั้งหมด เพื่อเริ่มต้นเลือกใหม่?',
+        '↺ รีเซ็ตทันที',
+        true,
+        () => {
+          saveHeroClaims({});
+          renderHeroGrid();
+        }
+      );
+    }
+
+    function updateHeroQrDisplay() {
+      let url = localStorage.getItem(ROV_QR_KEY) || 'https://www.rov.in.th/hero';
+      const img = document.getElementById('heroQrImg');
+      const link = document.getElementById('heroQrLink');
+      if (img) img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' + encodeURIComponent(url);
+      if (link) link.href = url;
+    }
+
+    function changeHeroQrUrl() {
+      const current = localStorage.getItem(ROV_QR_KEY) || 'https://www.rov.in.th/hero';
+      showCustomPromptModal(
+        'แก้ไขลิงก์ QR Code',
+        'วางลิงก์เว็บทางการ RoV หรือ Google Form สำหรับให้นักเรียนสแกน:',
+        current,
+        'https://...',
+        (newUrl) => {
+          localStorage.setItem(ROV_QR_KEY, newUrl);
+          updateHeroQrDisplay();
+        }
+      );
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      renderHeroGrid();
+      updateHeroQrDisplay();
+    });
+
+    </script>
 </body>
 </html>
