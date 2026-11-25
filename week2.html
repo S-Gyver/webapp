@@ -4524,7 +4524,12 @@
     }
 
     function updateHeroQrDisplay() {
-      let url = localStorage.getItem(ROV_QR_KEY) || 'https://s-gyver.github.io/webapp/hero-select.html?room=rov_webapp_sgyver_2026';
+      let url = localStorage.getItem(ROV_QR_KEY);
+      // ถ้ารหัสเก่าเป็นเว็บ rov.in.th หรือยังไม่มีค่า ให้รีเซ็ตเป็นลิงก์ GitHub Pages ทันที
+      if (!url || url.includes('rov.in.th')) {
+        url = 'https://s-gyver.github.io/webapp/hero-select.html?room=rov_webapp_sgyver_2026';
+        localStorage.setItem(ROV_QR_KEY, url);
+      }
       const img = document.getElementById('heroQrImg');
       const link = document.getElementById('heroQrLink');
       if (img) img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' + encodeURIComponent(url);
