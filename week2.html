@@ -1296,8 +1296,7 @@
             </div>
 
             <div class="hero-qr-actions">
-              <a id="heroQrLink" href="https://www.rov.in.th/hero" target="_blank" class="hero-qr-btn primary">
-                🌐 เปิดเว็บทางการ RoV (rov.in.th/hero)
+              <a id="heroQrLink" href="https://s-gyver.github.io/webapp/hero-select.html" target="_blank" class="hero-qr-btn primary">
               </a>
               <button type="button" class="hero-qr-btn secondary" onclick="changeHeroQrUrl()">
                 ✏️ แก้ไขลิงก์ QR Code
@@ -1317,32 +1316,55 @@
                 <span class="hero-board-hint">แตะที่การ์ดตัวละครเพื่อพิมพ์ชื่อจอง</span>
               </div>
               <div class="hero-board-actions">
-                <button type="button" class="hero-board-btn view-claimed" onclick="openClaimedListModal()">📋 ดูตัวละครที่เลือกแล้ว (<span id="claimedBtnCount">0</span>)</button>
+                <button type="button" class="hero-board-btn view-claimed" id="toggleViewBtn" onclick="toggleHeroBoardView()">📋 ดูตัวละครที่เลือกแล้ว (<span id="claimedBtnCount">0</span>)</button>
                 <button type="button" class="hero-board-btn random" onclick="randomClaimHero()">🎲 สุ่มตัวละครให้ฉัน</button>
                 <button type="button" class="hero-board-btn reset" onclick="resetAllHeroClaims()">↺ รีเซ็ตทั้งหมด</button>
               </div>
             </div>
             
-            <!-- แถบตัวกรองสายและช่องค้นหา -->
-            <div class="hero-filter-bar">
-              <div class="hero-filter-tabs">
-                <button type="button" class="hero-tab-btn active" onclick="filterHeroRole('all', this)">ทั้งหมด</button>
-                <button type="button" class="hero-tab-btn claimed-tab-btn" onclick="filterHeroRole('claimed', this)">🔒 ที่เลือกแล้ว (<span id="claimedTabCount">0</span>)</button>
-                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แครี่', this)">🏹 แครี่</button>
-                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แอสซาซิน', this)">🗡️ แอสซาซิน</button>
-                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('เมจ', this)">⚡ เมจ</button>
-                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('ไฟต์เตอร์', this)">⚔️ ไฟต์เตอร์</button>
-                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แทงค์', this)">🛡️ แทงค์</button>
-                <button type="button" class="hero-tab-btn" onclick="filterHeroRole('ซัพพอร์ต', this)">🌿 ซัพพอร์ต</button>
+            <!-- หน้าที่ 1: เลือกแชมเปียน (Selector View) -->
+            <div id="heroSelectorView" class="hero-view-panel active">
+              <div class="hero-filter-bar">
+                <div class="hero-filter-tabs">
+                  <button type="button" class="hero-tab-btn active" onclick="filterHeroRole('all', this)">ทั้งหมด</button>
+                  <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แครี่', this)">🏹 แครี่</button>
+                  <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แอสซาซิน', this)">🗡️ แอสซาซิน</button>
+                  <button type="button" class="hero-tab-btn" onclick="filterHeroRole('เมจ', this)">⚡ เมจ</button>
+                  <button type="button" class="hero-tab-btn" onclick="filterHeroRole('ไฟต์เตอร์', this)">⚔️ ไฟต์เตอร์</button>
+                  <button type="button" class="hero-tab-btn" onclick="filterHeroRole('แทงค์', this)">🛡️ แทงค์</button>
+                  <button type="button" class="hero-tab-btn" onclick="filterHeroRole('ซัพพอร์ต', this)">🌿 ซัพพอร์ต</button>
+                </div>
+                <div class="hero-search-wrap">
+                  <input type="text" id="heroSearchInput" class="hero-search-input" placeholder="🔍 ค้นหาชื่อฮีโร่ เช่น Valhein..." oninput="onHeroSearch(this.value)">
+                </div>
               </div>
-              <div class="hero-search-wrap">
-                <input type="text" id="heroSearchInput" class="hero-search-input" placeholder="🔍 ค้นหาชื่อฮีโร่ เช่น Valhein..." oninput="onHeroSearch(this.value)">
+
+              <!-- รายชื่อตัวละครให้เลือก -->
+              <div class="hero-cards-grid" id="heroCardsGrid">
+                <!-- ตัวละครจะถูกสร้างโดยอัตโนมัติผ่าน JavaScript -->
               </div>
             </div>
 
-            <!-- หมวดหมู่และรายชื่อตัวละคร -->
-            <div class="hero-cards-grid" id="heroCardsGrid">
-              <!-- ตัวละครจะถูกสร้างโดยอัตโนมัติผ่าน JavaScript -->
+            <!-- หน้าที่ 2: ดูตัวละครที่เลือกแล้ว (Claimed Roster View - ไม่ใช่ Popup แต่เป็น Tab สไลด์มาแทน) -->
+            <div id="heroClaimedView" class="hero-view-panel">
+              <div class="roster-view-header">
+                <div class="roster-view-info">
+                  <span style="font-size:22px;">📋</span>
+                  <div>
+                    <div style="font-size:16.5px; font-weight:900; color:var(--ios-label);">รายชื่อตัวละครที่นักเรียนเลือกแล้ว</div>
+                    <div style="font-size:12px; color:var(--ios-secondary);">เลือกไปแล้ว <b id="rosterCountText" style="color:#34C759;">0</b> ตัวละคร (1 คนต่อ 1 ตัว ไม่ซ้ำกัน)</div>
+                  </div>
+                </div>
+                <div class="roster-view-actions">
+                  <button type="button" class="hero-board-btn copy" onclick="copyClaimedRoster()">📋 คัดลอกรายชื่อทั้งหมด</button>
+                  <button type="button" class="hero-board-btn back-selector" onclick="toggleHeroBoardView('selector')">← กลับไปเลือกแชมเปียน</button>
+                </div>
+              </div>
+
+              <!-- รายชื่อตัวละครที่ถูกเลือกแล้ว -->
+              <div class="roster-cards-grid" id="rosterCardsGrid">
+                <!-- แสดงตัวละครที่ถูกเลือกแล้ว -->
+              </div>
             </div>
           </div>
         </div>
@@ -4035,6 +4057,99 @@
       } catch (e) {}
     }
 
+    
+    /* ===== ระบบสลับหน้า (Tabs) ระหว่างเลือกแชมเปียน กับ ดูตัวละครที่เลือกแล้ว ===== */
+    let currentBoardView = 'selector'; // 'selector' หรือ 'claimed'
+
+    function toggleHeroBoardView(targetView) {
+      if (targetView) {
+        currentBoardView = targetView;
+      } else {
+        currentBoardView = currentBoardView === 'selector' ? 'claimed' : 'selector';
+      }
+
+      const selectorView = document.getElementById('heroSelectorView');
+      const claimedView = document.getElementById('heroClaimedView');
+      const toggleBtn = document.getElementById('toggleViewBtn');
+
+      if (currentBoardView === 'claimed') {
+        if (selectorView) selectorView.classList.remove('active');
+        if (claimedView) claimedView.classList.add('active');
+        renderClaimedRosterView();
+        if (toggleBtn) {
+          toggleBtn.innerHTML = '🎮 เลือกแชมเปียน';
+          toggleBtn.className = 'hero-board-btn back-selector';
+        }
+      } else {
+        if (claimedView) claimedView.classList.remove('active');
+        if (selectorView) selectorView.classList.add('active');
+        renderHeroGrid();
+        if (toggleBtn) {
+          const claims = getHeroClaims();
+          toggleBtn.innerHTML = '📋 ดูตัวละครที่เลือกแล้ว (' + Object.keys(claims).length + ')';
+          toggleBtn.className = 'hero-board-btn view-claimed';
+        }
+      }
+    }
+
+    function renderClaimedRosterView() {
+      const grid = document.getElementById('rosterCardsGrid');
+      const countEl = document.getElementById('rosterCountText');
+      if (!grid) return;
+
+      const claims = getHeroClaims();
+      const claimedKeys = Object.keys(claims);
+      if (countEl) countEl.innerText = claimedKeys.length;
+
+      const claimedHeroes = claimedKeys.map(id => {
+        const hero = ROV_HERO_LIST.find(h => h.id === id);
+        return hero ? { ...hero, owner: claims[id] } : null;
+      }).filter(Boolean);
+
+      if (claimedHeroes.length === 0) {
+        grid.innerHTML = `
+          <div class="roster-empty-state">
+            <div style="font-size:48px; margin-bottom:10px;">🎯</div>
+            <div style="font-size:18px; font-weight:800; color:var(--ios-label); margin-bottom:6px;">ยังไม่มีใครเลือกล็อกตัวละคร</div>
+            <div style="font-size:13.5px; color:var(--ios-secondary); margin-bottom:16px;">เมื่อนักเรียนเลือกตัวละครบนจอหรือมือถือ รายชื่อจะปรากฏตรงนี้ทันที!</div>
+            <button type="button" class="hero-board-btn back-selector" onclick="toggleHeroBoardView('selector')">👉 แตะเพื่อเริ่มเลือกแชมเปียน</button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = claimedHeroes.map((hero, idx) => `
+        <div class="roster-hero-card">
+          <div class="roster-card-avatar-wrap">
+            <img src="${hero.image}" alt="${hero.name}" class="roster-card-img" onerror="this.src='images/valhein.png'">
+            <span class="roster-num-badge">#${idx + 1}</span>
+            <span class="hero-role-badge role-${hero.roleEn}">${hero.icon} ${hero.role}</span>
+          </div>
+          <div class="roster-card-details">
+            <div class="roster-hero-name">${hero.name}</div>
+            <div class="roster-owner-pill">
+              <span>👤</span>
+              <b>${escapeHtml(hero.owner)}</b>
+            </div>
+            <button type="button" class="roster-unclaim-btn" onclick="unclaimHeroFromRoster('${hero.id}')">🔓 ยกเลิกการจอง</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function unclaimHeroFromRoster(heroId) {
+      const hero = ROV_HERO_LIST.find(h => h.id === heroId);
+      const claims = getHeroClaims();
+      if (!claims[heroId]) return;
+
+      if (confirm(`ต้องการยกเลิกการจองตัวละคร "${hero ? hero.name : heroId}" ของ "${claims[heroId]}" หรือไม่?`)) {
+        delete claims[heroId];
+        saveHeroClaims(claims);
+        renderClaimedRosterView();
+        renderHeroGrid();
+      }
+    }
+
     function openClaimedListModal(newHeroId) {
       closeCustomModal();
       const claims = getHeroClaims();
@@ -4299,6 +4414,7 @@
         renderHeroGrid();
         // โชว์แอนิเมชันเต็มจอโปรเจกเตอร์สุดอลังการทันที!
         triggerChampionLockInSplash(hero, studentName);
+        setTimeout(() => toggleHeroBoardView("claimed"), 2800);
       });
     }
 
@@ -4316,6 +4432,7 @@
         renderHeroGrid();
         // โชว์แอนิเมชันเต็มจอโปรเจกเตอร์สุดอลังการทันที!
         triggerChampionLockInSplash(randomHero, studentName);
+        setTimeout(() => toggleHeroBoardView("claimed"), 2800);
       });
     }
 
