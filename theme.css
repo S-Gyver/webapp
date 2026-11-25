@@ -663,120 +663,283 @@ html[data-theme="dark"] .hero-status-pill.pill-locked {
   background: var(--ios-card);
 }
 
-/* ปรับ Grid การ์ดฮีโร่แบบมีรูป */
-.hero-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+/* =========================================================
+   สไลด์เลือกฮีโร่ RoV แบบขยายเต็มหน้าจอ และ Grid 18 คอลัมน์ต่อแถว
+========================================================= */
+.slide.hero-picker-slide {
+  max-width: min(1880px, 98vw) !important;
+  width: 98vw !important;
+}
+.hero-picker-container {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 12px 18px 8px !important;
+}
+.hero-picker-slide .hero-selection-layout {
+  display: flex !important;
   gap: 12px !important;
-  max-height: 490px !important;
+  align-items: stretch !important;
+  margin-top: 8px !important;
+}
+.hero-picker-slide .hero-qr-card {
+  width: 200px !important;
+  padding: 12px 10px !important;
+  flex-shrink: 0 !important;
+  border-radius: 16px !important;
+}
+.hero-picker-slide .hero-qr-frame {
+  margin: 6px auto !important;
+}
+.hero-picker-slide .hero-qr-frame img {
+  width: 135px !important;
+  height: 135px !important;
+}
+.hero-picker-slide .hero-qr-btn {
+  padding: 6px 10px !important;
+  font-size: 11.5px !important;
+  margin-top: 5px !important;
+}
+.hero-picker-slide .hero-qr-tip {
+  font-size: 10.5px !important;
+  padding: 6px 8px !important;
+  margin-top: 6px !important;
+}
+.hero-picker-slide .hero-board-card {
+  flex: 1 !important;
+  padding: 10px 14px !important;
+  border-radius: 16px !important;
+}
+
+/* ปรับ Grid การ์ดฮีโร่แบบ 18 การ์ดต่อแถว รองรับ Responsive ทุกขนาดจอคอม */
+.hero-cards-grid,
+.roster-cards-grid {
+  display: grid !important;
+  gap: 5px !important;
+  max-height: calc(100vh - 250px) !important;
+  min-height: 440px !important;
   overflow-y: auto !important;
   padding: 4px 6px 12px 2px !important;
 }
 
-.hero-card-item {
+/* หน้าจอคอมพิวเตอร์ขนาดใหญ่ & จอโปรเจกเตอร์: 1 แถวมี 18 การ์ด */
+@media (min-width: 1260px) {
+  .hero-cards-grid,
+  .roster-cards-grid {
+    grid-template-columns: repeat(18, minmax(0, 1fr)) !important;
+  }
+}
+/* หน้าจอโน้ตบุ๊กขนาดกลาง (1080px - 1259px): 15 การ์ด */
+@media (min-width: 1080px) and (max-width: 1259px) {
+  .hero-cards-grid,
+  .roster-cards-grid {
+    grid-template-columns: repeat(15, minmax(0, 1fr)) !important;
+  }
+}
+/* หน้าจอ 900px - 1079px: 12 การ์ด */
+@media (min-width: 900px) and (max-width: 1079px) {
+  .hero-cards-grid,
+  .roster-cards-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+  }
+}
+/* หน้าจอแท็บเล็ต 720px - 899px: 8 การ์ด */
+@media (min-width: 720px) and (max-width: 899px) {
+  .hero-cards-grid,
+  .roster-cards-grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+  }
+}
+/* หน้าจอ 500px - 719px: 5 การ์ด */
+@media (min-width: 500px) and (max-width: 719px) {
+  .hero-cards-grid,
+  .roster-cards-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+/* มือถือ < 500px: 3 การ์ด */
+@media (max-width: 499px) {
+  .hero-cards-grid,
+  .roster-cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ดีไซน์การ์ดฮีโร่และ Roster ให้กะทัดรัด คมชัด และสวยงาม */
+.hero-card-item,
+.roster-hero-card {
   background: var(--ios-card) !important;
-  border-radius: 16px !important;
-  padding: 8px !important;
+  border-radius: 9px !important;
+  padding: 3.5px !important;
   border: 1px solid var(--ios-separator) !important;
   cursor: pointer;
-  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
   display: flex !important;
   flex-direction: column !important;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+  position: relative !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
 }
-.hero-card-item:hover {
-  transform: translateY(-4px) !important;
+.hero-card-item:hover,
+.roster-hero-card:hover {
+  transform: translateY(-2px) scale(1.04) !important;
   border-color: #007AFF !important;
-  box-shadow: 0 8px 20px rgba(0, 122, 255, 0.18) !important;
+  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.22) !important;
+  z-index: 3 !important;
 }
 .hero-card-item.claimed {
   background: rgba(52, 199, 89, 0.06) !important;
-  border-color: rgba(52, 199, 89, 0.45) !important;
+  border-color: rgba(52, 199, 89, 0.5) !important;
 }
-.hero-card-item.claimed:hover {
-  border-color: #FF3B30 !important;
+.roster-hero-card {
+  border-color: rgba(52, 199, 89, 0.45) !important;
 }
 
 /* ส่วนรูปภาพอวตาร */
-.hero-avatar-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 12px;
-  overflow: hidden;
-  background: rgba(118, 118, 128, 0.12);
-  margin-bottom: 6px;
+.hero-avatar-wrap,
+.roster-card-avatar-wrap {
+  position: relative !important;
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  background: rgba(118, 118, 128, 0.12) !important;
+  margin-bottom: 2px !important;
 }
-.hero-avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.28s ease;
+.hero-avatar-img,
+.roster-card-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  transition: transform 0.22s ease !important;
 }
-.hero-card-item:hover .hero-avatar-img {
-  transform: scale(1.08);
+.hero-card-item:hover .hero-avatar-img,
+.roster-hero-card:hover .roster-card-img {
+  transform: scale(1.08) !important;
+}
+
+/* Badges สัญลักษณ์บนรูปภาพ */
+.roster-num-badge {
+  position: absolute !important;
+  top: 2px !important;
+  right: 2px !important;
+  background: rgba(0, 0, 0, 0.78) !important;
+  color: #FFD60A !important;
+  font-size: 8px !important;
+  font-weight: 900 !important;
+  padding: 1px 4px !important;
+  border-radius: 4px !important;
+  line-height: 1.1 !important;
+  z-index: 2 !important;
 }
 .hero-role-badge {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  font-size: 10px;
-  font-weight: 800;
-  padding: 2px 7px;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.65);
-  color: #FFFFFF;
-  backdrop-filter: blur(4px);
+  position: absolute !important;
+  top: 2px !important;
+  left: 2px !important;
+  font-size: 8px !important;
+  font-weight: 800 !important;
+  padding: 1px 3px !important;
+  border-radius: 4px !important;
+  background: rgba(0, 0, 0, 0.65) !important;
+  color: #FFFFFF !important;
+  line-height: 1.1 !important;
+  z-index: 2 !important;
 }
-.hero-role-badge.role-Marksman { background: rgba(255, 149, 0, 0.85); }
-.hero-role-badge.role-Assassin { background: rgba(255, 59, 48, 0.85); }
-.hero-role-badge.role-Mage     { background: rgba(175, 82, 222, 0.85); }
-.hero-role-badge.role-Fighter  { background: rgba(255, 45, 85, 0.85); }
-.hero-role-badge.role-Tank     { background: rgba(52, 199, 89, 0.85); }
-.hero-role-badge.role-Support  { background: rgba(0, 122, 255, 0.85); }
+.hero-role-badge.role-Marksman { background: rgba(255, 149, 0, 0.88) !important; }
+.hero-role-badge.role-Assassin { background: rgba(255, 59, 48, 0.88) !important; }
+.hero-role-badge.role-Mage     { background: rgba(175, 82, 222, 0.88) !important; }
+.hero-role-badge.role-Fighter  { background: rgba(255, 45, 85, 0.88) !important; }
+.hero-role-badge.role-Tank     { background: rgba(52, 199, 89, 0.88) !important; }
+.hero-role-badge.role-Support  { background: rgba(0, 122, 255, 0.88) !important; }
 
 .hero-lock-badge {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.58);
-  backdrop-filter: blur(2px);
-  color: #FFFFFF;
-  font-size: 12px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
+  position: absolute !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: blur(1.5px) !important;
+  color: #FFFFFF !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  z-index: 2 !important;
 }
 
-.hero-card-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.hero-card-info,
+.roster-card-details {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1px !important;
+  width: 100% !important;
+  align-items: center !important;
+  text-align: center !important;
+  overflow: hidden !important;
 }
-.hero-name-label {
-  font-size: 13px !important;
+.hero-name-label,
+.roster-hero-name {
+  font-size: 9.5px !important;
   font-weight: 800 !important;
   color: var(--ios-label) !important;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  width: 100% !important;
+  line-height: 1.15 !important;
+  margin: 1px 0 !important;
 }
-.hero-owner-label {
-  font-size: 11px !important;
+.hero-owner-label,
+.roster-owner-pill {
+  font-size: 8px !important;
+  font-weight: 700 !important;
   color: var(--ios-secondary) !important;
-  text-align: center;
-  min-height: 18px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  width: 100% !important;
+  line-height: 1.15 !important;
+  box-sizing: border-box !important;
+  margin: 1px 0 !important;
+}
+.roster-owner-pill {
+  background: rgba(52, 199, 89, 0.15) !important;
+  border: 0.5px solid rgba(52, 199, 89, 0.4) !important;
+  padding: 1px 3px !important;
+  border-radius: 4px !important;
+  color: #34C759 !important;
+  display: block !important;
+}
+.roster-owner-pill b {
+  color: #34C759 !important;
 }
 .tap-to-pick {
-  color: #007AFF;
-  font-weight: 700;
+  color: #007AFF !important;
+  font-weight: 700 !important;
+  font-size: 8px !important;
+}
+.roster-unclaim-btn {
+  background: rgba(255, 59, 48, 0.1) !important;
+  border: none !important;
+  color: #FF3B30 !important;
+  font-size: 7.5px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  padding: 1px 3px !important;
+  border-radius: 3px !important;
+  font-family: inherit !important;
+  width: 100% !important;
+  text-align: center !important;
+  line-height: 1.1 !important;
+  margin-top: 1px !important;
+  transition: all 0.14s ease !important;
+}
+.roster-unclaim-btn:hover {
+  background: #FF3B30 !important;
+  color: #FFFFFF !important;
 }
 
 /* Dark Mode Overrides for Avatars & Filters */
@@ -1380,106 +1543,6 @@ html[data-theme="dark"] .claimed-row-item.newly-claimed {
   gap: 8px;
 }
 
-.roster-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 14px;
-  max-height: 490px;
-  overflow-y: auto;
-  padding: 4px 6px 14px 2px;
-}
-.roster-hero-card {
-  background: var(--ios-card);
-  border: 1.5px solid rgba(52, 199, 89, 0.4);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  border-radius: 18px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-.roster-hero-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(52, 199, 89, 0.22);
-}
-.roster-card-avatar-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 14px;
-  overflow: hidden;
-  background: rgba(118, 118, 128, 0.12);
-  margin-bottom: 8px;
-}
-.roster-card-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.roster-num-badge {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: rgba(0, 0, 0, 0.7);
-  color: #FFD60A;
-  font-size: 11px;
-  font-weight: 900;
-  padding: 2px 8px;
-  border-radius: 999px;
-  backdrop-filter: blur(4px);
-}
-.roster-card-details {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: center;
-  text-align: center;
-}
-.roster-hero-name {
-  font-size: 13.5px;
-  font-weight: 800;
-  color: var(--ios-label);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-}
-.roster-owner-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: rgba(52, 199, 89, 0.15);
-  border: 1px solid rgba(52, 199, 89, 0.4);
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  color: #34C759;
-  font-weight: 800;
-  max-width: 90%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.roster-owner-pill b {
-  color: #34C759;
-}
-.roster-unclaim-btn {
-  background: transparent;
-  border: none;
-  color: var(--ios-secondary);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-family: inherit;
-  transition: all 0.14s ease;
-}
-.roster-unclaim-btn:hover {
-  background: rgba(255, 59, 48, 0.12);
-  color: #FF3B30;
-}
 .roster-empty-state {
   grid-column: 1 / -1;
   text-align: center;

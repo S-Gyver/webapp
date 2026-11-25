@@ -1291,16 +1291,16 @@
         const owner = claims[hero.id];
         const isClaimed = Boolean(owner);
         return `
-          <div class="hero-card-item ${isClaimed ? 'claimed' : 'available'}" onclick="clickHeroCard('${hero.id}')">
+          <div class="hero-card-item ${isClaimed ? 'claimed' : 'available'}" onclick="clickHeroCard('${hero.id}')" title="${hero.name} (${hero.role})">
             <div class="hero-avatar-wrap">
               <img src="${hero.image}" alt="${hero.name}" class="hero-avatar-img" loading="lazy" onerror="this.src='images/valhein.png'">
-              <span class="hero-role-badge role-${hero.roleEn}">${hero.icon} ${hero.role}</span>
-              ${isClaimed ? '<span class="hero-lock-badge">🔒 จองแล้ว</span>' : ''}
+              <span class="hero-role-badge role-${hero.roleEn}" title="${hero.role}">${hero.icon}</span>
+              ${isClaimed ? '<span class="hero-lock-badge">🔒</span>' : ''}
             </div>
             <div class="hero-card-info">
-              <div class="hero-name-label">${hero.name}</div>
-              <div class="hero-owner-label">
-                ${isClaimed ? '👤 <b>' + escapeHtml(owner) + '</b>' : '<span class="tap-to-pick">แตะเลือกตัวนี้ ✨</span>'}
+              <div class="hero-name-label" title="${hero.name}">${hero.name}</div>
+              <div class="hero-owner-label" title="${isClaimed ? escapeHtml(owner) : 'แตะเลือก'}">
+                ${isClaimed ? '👤 <b>' + escapeHtml(owner) + '</b>' : '<span class="tap-to-pick">+ ว่าง</span>'}
               </div>
             </div>
           </div>
