@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>สัปดาห์ที่ 2: เริ่มต้น Full Stack Junior (HTML + CSS) - ชุมนุม Web Application</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
       <style>
     :root {
       --ios-bg: #F2F2F7;
@@ -4032,6 +4033,12 @@
     const handledMessageIds = new Set();
     let lastHandledClaims = {};
 
+    // ⚡ Supabase Configuration
+    const SUPABASE_URL = 'https://vcqosaykxxsrknfqbcbf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjcW9zYXlreHhzcmtuZnFiY2JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1NTI4MjUsImV4cCI6MjExMTEyODgyNX0.xnmZ3T5KyLo8mZY7n0ejtw-gusjoVAaS9v8j3uRBuZA';
+    const sbClient = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+    let rovChannel = null;
+
     function getLiveRoomId() {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get('room') || DEFAULT_LIVE_ROOM;
@@ -4074,7 +4081,106 @@
       // แสดงป้ายสถานะห้อง
       const statusBadge = document.getElementById('liveRoomStatusBadge');
       if (statusBadge) {
-        statusBadge.innerHTML = '🟢 เชื่อมต่อห้องสด: <b>' + roomId + '</b>';
+        statusBadge.innerHTML = '🟢 เชื่อมต่อห้องสด (Supabase Realtime): <b>' + roomId + '</b>';
+      }
+
+      // 0. ดึงข้อมูลตัวละครที่เคยเลือกแล้วจาก Supabase มาแสดงทันทีที่เปิดจอ
+      if (sbClient) {
+        sbClient.from('rov_hero_claims')
+          .select('id, hero_id, student_name')
+          .eq('room_id', roomId)
+          .order('id', { ascending: true })
+          .then(({ data, error }) => {
+            if (!error && Array.isArray(data) && data.length > 0) {
+              const claims = getHeroClaims();
+              data.forEach(row => {
+                claims[row.hero_id] = row.student_name;
+                handledMessageIds.add('row_' + row.id);
+                handledMessageIds.add('pg_' + row.id);
+              });
+              saveHeroClaims(claims);
+              renderHeroGrid();
+              renderClaimedRosterView();
+            }
+          }).catch(e => console.log('Init claims query notice:', e));
+
+        // เชื่อมต่อ Supabase Realtime Channel
+        try {
+          rovChannel = sbClient.channel('rov_room_' + roomId, {
+            config: { broadcast: { ack: true } }
+          });
+
+          rovChannel
+            // รับสัญญาณ Broadcast จากมือถือเด็กแบบเรียลไทม์ (เร็วระดับเสี้ยววินาที)
+            .on('broadcast', { event: 'claim' }, (p) => {
+              console.log('[Supabase Realtime Broadcast] Received:', p);
+              const d = p.payload;
+              if (d && d.heroId && d.studentName) {
+                handleRemoteClaim(d.heroId, d.studentName, d.id || ('sbb_' + Date.now()));
+              }
+            })
+            // รับสัญญาณการเปลี่ยนแปลงในตาราง Postgres rov_hero_claims
+            .on('postgres_changes', {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'rov_hero_claims',
+              filter: 'room_id=eq.' + roomId
+            }, (payload) => {
+              console.log('[Supabase Postgres Change] INSERT:', payload);
+              const row = payload.new;
+              if (row && row.hero_id && row.student_name) {
+                handleRemoteClaim(row.hero_id, row.student_name, 'pg_' + row.id);
+              }
+            })
+            .on('postgres_changes', {
+              event: 'DELETE',
+              schema: 'public',
+              table: 'rov_hero_claims'
+            }, () => {
+              console.log('[Supabase Postgres Change] DELETE detected, refreshing...');
+              if (sbClient) {
+                sbClient.from('rov_hero_claims').select('hero_id, student_name').eq('room_id', roomId)
+                  .then(({ data }) => {
+                    const newClaims = {};
+                    if (Array.isArray(data)) {
+                      data.forEach(r => { newClaims[r.hero_id] = r.student_name; });
+                    }
+                    saveHeroClaims(newClaims);
+                    renderHeroGrid();
+                    renderClaimedRosterView();
+                  });
+              }
+            })
+            .subscribe((status) => {
+              console.log('[Supabase Realtime Projector] Status:', status);
+              if (statusBadge && status === 'SUBSCRIBED') {
+                statusBadge.innerHTML = '🟢 เชื่อมต่อห้องสด (Supabase Realtime Online): <b>' + roomId + '</b>';
+                statusBadge.style.background = 'rgba(52, 199, 89, 0.2)';
+                statusBadge.style.color = '#34C759';
+              }
+            });
+        } catch(e) {
+          console.error('Supabase channel subscribe error:', e);
+        }
+
+        // Failsafe Polling ทุก 2.5 วินาที ดึงจากตาราง Supabase (ป้องกันกรณีเน็ตโรงเรียนตัดชั่วขณะ)
+        setInterval(() => {
+          sbClient.from('rov_hero_claims')
+            .select('id, hero_id, student_name')
+            .eq('room_id', roomId)
+            .order('id', { ascending: true })
+            .then(({ data, error }) => {
+              if (!error && Array.isArray(data)) {
+                data.forEach(row => {
+                  const idKey = 'row_' + row.id;
+                  if (!handledMessageIds.has(idKey)) {
+                    console.log('[Supabase Poll Failsafe] Pick detected:', row);
+                    handleRemoteClaim(row.hero_id, row.student_name, idKey);
+                  }
+                });
+              }
+            }).catch(() => {});
+        }, 2500);
       }
 
       // 1. Channel สำหรับเปิดบนเบราว์เซอร์เดียวกัน (BroadcastChannel)
@@ -4103,14 +4209,14 @@
         }
       });
 
-      // 3. Channel Realtime ข้ามอุปกรณ์มือถือ (SSE ผ่าน ntfy.sh)
+      // 3. Channel Realtime ข้ามอุปกรณ์มือถือสำรอง (ntfy.sh)
       let sse = null;
       function connectSSE() {
         try {
           if (sse) { sse.close(); }
           sse = new EventSource('https://ntfy.sh/' + roomId + '/sse');
           sse.onopen = function() {
-            console.log('[LiveSync SSE] Connected to ntfy.sh/' + roomId);
+            console.log('[LiveSync SSE Fallback] Connected');
           };
           sse.onmessage = function(event) {
             try {
@@ -4119,43 +4225,17 @@
                 let payload = null;
                 try { payload = JSON.parse(data.message); } catch(_) { payload = data.message; }
                 if (payload && payload.heroId && payload.studentName) {
-                  console.log('[LiveSync SSE] Pick received:', payload);
                   handleRemoteClaim(payload.heroId, payload.studentName, data.id || ('sse_' + Date.now()));
                 }
               }
             } catch(e) {}
           };
           sse.onerror = function() {
-            setTimeout(connectSSE, 3500);
+            setTimeout(connectSSE, 4500);
           };
         } catch(e) {}
       }
       connectSSE();
-
-      // 4. Polling Fallback ทุก 1.8 วินาที ดึงข้อความ 5 นาทีล่าสุดเสมอ (ไม่มีพลาดแม้แต่ข้อความเดียว)
-      setInterval(function() {
-        fetch('https://ntfy.sh/' + roomId + '/json?poll=1&since=5m')
-          .then(res => res.text())
-          .then(raw => {
-            if (!raw) return;
-            const lines = raw.trim().split('\n');
-            lines.forEach(line => {
-              try {
-                const item = JSON.parse(line);
-                if (item && item.message && item.id) {
-                  if (handledMessageIds.has(item.id)) return;
-                  let p = null;
-                  try { p = JSON.parse(item.message); } catch(_) { p = item.message; }
-                  if (p && p.heroId && p.studentName) {
-                    console.log('[LiveSync Poll] Received pick:', p);
-                    handleRemoteClaim(p.heroId, p.studentName, item.id);
-                  }
-                }
-              } catch(_) {}
-            });
-          })
-          .catch(() => {});
-      }, 1800);
     }
 
     /* ===== ระบบสลับหน้า (Tabs) ระหว่างเลือกแชมเปียน กับ ดูตัวละครที่เลือกแล้ว ===== */
@@ -4545,6 +4625,20 @@
         () => {
           saveHeroClaims({});
           renderHeroGrid();
+          renderClaimedRosterView();
+
+          // ลบออกจาก Supabase Database
+          const roomId = getLiveRoomId();
+          if (sbClient) {
+            sbClient.from('rov_hero_claims').delete().eq('room_id', roomId)
+              .then(r => console.log('Deleted rows in Supabase:', r))
+              .catch(e => console.error(e));
+          }
+
+          // Broadcast สัญญาณ reset ไปยังมือถือเด็กทุกคน
+          if (rovChannel) {
+            rovChannel.send({ type: 'broadcast', event: 'reset', payload: { time: Date.now() } });
+          }
         }
       );
     }
@@ -4578,7 +4672,9 @@
 
     document.addEventListener('DOMContentLoaded', function() {
       renderHeroGrid();
+      renderClaimedRosterView();
       updateHeroQrDisplay();
+      initProjectorLiveSync();
     });
 
     </script>

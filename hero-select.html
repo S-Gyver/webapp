@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>เลือกตัวละคร RoV ประจำตัว</title>
   <link rel="stylesheet" href="theme.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
       --ios-bg: #000000;
@@ -1191,6 +1192,78 @@
     let currentHeroSearchQuery = '';
     let localClaims = {};
 
+    // ⚡ Supabase Configuration
+    const SUPABASE_URL = 'https://vcqosaykxxsrknfqbcbf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjcW9zYXlreHhzcmtuZnFiY2JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1NTI4MjUsImV4cCI6MjExMTEyODgyNX0.xnmZ3T5KyLo8mZY7n0ejtw-gusjoVAaS9v8j3uRBuZA';
+    const sbClient = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+    let rovChannel = null;
+
+    if (sbClient) {
+      rovChannel = sbClient.channel('rov_room_' + roomId, {
+        config: { broadcast: { ack: true } }
+      });
+
+      rovChannel
+        .on('broadcast', { event: 'claim' }, (p) => {
+          if (p && p.payload && p.payload.heroId) {
+            const claims = getHeroClaims();
+            claims[p.payload.heroId] = p.payload.studentName;
+            saveHeroClaims(claims);
+            renderHeroGrid();
+          }
+        })
+        .on('broadcast', { event: 'reset' }, () => {
+          saveHeroClaims({});
+          renderHeroGrid();
+        })
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'rov_hero_claims',
+          filter: 'room_id=eq.' + roomId
+        }, (payload) => {
+          if (payload.eventType === 'INSERT') {
+            const row = payload.new;
+            const claims = getHeroClaims();
+            claims[row.hero_id] = row.student_name;
+            saveHeroClaims(claims);
+            renderHeroGrid();
+          } else if (payload.eventType === 'DELETE') {
+            syncFromSupabase();
+          }
+        })
+        .subscribe((status) => {
+          console.log('[Supabase Realtime] Status:', status);
+          const badge = document.getElementById('roomDisplayBadge');
+          if (badge && (status === 'SUBSCRIBED' || status === 'CHANNEL_ERROR')) {
+            if (status === 'SUBSCRIBED') {
+              badge.innerHTML = '🟢 เชื่อมต่อห้องฉายโปรเจกเตอร์แล้ว (Supabase Realtime)';
+              badge.style.background = 'rgba(52, 199, 89, 0.2)';
+              badge.style.color = '#34C759';
+            }
+          }
+        });
+    }
+
+    async function syncFromSupabase() {
+      if (!sbClient) return;
+      try {
+        const { data, error } = await sbClient
+          .from('rov_hero_claims')
+          .select('hero_id, student_name')
+          .eq('room_id', roomId);
+        if (!error && Array.isArray(data)) {
+          const newClaims = {};
+          data.forEach(r => { newClaims[r.hero_id] = r.student_name; });
+          saveHeroClaims(newClaims);
+          renderHeroGrid();
+        }
+      } catch(err) {
+        console.log('Supabase sync notice:', err);
+      }
+    }
+    syncFromSupabase();
+
     function getHeroClaims() {
       try {
         const d = localStorage.getItem('wc_rov_hero_claims');
@@ -1311,7 +1384,38 @@
           id: 'm_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5)
         });
 
-        // 1. Broadcast ผ่าน window.BroadcastChannel (ถ้าเปิดบนคอมเดียวกัน)
+        // 1. ส่งผ่าน Supabase Realtime Broadcast ทันที (เข้าโปรเจกเตอร์ในเสี้ยววินาที)
+        try {
+          if (rovChannel) {
+            rovChannel.send({
+              type: 'broadcast',
+              event: 'claim',
+              payload: {
+                heroId: heroId,
+                studentName: studentName,
+                time: Date.now(),
+                id: 'sb_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5)
+              }
+            });
+          }
+        } catch(e) { console.error('Supabase broadcast error:', e); }
+
+        // 2. บันทึกลงตาราง rov_hero_claims ใน Supabase (เก็บถาวร)
+        try {
+          if (sbClient) {
+            sbClient.from('rov_hero_claims').insert([{
+              room_id: roomId,
+              hero_id: heroId,
+              student_name: studentName
+            }]).then(res => {
+              console.log('[Supabase Insert Success]:', res);
+            }).catch(err => {
+              console.warn('[Supabase Insert Warn]:', err);
+            });
+          }
+        } catch(e) {}
+
+        // 3. Broadcast ผ่าน window.BroadcastChannel (ถ้าเปิดบนคอมเดียวกัน)
         try {
           if (window.BroadcastChannel) {
             const bc = new BroadcastChannel('rov_webapp_live_sync');
@@ -1319,18 +1423,18 @@
           }
         } catch(e) {}
 
-        // 2. Broadcast ผ่าน localStorage trigger
+        // 4. Broadcast ผ่าน localStorage trigger
         try {
           localStorage.setItem('wc_rov_last_claim_trigger', pickPayload);
         } catch(e) {}
 
-        // 3. ส่งสัญญาณ Realtime ไปยัง ntfy.sh (แบบ text/plain ไร้ปัญหา CORS เข้าจอโปรเจกเตอร์ครูทันที!)
+        // 5. ส่งสัญญาณ Realtime ไปยัง ntfy.sh สำรอง
         try {
           fetch('https://ntfy.sh/' + roomId, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain' },
             body: pickPayload
-          }).then(r => console.log('Sync sent to projector:', r.status))
+          }).then(r => console.log('Sync sent to projector fallback:', r.status))
             .catch(err => console.error('Sync error:', err));
         } catch(e) {}
 
