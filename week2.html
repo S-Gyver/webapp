@@ -1292,12 +1292,11 @@
             </div>
             
             <div class="hero-qr-frame">
-              <img id="heroQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fwww.rov.in.th%2Fhero" alt="QR Code เลือกตัวละคร RoV" width="190" height="190">
+              <img id="heroQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fs-gyver.github.io%2Fwebapp%2Fhero-select.html%3Froom%3Drov_webapp_sgyver_2026" alt="QR Code เลือกตัวละคร RoV" width="190" height="190">
             </div>
 
             <div class="hero-qr-actions">
-              <a id="heroQrLink" href="https://s-gyver.github.io/webapp/hero-select.html" target="_blank" class="hero-qr-btn primary">
-              </a>
+              <a id="heroQrLink" href="https://s-gyver.github.io/webapp/hero-select.html?room=rov_webapp_sgyver_2026" target="_blank" class="hero-qr-btn primary">🌐 เปิดหน้าเลือกตัวละคร (hero-select.html)</a>
               <button type="button" class="hero-qr-btn secondary" onclick="changeHeroQrUrl()">
                 ✏️ แก้ไขลิงก์ QR Code
               </button>
@@ -4021,40 +4020,115 @@
 
     /* ===== เชื่อมต่อระบบ Live Sync ข้ามอุปกรณ์ (มือถือเด็ก ➡️ จอโปรเจกเตอร์) ===== */
     const LIVE_ROOM_KEY = 'wc_rov_live_room_id';
+    const DEFAULT_LIVE_ROOM = 'rov_webapp_sgyver_2026';
+    let lastHandledClaims = {};
+
     function getLiveRoomId() {
-      let r = localStorage.getItem(LIVE_ROOM_KEY);
-      if (!r) {
-        r = 'rov_room_' + Math.floor(1000 + Math.random() * 9000);
-        localStorage.setItem(LIVE_ROOM_KEY, r);
+      return localStorage.getItem(LIVE_ROOM_KEY) || DEFAULT_LIVE_ROOM;
+    }
+
+    function handleRemoteClaim(heroId, studentName) {
+      if (!heroId || !studentName) return;
+      const now = Date.now();
+      if (lastHandledClaims[heroId] === studentName && (now - (lastHandledClaims[heroId + '_time'] || 0)) < 4000) {
+        return; // ป้องกันข้อความซ้ำ
       }
-      return r;
+      lastHandledClaims[heroId] = studentName;
+      lastHandledClaims[heroId + '_time'] = now;
+
+      const claims = getHeroClaims();
+      claims[heroId] = studentName;
+      saveHeroClaims(claims);
+      renderHeroGrid();
+      renderClaimedRosterView();
+
+      const hero = ROV_HERO_LIST.find(h => h.id === heroId);
+      if (hero) {
+        // 1. เด้งแอนิเมชันเปิดตัวฮีโร่เต็มจอโปรเจกเตอร์ทันที!
+        triggerChampionLockInSplash(hero, studentName);
+        // 2. สไลด์สลับไปหน้าดูตัวละครที่เลือกแล้วอัตโนมัติ
+        setTimeout(() => toggleHeroBoardView('claimed'), 2600);
+      }
     }
 
     function initProjectorLiveSync() {
       const roomId = getLiveRoomId();
-      try {
-        const sseUrl = 'https://ntfy.sh/' + roomId + '/sse';
-        const eventSource = new EventSource(sseUrl);
-        eventSource.onmessage = function(event) {
-          try {
-            const data = JSON.parse(event.data);
-            if (data && data.message) {
-              const payload = JSON.parse(data.message);
-              if (payload && payload.heroId && payload.studentName) {
-                const claims = getHeroClaims();
-                claims[payload.heroId] = payload.studentName;
-                saveHeroClaims(claims);
-                renderHeroGrid();
 
-                const hero = ROV_HERO_LIST.find(h => h.id === payload.heroId);
-                if (hero) {
-                  triggerChampionLockInSplash(hero, payload.studentName);
+      // 1. Channel สำหรับกรณีเปิดสองแท็บบนเครื่องเดียวกัน (BroadcastChannel)
+      try {
+        if (window.BroadcastChannel) {
+          const bc = new BroadcastChannel('rov_webapp_live_sync');
+          bc.onmessage = function(e) {
+            if (e.data && e.data.heroId && e.data.studentName) {
+              handleRemoteClaim(e.data.heroId, e.data.studentName);
+            }
+          };
+        }
+      } catch(e) {}
+
+      // 2. Channel ผ่าน window storage event
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'wc_rov_last_claim_trigger' && e.newValue) {
+          try {
+            const p = JSON.parse(e.newValue);
+            if (p && p.heroId && p.studentName) {
+              handleRemoteClaim(p.heroId, p.studentName);
+            }
+          } catch(_) {}
+        }
+      });
+
+      // 3. Channel Realtime ข้ามอุปกรณ์ (SSE ผ่าน ntfy.sh)
+      let sse = null;
+      let lastSseTime = Math.floor(Date.now() / 1000);
+
+      function connectSSE() {
+        try {
+          if (sse) { sse.close(); }
+          sse = new EventSource('https://ntfy.sh/' + roomId + '/sse');
+          sse.onmessage = function(event) {
+            try {
+              const data = JSON.parse(event.data);
+              if (data && data.message) {
+                let payload = null;
+                try { payload = JSON.parse(data.message); } catch(_) { payload = data.message; }
+                if (payload && payload.heroId && payload.studentName) {
+                  lastSseTime = data.time || Math.floor(Date.now() / 1000);
+                  handleRemoteClaim(payload.heroId, payload.studentName);
                 }
               }
-            }
-          } catch (e) {}
-        };
-      } catch (e) {}
+            } catch(e) {}
+          };
+          sse.onerror = function() {
+            setTimeout(connectSSE, 4000); // Reconnect if disconnected
+          };
+        } catch(e) {}
+      }
+      connectSSE();
+
+      // 4. Polling Fallback ทุก 2.5 วินาที เผื่อเครือข่ายบล็อก SSE
+      setInterval(function() {
+        fetch('https://ntfy.sh/' + roomId + '/json?poll=1&since=' + lastSseTime)
+          .then(res => res.text())
+          .then(raw => {
+            if (!raw) return;
+            const lines = raw.trim().split('\n');
+            lines.forEach(line => {
+              try {
+                const item = JSON.parse(line);
+                if (item && item.message) {
+                  let p = null;
+                  try { p = JSON.parse(item.message); } catch(_) { p = item.message; }
+                  if (p && p.heroId && p.studentName) {
+                    if (item.time) lastSseTime = Math.max(lastSseTime, item.time);
+                    handleRemoteClaim(p.heroId, p.studentName);
+                  }
+                }
+              } catch(_) {}
+            });
+          })
+          .catch(() => {});
+      }, 2500);
     }
 
     
@@ -4450,7 +4524,7 @@
     }
 
     function updateHeroQrDisplay() {
-      let url = localStorage.getItem(ROV_QR_KEY) || 'https://www.rov.in.th/hero';
+      let url = localStorage.getItem(ROV_QR_KEY) || 'https://s-gyver.github.io/webapp/hero-select.html?room=rov_webapp_sgyver_2026';
       const img = document.getElementById('heroQrImg');
       const link = document.getElementById('heroQrLink');
       if (img) img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' + encodeURIComponent(url);
@@ -4458,7 +4532,7 @@
     }
 
     function changeHeroQrUrl() {
-      const current = localStorage.getItem(ROV_QR_KEY) || 'https://www.rov.in.th/hero';
+      const current = localStorage.getItem(ROV_QR_KEY) || 'https://s-gyver.github.io/webapp/hero-select.html?room=rov_webapp_sgyver_2026';
       showCustomPromptModal(
         'แก้ไขลิงก์ QR Code',
         'วางลิงก์เว็บทางการ RoV หรือ Google Form สำหรับให้นักเรียนสแกน:',
