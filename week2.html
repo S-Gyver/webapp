@@ -1271,11 +1271,11 @@
     <!-- ==========================================
          สไลด์ที่ 6 (แทรกใหม่): สแกนเลือกตัวละคร RoV ประจำตัว (ไม่ซ้ำกัน!)
     ========================================== -->
-    <section class="slide hero-picker-slide">
+    <section class="slide">
       <div class="glow-orb-1"></div>
       <div class="glow-orb-2"></div>
 
-      <div class="concept-container hero-picker-container">
+      <div class="concept-container" style="max-width:1200px;">
         <div class="concept-header-bar">
           <span class="concept-tag tag-orange">CHOOSE YOUR HERO // ภารกิจจับจองตัวละคร</span>
           <h2 class="concept-title">สแกนเลือกตัวละคร RoV ของตัวเอง (1 คนต่อ 1 ตัวละคร ไม่ซ้ำกัน!)</h2>
@@ -1289,11 +1289,11 @@
           <div class="hero-qr-card">
             <div class="hero-qr-header">
               <span class="qr-pulse-dot"></span>
-              <span style="font-weight:800; font-size:14px; color:var(--ios-label);">สแกนด้วยกล้องมือถือ</span>
+              <span style="font-weight:800; font-size:14.5px; color:var(--ios-label);">สแกนด้วยกล้องมือถือ</span>
             </div>
             
             <div class="hero-qr-frame">
-              <img id="heroQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fs-gyver.github.io%2Fwebapp%2Fhero-select.html%3Froom%3Drov_webapp_sgyver_2026" alt="QR Code เลือกตัวละคร RoV" width="140" height="140">
+              <img id="heroQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fs-gyver.github.io%2Fwebapp%2Fhero-select.html%3Froom%3Drov_webapp_sgyver_2026" alt="QR Code เลือกตัวละคร RoV" width="190" height="190">
             </div>
 
             <div class="hero-qr-actions">
@@ -3916,16 +3916,16 @@
         const owner = claims[hero.id];
         const isClaimed = Boolean(owner);
         return `
-          <div class="hero-card-item ${isClaimed ? 'claimed' : 'available'}" onclick="clickHeroCard('${hero.id}')" title="${hero.name} (${hero.role})">
+          <div class="hero-card-item ${isClaimed ? 'claimed' : 'available'}" onclick="clickHeroCard('${hero.id}')">
             <div class="hero-avatar-wrap">
               <img src="${hero.image}" alt="${hero.name}" class="hero-avatar-img" loading="lazy" onerror="this.src='images/valhein.png'">
-              <span class="hero-role-badge role-${hero.roleEn}" title="${hero.role}">${hero.icon}</span>
-              ${isClaimed ? '<span class="hero-lock-badge">🔒</span>' : ''}
+              <span class="hero-role-badge role-${hero.roleEn}">${hero.icon} ${hero.role}</span>
+              ${isClaimed ? '<span class="hero-lock-badge">🔒 จองแล้ว</span>' : ''}
             </div>
             <div class="hero-card-info">
               <div class="hero-name-label" title="${hero.name}">${hero.name}</div>
-              <div class="hero-owner-label" title="${isClaimed ? escapeHtml(owner) : 'ว่าง'}">
-                ${isClaimed ? '👤 <b>' + escapeHtml(owner) + '</b>' : '<span class="tap-to-pick">+ ว่าง</span>'}
+              <div class="hero-owner-label">
+                ${isClaimed ? '👤 <b>' + escapeHtml(owner) + '</b>' : '<span class="tap-to-pick">แตะเพื่อเลือกตัวนี้ ✨</span>'}
               </div>
             </div>
           </div>
@@ -4299,18 +4299,19 @@
       }
 
       grid.innerHTML = claimedHeroes.map((hero, idx) => `
-        <div class="roster-hero-card" title="${hero.name} - จองโดย ${escapeHtml(hero.owner)}">
+        <div class="roster-hero-card">
           <div class="roster-card-avatar-wrap">
             <img src="${hero.image}" alt="${hero.name}" class="roster-card-img" onerror="this.src='images/valhein.png'">
             <span class="roster-num-badge">#${idx + 1}</span>
-            <span class="hero-role-badge role-${hero.roleEn}" title="${hero.role}">${hero.icon}</span>
+            <span class="hero-role-badge role-${hero.roleEn}">${hero.icon} ${hero.role}</span>
           </div>
           <div class="roster-card-details">
-            <div class="roster-hero-name" title="${hero.name}">${hero.name}</div>
-            <div class="roster-owner-pill" title="จองโดย: ${escapeHtml(hero.owner)}">
-              <b>👤 ${escapeHtml(hero.owner)}</b>
+            <div class="roster-hero-name">${hero.name}</div>
+            <div class="roster-owner-pill">
+              <span>👤</span>
+              <b>${escapeHtml(hero.owner)}</b>
             </div>
-            <button type="button" class="roster-unclaim-btn" title="ยกเลิกการจองตัวละครนี้" onclick="unclaimHeroFromRoster('${hero.id}')">✕ ยกเลิก</button>
+            <button type="button" class="roster-unclaim-btn" onclick="unclaimHeroFromRoster('${hero.id}')">🔓 ยกเลิกการจอง</button>
           </div>
         </div>
       `).join('');
