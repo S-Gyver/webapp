@@ -829,82 +829,49 @@ html[data-theme="dark"] .hero-status-pill.pill-locked {
 }
 
 /* =========================================================
-   เฉพาะหน้า "ตัวละครที่เลือกแล้ว" (Roster Grid): 18 การ์ดต่อแถว & Responsive
+   เฉพาะหน้า "ตัวละครที่เลือกแล้ว" (Roster Grid): จัดเรียงสวยงาม สมส่วน ไม่ยืด ไม่โดนบีบ
 ========================================================= */
 .roster-cards-grid {
   display: grid !important;
-  gap: 5px !important;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+  gap: 12px !important;
   max-height: calc(100vh - 250px) !important;
-  min-height: 440px !important;
+  min-height: 200px !important;
+  align-content: start !important;
+  align-items: start !important;
   overflow-y: auto !important;
-  padding: 4px 6px 12px 2px !important;
-}
-
-/* หน้าจอคอมพิวเตอร์ขนาดใหญ่ & จอโปรเจกเตอร์: 1 แถวมี 18 การ์ด */
-@media (min-width: 1260px) {
-  .roster-cards-grid {
-    grid-template-columns: repeat(18, minmax(0, 1fr)) !important;
-  }
-}
-/* หน้าจอโน้ตบุ๊กขนาดกลาง (1080px - 1259px): 15 การ์ด */
-@media (min-width: 1080px) and (max-width: 1259px) {
-  .roster-cards-grid {
-    grid-template-columns: repeat(15, minmax(0, 1fr)) !important;
-  }
-}
-/* หน้าจอ 900px - 1079px: 12 การ์ด */
-@media (min-width: 900px) and (max-width: 1079px) {
-  .roster-cards-grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-  }
-}
-/* หน้าจอแท็บเล็ต 720px - 899px: 8 การ์ด */
-@media (min-width: 720px) and (max-width: 899px) {
-  .roster-cards-grid {
-    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
-  }
-}
-/* หน้าจอ 500px - 719px: 5 การ์ด */
-@media (min-width: 500px) and (max-width: 719px) {
-  .roster-cards-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-  }
-}
-/* มือถือ < 500px: 3 การ์ด */
-@media (max-width: 499px) {
-  .roster-cards-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  }
+  padding: 8px 6px 20px 2px !important;
 }
 
 /* ดีไซน์การ์ดในหน้าตัวละครที่เลือกแล้วให้กะทัดรัด คมชัด */
 .roster-hero-card {
   background: var(--ios-card) !important;
-  border-radius: 9px !important;
-  padding: 3.5px !important;
-  border: 1px solid rgba(52, 199, 89, 0.45) !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 14px !important;
+  padding: 7px !important;
+  border: 1.5px solid rgba(52, 199, 89, 0.45) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
   display: flex !important;
   flex-direction: column !important;
   position: relative !important;
   box-sizing: border-box !important;
+  height: auto !important;
   min-width: 0 !important;
-  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  transition: transform 0.16s ease, box-shadow 0.16s ease !important;
 }
 .roster-hero-card:hover {
-  transform: translateY(-2px) scale(1.04) !important;
-  box-shadow: 0 6px 16px rgba(52, 199, 89, 0.25) !important;
-  z-index: 3 !important;
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 6px 18px rgba(52, 199, 89, 0.28) !important;
+  z-index: 2 !important;
 }
 
 .roster-card-avatar-wrap {
   position: relative !important;
   width: 100% !important;
   aspect-ratio: 1 / 1 !important;
-  border-radius: 6px !important;
+  border-radius: 10px !important;
   overflow: hidden !important;
   background: rgba(118, 118, 128, 0.12) !important;
-  margin-bottom: 2px !important;
+  margin-bottom: 5px !important;
 }
 .roster-card-img {
   width: 100% !important;
@@ -914,44 +881,45 @@ html[data-theme="dark"] .hero-status-pill.pill-locked {
   transition: transform 0.22s ease !important;
 }
 .roster-hero-card:hover .roster-card-img {
-  transform: scale(1.08) !important;
+  transform: scale(1.06) !important;
 }
 
 .roster-num-badge {
   position: absolute !important;
-  top: 2px !important;
-  right: 2px !important;
+  top: 4px !important;
+  right: 4px !important;
   background: rgba(0, 0, 0, 0.78) !important;
   color: #FFD60A !important;
-  font-size: 8px !important;
+  font-size: 10px !important;
   font-weight: 900 !important;
-  padding: 1px 4px !important;
-  border-radius: 4px !important;
-  line-height: 1.1 !important;
+  padding: 1px 6px !important;
+  border-radius: 999px !important;
+  line-height: 1.2 !important;
   z-index: 2 !important;
 }
 .roster-hero-card .hero-role-badge {
   position: absolute !important;
-  top: 2px !important;
-  left: 2px !important;
-  font-size: 8px !important;
-  padding: 1px 3px !important;
-  border-radius: 4px !important;
-  line-height: 1.1 !important;
+  top: 4px !important;
+  left: 4px !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  padding: 1px 5px !important;
+  border-radius: 5px !important;
+  line-height: 1.2 !important;
   z-index: 2 !important;
 }
 
 .roster-card-details {
   display: flex !important;
   flex-direction: column !important;
-  gap: 1px !important;
+  gap: 3px !important;
   width: 100% !important;
   align-items: center !important;
   text-align: center !important;
   overflow: hidden !important;
 }
 .roster-hero-name {
-  font-size: 9.5px !important;
+  font-size: 11.5px !important;
   font-weight: 800 !important;
   color: var(--ios-label) !important;
   text-align: center !important;
@@ -959,49 +927,51 @@ html[data-theme="dark"] .hero-status-pill.pill-locked {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   width: 100% !important;
-  line-height: 1.15 !important;
+  line-height: 1.2 !important;
   margin: 1px 0 !important;
 }
 .roster-owner-pill {
-  font-size: 8px !important;
+  font-size: 9.5px !important;
   font-weight: 700 !important;
   color: #34C759 !important;
   background: rgba(52, 199, 89, 0.15) !important;
   border: 0.5px solid rgba(52, 199, 89, 0.4) !important;
-  padding: 1px 3px !important;
-  border-radius: 4px !important;
+  padding: 2px 8px !important;
+  border-radius: 6px !important;
   text-align: center !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   width: 100% !important;
-  line-height: 1.15 !important;
   box-sizing: border-box !important;
   margin: 1px 0 !important;
   display: block !important;
+  line-height: 1.2 !important;
 }
 .roster-owner-pill b {
   color: #34C759 !important;
 }
 .roster-unclaim-btn {
-  background: rgba(255, 59, 48, 0.1) !important;
-  border: none !important;
+  background: rgba(255, 59, 48, 0.08) !important;
+  border: 1px solid rgba(255, 59, 48, 0.22) !important;
   color: #FF3B30 !important;
-  font-size: 7.5px !important;
+  font-size: 9px !important;
   font-weight: 700 !important;
   cursor: pointer !important;
-  padding: 1px 3px !important;
-  border-radius: 3px !important;
+  padding: 3px 6px !important;
+  border-radius: 5px !important;
   font-family: inherit !important;
   width: 100% !important;
   text-align: center !important;
-  line-height: 1.1 !important;
-  margin-top: 1px !important;
+  line-height: 1.2 !important;
+  margin-top: 2px !important;
+  white-space: nowrap !important;
   transition: all 0.14s ease !important;
 }
 .roster-unclaim-btn:hover {
   background: #FF3B30 !important;
   color: #FFFFFF !important;
+  border-color: #FF3B30 !important;
 }
 
 /* Dark Mode Overrides for Avatars & Filters */
