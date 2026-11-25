@@ -1185,7 +1185,8 @@
   }
 ];
     const urlParams = new URLSearchParams(window.location.search);
-    const roomId = urlParams.get('room') || 'rov_webapp_sgyver_2026';
+    const DEFAULT_LIVE_ROOM = 'rov_webapp_sgyver_2026';
+    const roomId = urlParams.get('room') || DEFAULT_LIVE_ROOM;
     let currentHeroRoleFilter = 'all';
     let currentHeroSearchQuery = '';
     let localClaims = {};
@@ -1303,26 +1304,34 @@
         saveHeroClaims(claims);
         renderHeroGrid();
 
+        const pickPayload = JSON.stringify({
+          heroId: heroId,
+          studentName: studentName,
+          time: Date.now(),
+          id: 'm_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5)
+        });
+
         // 1. Broadcast ผ่าน window.BroadcastChannel (ถ้าเปิดบนคอมเดียวกัน)
         try {
           if (window.BroadcastChannel) {
             const bc = new BroadcastChannel('rov_webapp_live_sync');
-            bc.postMessage({ heroId, studentName, time: Date.now() });
+            bc.postMessage(JSON.parse(pickPayload));
           }
         } catch(e) {}
 
         // 2. Broadcast ผ่าน localStorage trigger
         try {
-          localStorage.setItem('wc_rov_last_claim_trigger', JSON.stringify({ heroId, studentName, time: Date.now() }));
+          localStorage.setItem('wc_rov_last_claim_trigger', pickPayload);
         } catch(e) {}
 
-        // 3. ส่งสัญญาณ Realtime ไปยัง ntfy.sh เข้าจอโปรเจกเตอร์ของครูทันที!
+        // 3. ส่งสัญญาณ Realtime ไปยัง ntfy.sh (แบบ text/plain ไร้ปัญหา CORS เข้าจอโปรเจกเตอร์ครูทันที!)
         try {
           fetch('https://ntfy.sh/' + roomId, {
             method: 'POST',
-            headers: { 'Title': 'RoV Pick', 'Priority': 'high' },
-            body: JSON.stringify({ heroId, studentName, time: Date.now() })
-          }).catch(() => {});
+            headers: { 'Content-Type': 'text/plain' },
+            body: pickPayload
+          }).then(r => console.log('Sync sent to projector:', r.status))
+            .catch(err => console.error('Sync error:', err));
         } catch(e) {}
 
         alert('🎉 ล็อกตัวละคร ' + hero.name + ' สำเร็จแล้ว! ดูที่จอโปรเจกเตอร์ได้เลยครับ!');
@@ -1332,25 +1341,6 @@
       input.onkeydown = (e) => { if (e.key === 'Enter') doSubmit(); };
       overlay.onclick = (e) => { if (e.target === overlay) closeCustomModal(); };
     }
-
-    // ฟังการอัปเดตจากจอโปรเจกเตอร์
-    try {
-      const sse = new EventSource('https://ntfy.sh/' + roomId + '/sse');
-      sse.onmessage = function(e) {
-        try {
-          const d = JSON.parse(e.data);
-          if (d && d.message) {
-            const p = JSON.parse(d.message);
-            if (p && p.heroId && p.studentName) {
-              const c = getHeroClaims();
-              c[p.heroId] = p.studentName;
-              saveHeroClaims(c);
-              renderHeroGrid();
-            }
-          }
-        } catch(err) {}
-      };
-    } catch(e) {}
 
     renderHeroGrid();
   </script>

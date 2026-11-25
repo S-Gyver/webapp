@@ -1313,6 +1313,8 @@
               <div class="hero-board-status">
                 <span id="heroCountBadge" class="hero-counter-badge">เลือกแล้ว <b id="claimedCount">0</b> / <span id="totalHeroesCount">110</span> ตัว</span>
                 <span class="hero-board-hint">แตะที่การ์ดตัวละครเพื่อพิมพ์ชื่อจอง</span>
+                <span id="liveRoomStatusBadge" style="font-size:11.5px; padding:3px 10px; border-radius:999px; background:rgba(52,199,89,0.14); color:#34C759; font-weight:800; border:0.5px solid rgba(52,199,89,0.3);">🟢 เชื่อมต่อห้องสด: <b>rov_webapp_sgyver_2026</b></span>
+                <button type="button" onclick="testLiveSplashButton()" style="background:transparent; border:none; color:var(--ios-blue); font-size:11.5px; cursor:pointer; font-weight:700; text-decoration:underline;">[ทดสอบเด้งจอ]</button>
               </div>
               <div class="hero-board-actions">
                 <button type="button" class="hero-board-btn view-claimed" id="toggleViewBtn" onclick="toggleHeroBoardView()">📋 ดูตัวละครที่เลือกแล้ว (<span id="claimedBtnCount">0</span>)</button>
@@ -3979,6 +3981,12 @@
       } catch (e) {}
     }
 
+    
+    function testLiveSplashButton() {
+      const hero = ROV_HERO_LIST.find(h => h.id === 'valhein') || ROV_HERO_LIST[0];
+      handleRemoteClaim(hero.id, 'น้องทดสอบจอโปรเจกเตอร์', 'test_' + Date.now());
+    }
+
     function triggerChampionLockInSplash(hero, studentName) {
       if (!hero) return;
       playHeroLockSound();
@@ -4021,20 +4029,28 @@
     /* ===== เชื่อมต่อระบบ Live Sync ข้ามอุปกรณ์ (มือถือเด็ก ➡️ จอโปรเจกเตอร์) ===== */
     const LIVE_ROOM_KEY = 'wc_rov_live_room_id';
     const DEFAULT_LIVE_ROOM = 'rov_webapp_sgyver_2026';
+    const handledMessageIds = new Set();
     let lastHandledClaims = {};
 
     function getLiveRoomId() {
-      return localStorage.getItem(LIVE_ROOM_KEY) || DEFAULT_LIVE_ROOM;
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('room') || DEFAULT_LIVE_ROOM;
     }
 
-    function handleRemoteClaim(heroId, studentName) {
+    // รีเซ็ต localStorage ให้เป็นห้องกลางเสมอ
+    try { localStorage.setItem(LIVE_ROOM_KEY, DEFAULT_LIVE_ROOM); } catch(e) {}
+
+    function handleRemoteClaim(heroId, studentName, messageId) {
       if (!heroId || !studentName) return;
+      if (messageId && handledMessageIds.has(messageId)) return;
+      if (messageId) handledMessageIds.add(messageId);
+
       const now = Date.now();
-      if (lastHandledClaims[heroId] === studentName && (now - (lastHandledClaims[heroId + '_time'] || 0)) < 4000) {
-        return; // ป้องกันข้อความซ้ำ
+      const dedupeKey = heroId + '_' + studentName;
+      if (lastHandledClaims[dedupeKey] && (now - lastHandledClaims[dedupeKey]) < 4000) {
+        return; // ป้องกันข้อความซ้ำซ้อนใน 4 วินาที
       }
-      lastHandledClaims[heroId] = studentName;
-      lastHandledClaims[heroId + '_time'] = now;
+      lastHandledClaims[dedupeKey] = now;
 
       const claims = getHeroClaims();
       claims[heroId] = studentName;
@@ -4044,7 +4060,7 @@
 
       const hero = ROV_HERO_LIST.find(h => h.id === heroId);
       if (hero) {
-        // 1. เด้งแอนิเมชันเปิดตัวฮีโร่เต็มจอโปรเจกเตอร์ทันที!
+        // 1. ระเบิดแอนิเมชันเปิดตัวฮีโร่เต็มจอโปรเจกเตอร์ทันที!
         triggerChampionLockInSplash(hero, studentName);
         // 2. สไลด์สลับไปหน้าดูตัวละครที่เลือกแล้วอัตโนมัติ
         setTimeout(() => toggleHeroBoardView('claimed'), 2600);
@@ -4053,14 +4069,22 @@
 
     function initProjectorLiveSync() {
       const roomId = getLiveRoomId();
+      console.log('[LiveSync] Projector listening to room:', roomId);
 
-      // 1. Channel สำหรับกรณีเปิดสองแท็บบนเครื่องเดียวกัน (BroadcastChannel)
+      // แสดงป้ายสถานะห้อง
+      const statusBadge = document.getElementById('liveRoomStatusBadge');
+      if (statusBadge) {
+        statusBadge.innerHTML = '🟢 เชื่อมต่อห้องสด: <b>' + roomId + '</b>';
+      }
+
+      // 1. Channel สำหรับเปิดบนเบราว์เซอร์เดียวกัน (BroadcastChannel)
       try {
         if (window.BroadcastChannel) {
           const bc = new BroadcastChannel('rov_webapp_live_sync');
           bc.onmessage = function(e) {
             if (e.data && e.data.heroId && e.data.studentName) {
-              handleRemoteClaim(e.data.heroId, e.data.studentName);
+              console.log('[LiveSync BC] Received:', e.data);
+              handleRemoteClaim(e.data.heroId, e.data.studentName, e.data.id || ('bc_' + Date.now()));
             }
           };
         }
@@ -4072,20 +4096,22 @@
           try {
             const p = JSON.parse(e.newValue);
             if (p && p.heroId && p.studentName) {
-              handleRemoteClaim(p.heroId, p.studentName);
+              console.log('[LiveSync Storage] Received:', p);
+              handleRemoteClaim(p.heroId, p.studentName, p.id || ('st_' + Date.now()));
             }
           } catch(_) {}
         }
       });
 
-      // 3. Channel Realtime ข้ามอุปกรณ์ (SSE ผ่าน ntfy.sh)
+      // 3. Channel Realtime ข้ามอุปกรณ์มือถือ (SSE ผ่าน ntfy.sh)
       let sse = null;
-      let lastSseTime = Math.floor(Date.now() / 1000);
-
       function connectSSE() {
         try {
           if (sse) { sse.close(); }
           sse = new EventSource('https://ntfy.sh/' + roomId + '/sse');
+          sse.onopen = function() {
+            console.log('[LiveSync SSE] Connected to ntfy.sh/' + roomId);
+          };
           sse.onmessage = function(event) {
             try {
               const data = JSON.parse(event.data);
@@ -4093,22 +4119,22 @@
                 let payload = null;
                 try { payload = JSON.parse(data.message); } catch(_) { payload = data.message; }
                 if (payload && payload.heroId && payload.studentName) {
-                  lastSseTime = data.time || Math.floor(Date.now() / 1000);
-                  handleRemoteClaim(payload.heroId, payload.studentName);
+                  console.log('[LiveSync SSE] Pick received:', payload);
+                  handleRemoteClaim(payload.heroId, payload.studentName, data.id || ('sse_' + Date.now()));
                 }
               }
             } catch(e) {}
           };
           sse.onerror = function() {
-            setTimeout(connectSSE, 4000); // Reconnect if disconnected
+            setTimeout(connectSSE, 3500);
           };
         } catch(e) {}
       }
       connectSSE();
 
-      // 4. Polling Fallback ทุก 2.5 วินาที เผื่อเครือข่ายบล็อก SSE
+      // 4. Polling Fallback ทุก 1.8 วินาที ดึงข้อความ 5 นาทีล่าสุดเสมอ (ไม่มีพลาดแม้แต่ข้อความเดียว)
       setInterval(function() {
-        fetch('https://ntfy.sh/' + roomId + '/json?poll=1&since=' + lastSseTime)
+        fetch('https://ntfy.sh/' + roomId + '/json?poll=1&since=5m')
           .then(res => res.text())
           .then(raw => {
             if (!raw) return;
@@ -4116,22 +4142,22 @@
             lines.forEach(line => {
               try {
                 const item = JSON.parse(line);
-                if (item && item.message) {
+                if (item && item.message && item.id) {
+                  if (handledMessageIds.has(item.id)) return;
                   let p = null;
                   try { p = JSON.parse(item.message); } catch(_) { p = item.message; }
                   if (p && p.heroId && p.studentName) {
-                    if (item.time) lastSseTime = Math.max(lastSseTime, item.time);
-                    handleRemoteClaim(p.heroId, p.studentName);
+                    console.log('[LiveSync Poll] Received pick:', p);
+                    handleRemoteClaim(p.heroId, p.studentName, item.id);
                   }
                 }
               } catch(_) {}
             });
           })
           .catch(() => {});
-      }, 2500);
+      }, 1800);
     }
 
-    
     /* ===== ระบบสลับหน้า (Tabs) ระหว่างเลือกแชมเปียน กับ ดูตัวละครที่เลือกแล้ว ===== */
     let currentBoardView = 'selector'; // 'selector' หรือ 'claimed'
 
