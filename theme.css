@@ -1613,22 +1613,6 @@ html[data-theme="dark"] .step-pacing-btn.active {
   border-color: rgba(84, 84, 88, 0.6);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
-html[data-theme="dark"] .step-callout-card {
-  background: #242426;
-  border-color: rgba(84, 84, 88, 0.6);
-}
-html[data-theme="dark"] .step-callout-title { color: #FFFFFF; }
-html[data-theme="dark"] .step-callout-desc { color: #AEAEB2; }
-html[data-theme="dark"] .step-callout-desc code,
-html[data-theme="dark"] .step-callout-trap code {
-  background: rgba(255, 255, 255, 0.12);
-  color: #FF6961;
-}
-html[data-theme="dark"] .step-callout-trap {
-  background: rgba(255, 159, 10, 0.16);
-  border-left-color: #FF9F0A;
-  color: #FFD60A;
-}
 html[data-theme="dark"] .preview-step-badge {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.15);

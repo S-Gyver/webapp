@@ -589,14 +589,14 @@
 
     .s7-code-content {
       flex: 1;
-      padding: 8px 12px;
+      padding: 12px 16px;
       font-family: 'Cascadia Mono', 'Consolas', 'Leelawadee UI', monospace;
-      font-size: 12px;
-      line-height: 1.46;
+      font-size: 13.5px;
+      line-height: 1.58;
       color: #1C1C1E;
       background: #FFFFFF;
       overflow-y: auto;
-      max-height: 445px;
+      min-height: 360px;
     }
 
     .code-line {
@@ -976,68 +976,6 @@
       border-left: 3.5px solid var(--ios-purple) !important;
       border-radius: 5px;
       font-weight: bold;
-    }
-
-    /* Teacher / Coach Callout Box */
-    .step-callout-card {
-      background: rgba(242, 242, 247, 0.9);
-      border-top: 0.5px solid var(--ios-separator);
-      padding: 8px 12px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 12px;
-      line-height: 1.45;
-      min-height: 60px;
-    }
-
-    .step-callout-icon {
-      font-size: 20px;
-      line-height: 1;
-      padding-top: 2px;
-      flex-shrink: 0;
-    }
-
-    .step-callout-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .step-callout-title {
-      font-weight: 700;
-      color: var(--ios-label);
-      font-size: 12.5px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .step-callout-desc {
-      color: var(--ios-secondary);
-      font-size: 11.5px;
-    }
-
-    .step-callout-desc code,
-    .step-callout-trap code {
-      font-family: 'SF Mono', 'Cascadia Mono', 'Consolas', monospace;
-      background: rgba(0, 0, 0, 0.06);
-      padding: 1px 4px;
-      border-radius: 4px;
-      color: #C81E1E;
-      font-weight: 600;
-    }
-
-    .step-callout-trap {
-      margin-top: 3px;
-      background: rgba(255, 149, 0, 0.1);
-      border-left: 2.5px solid var(--ios-orange);
-      padding: 3px 7px;
-      border-radius: 4px;
-      color: #9A3B00;
-      font-size: 11px;
-      font-weight: 500;
     }
 
     .preview-step-badge {
@@ -1736,16 +1674,6 @@
               <div class="code-line s7-part-html" data-s7-step="0"><span class="line-num">19</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
               <div class="code-line" data-s7-step="0"><span class="line-num">20</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
             </div>
-
-            <!-- กล่องคำแนะนำก้าวนี้ & จุดที่เด็กชอบพิมพ์ผิด (Teacher Callout Card) -->
-            <div class="step-callout-card" id="s7CalloutCard">
-              <div class="step-callout-icon" id="s7CalloutIcon">✨</div>
-              <div class="step-callout-body">
-                <div class="step-callout-title" id="s7CalloutTitle">ดูโค้ดรวมทั้งหมด (Complete View)</div>
-                <div class="step-callout-desc" id="s7CalloutDesc">โค้ดประสานงานระหว่าง HTML &amp; CSS อย่างลงตัว กดปุ่มก้าวที่ 1 - 3 ด้านบนเพื่อดูการเขียนทีละขั้นอย่างช้าๆ</div>
-                <div class="step-callout-trap" id="s7CalloutTrap">💡 <b>เคล็ดลับ:</b> วงเล็บปีกกา { } กดปุ่ม บ และ ล (กด Shift ค้างไว้) และปิดท้ายคำสั่งด้วยเซมิโคลอน ; เสมอ</div>
-              </div>
-            </div>
           </div>
 
           <!-- ฝั่งขวา: ผลลัพธ์หน้าเว็บ + ภารกิจท้าประลอง -->
@@ -1881,16 +1809,6 @@
               <div class="code-line s8-part-html" data-s8-step="4"><span class="line-num">27</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;p&gt;</span>ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ<span class="c-tag">&lt;/p&gt;</span></span></div>
               <div class="code-line s8-part-html" data-s8-step="0"><span class="line-num">28</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
               <div class="code-line" data-s8-step="0"><span class="line-num">29</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
-            </div>
-
-            <!-- กล่องคำแนะนำก้าวนี้ & จุดที่เด็กชอบพิมพ์ผิด (Teacher Callout Card) -->
-            <div class="step-callout-card" id="s8CalloutCard">
-              <div class="step-callout-icon" id="s8CalloutIcon">✨</div>
-              <div class="step-callout-body">
-                <div class="step-callout-title" id="s8CalloutTitle">ดูโค้ดรวมทั้งหมด (Complete View)</div>
-                <div class="step-callout-desc" id="s8CalloutDesc">ครบทั้งการแทรกรูป &lt;img&gt; และการปรับขนาดความกว้างด้วย CSS img { width } กดปุ่ม 1 - 3 ด้านบนเพื่อดูทีละขั้น</div>
-                <div class="step-callout-trap" id="s8CalloutTrap">💡 <b>เคล็ดลับ:</b> แท็ก &lt;img&gt; ไม่มีแท็กปิด &lt;/img&gt; และให้สะกดชื่อโฟลเดอร์ images/ ให้ถูกต้อง</div>
-              </div>
             </div>
           </div>
 
@@ -2044,16 +1962,6 @@
               <div class="code-line s9-part-html glow-green" data-s9-step="2" style="font-weight:bold;"><span class="line-num">33</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;img <span class="c-attr">class</span>=<span class="c-str">"logo-img"</span> <span class="c-attr">src</span>=<span class="c-str">"https://cdn-webth.garenanow.com/webth/rov/mainsite/v2/logo_rov.png"</span> <span class="c-attr">alt</span>=<span class="c-str">"RoV Logo"</span>&gt;</span></span></div>
               <div class="code-line s9-part-html" data-s9-step="0"><span class="line-num">34</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/body&gt;</span></span></div>
               <div class="code-line" data-s9-step="0"><span class="line-num">35</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
-            </div>
-
-            <!-- กล่องคำแนะนำก้าวนี้ & จุดที่เด็กชอบพิมพ์ผิด (Teacher Callout Card) -->
-            <div class="step-callout-card" id="s9CalloutCard">
-              <div class="step-callout-icon" id="s9CalloutIcon">✨</div>
-              <div class="step-callout-body">
-                <div class="step-callout-title" id="s9CalloutTitle">ดูโค้ดรวมทั้งหมด (Complete View)</div>
-                <div class="step-callout-desc" id="s9CalloutDesc">ดึงรูปภาพจากอินเทอร์เน็ตด้วยลิงก์ URL พร้อมแต่งขนาดด้วย .logo-img กดปุ่ม 1 - 3 ด้านบนเพื่อดูทีละขั้น</div>
-                <div class="step-callout-trap" id="s9CalloutTrap">💡 <b>เคล็ดลับ:</b> ใน CSS ต้องใส่เครื่องหมายจุด (.) หน้าชื่อคลาสเสมอ เช่น .logo-img ห้ามลืมเด็ดขาด!</div>
-              </div>
             </div>
           </div>
 
@@ -2261,10 +2169,6 @@
       const heading = document.getElementById('s7CanvasHeading');
       const quote = document.getElementById('s7CanvasQuote');
       const badge = document.getElementById('s7PreviewBadge');
-      const icon = document.getElementById('s7CalloutIcon');
-      const title = document.getElementById('s7CalloutTitle');
-      const desc = document.getElementById('s7CalloutDesc');
-      const trap = document.getElementById('s7CalloutTrap');
 
       lines.forEach(l => {
         l.classList.remove('code-dimmed', 'code-spotlight-step', 'code-spotlight-green', 'code-spotlight-purple');
@@ -2288,10 +2192,6 @@
         }
         if (quote) quote.style.display = 'none';
         if (badge) badge.innerHTML = '🟡 ก้าวที่ 1: เตรียมพื้นที่ &lt;style&gt; (ยังไม่ได้ใส่คำสั่ง สี/ตำแหน่งยังไม่เปลี่ยน)';
-        if (icon) icon.innerHTML = '📝';
-        if (title) title.innerHTML = 'ก้าวที่ 1: เปิดพื้นที่เขียน CSS ใน &lt;head&gt;';
-        if (desc) desc.innerHTML = 'ก่อนจะแต่งสีหรือจัดตำแหน่ง เราต้องสร้างกล่อง <code>&lt;style&gt;...&lt;/style&gt;</code> ให้อยู่ข้างในโซน <code>&lt;head&gt;</code> ก่อนเสมอ';
-        if (trap) trap.innerHTML = '⚠️ <b>ข้อควรระวัง:</b> ห้ามเอาแท็ก &lt;style&gt; ไปวางใน &lt;body&gt; หรือวางนอก &lt;html&gt; เด็ดขาดนะครับ!';
       } else if (step === 2) {
         if (heading) {
           heading.style.color = 'red';
@@ -2300,10 +2200,6 @@
         }
         if (quote) quote.style.display = 'none';
         if (badge) badge.innerHTML = '🔴 ก้าวที่ 2: สั่งชื่อสีแดง color: red; (ยังชิดซ้ายอยู่)';
-        if (icon) icon.innerHTML = '🔴';
-        if (title) title.innerHTML = 'ก้าวที่ 2: สั่งให้ชื่อฮีโร่กลายเป็นสีแดงด้วย h1';
-        if (desc) desc.innerHTML = 'พิมพ์ <code>h1 { color: red; font-size: 48px; }</code> ใน &lt;style&gt; เพื่อสั่งหัวข้อเป็นสีแดงสดและตัวใหญ่ขึ้น';
-        if (trap) trap.innerHTML = '⚠️ <b>ระวังจุดนี้:</b> ใช้ปีกกา <code>{ }</code> (Shift + บ, ล) และห้ามลืมปิดท้ายคำสั่งด้วยเซมิโคลอน <code>;</code> เสมอ!';
       } else if (step === 3) {
         if (heading) {
           heading.style.color = 'red';
@@ -2312,10 +2208,6 @@
         }
         if (quote) quote.style.display = 'none';
         if (badge) badge.innerHTML = '🎯 ก้าวที่ 3: สั่งย้ายมาตรงกลางจอด้วย text-align: center;';
-        if (icon) icon.innerHTML = '🎯';
-        if (title) title.innerHTML = 'ก้าวที่ 3: สั่งให้ทุกอย่างมาอยู่ตรงกลางจอด้วย body';
-        if (desc) desc.innerHTML = 'พิมพ์ <code>body { text-align: center; }</code> คำสั่งนี้จะดึงทั้งชื่อและเนื้อหาทั้งหมดในหน้าเว็บมาอยู่ตรงกลางจอทันที';
-        if (trap) trap.innerHTML = '💡 <b>สังเกตที่จอขวา:</b> จากเดิมที่ชื่อชิดซ้าย พอเพิ่มคำสั่งนี้ปุ๊บ ข้อความจะขยับมาตรงกลางทันที!';
       } else {
         if (heading) {
           heading.style.color = 'red';
@@ -2329,10 +2221,6 @@
           quote.style.textAlign = 'center';
         }
         if (badge) badge.innerHTML = '✨ ผลลัพธ์: โค้ดรวม HTML &amp; CSS สมบูรณ์แบบ';
-        if (icon) icon.innerHTML = '✨';
-        if (title) title.innerHTML = 'ก้าวที่ 4: รวมโค้ด CSS &amp; HTML สมบูรณ์แบบ';
-        if (desc) desc.innerHTML = 'ยอดเยี่ยมมาก! โค้ด HTML และ CSS ประสานงานกันอย่างลงตัว ตอนนี้พร้อมลุยภารกิจท้าประลองด้านล่างแล้วครับ';
-        if (trap) trap.innerHTML = '🏆 <b>ภารกิจท้าประลอง:</b> ลองเพิ่มแท็ก <code>&lt;p&gt;</code> ใต้ <code>&lt;h1&gt;</code> แล้วเปลี่ยนสีเป็นสีอื่นดูนะ!';
       }
     }
 
@@ -2350,10 +2238,6 @@
       const placeholder = document.getElementById('s8FolderPlaceholder');
       const quote = document.getElementById('s8CanvasQuote');
       const badge = document.getElementById('s8PreviewBadge');
-      const icon = document.getElementById('s8CalloutIcon');
-      const title = document.getElementById('s8CalloutTitle');
-      const desc = document.getElementById('s8CalloutDesc');
-      const trap = document.getElementById('s8CalloutTrap');
 
       lines.forEach(l => {
         l.classList.remove('code-dimmed', 'code-spotlight-step', 'code-spotlight-green', 'code-spotlight-purple');
@@ -2374,10 +2258,6 @@
         if (placeholder) placeholder.style.display = 'flex';
         if (quote) quote.style.display = 'none';
         if (badge) badge.innerHTML = '📁 ก้าวที่ 1: วางไฟล์รูปใน images/ (ยังไม่แทรกโค้ด)';
-        if (icon) icon.innerHTML = '📁';
-        if (title) title.innerHTML = 'ก้าวที่ 1: เตรียมไฟล์รูปในโฟลเดอร์ images/';
-        if (desc) desc.innerHTML = 'สร้างโฟลเดอร์ชื่อ <code>images</code> ไว้ข้างๆ ไฟล์ HTML แล้วนำรูปภาพฮีโร่ เช่น <code>valhein.png</code> ไปวางข้างใน';
-        if (trap) trap.innerHTML = '⚠️ <b>ข้อควรระวัง:</b> ตรวจสอบการสะกดชื่อโฟลเดอร์ <code>images</code> ให้ถูกต้อง และจำชื่อไฟล์พร้อมนามสกุล (.png / .jpg)';
       } else if (step === 2) {
         if (placeholder) placeholder.style.display = 'none';
         if (img) {
@@ -2387,10 +2267,6 @@
         }
         if (quote) quote.style.display = 'none';
         if (badge) badge.innerHTML = '🖼️ ก้าวที่ 2: แทรกแท็ก &lt;img&gt; (รูปขนาดใหญ่ล้นจอ)';
-        if (icon) icon.innerHTML = '🖼️';
-        if (title) title.innerHTML = 'ก้าวที่ 2: แทรกรูปภาพด้วยแท็ก &lt;img&gt; ใน &lt;body&gt;';
-        if (desc) desc.innerHTML = 'พิมพ์ <code>&lt;img src=\"images/valhein.png\" alt=\"Valhein\"&gt;</code> ใน &lt;body&gt; รูปจะปรากฏขึ้นมาทันที!';
-        if (trap) trap.innerHTML = '⚠️ <b>ระวังจำสับสน:</b> แท็ก <code>&lt;img&gt;</code> ไม่มีแท็กปิด <code>&lt;/img&gt;</code> นะครับ! สังเกตรูปจะใหญ่ล้นจอเพราะยังไม่มี CSS';
       } else if (step === 3) {
         if (placeholder) placeholder.style.display = 'none';
         if (img) {
@@ -2400,10 +2276,6 @@
         }
         if (quote) quote.style.display = 'none';
         if (badge) badge.innerHTML = '📏 ก้าวที่ 3: ล็อคขนาดรูปด้วย CSS img { width: 220px; }';
-        if (icon) icon.innerHTML = '📏';
-        if (title) title.innerHTML = 'ก้าวที่ 3: ล็อคขนาดรูปภาพให้พอดีหน้าจอด้วย CSS';
-        if (desc) desc.innerHTML = 'ขึ้นไปที่โซน &lt;style&gt; แล้วพิมพ์ <code>img { width: 220px; }</code> เพื่อควบคุมขนาดความกว้าง';
-        if (trap) trap.innerHTML = '💡 <b>สังเกตที่จอขวา:</b> พอใส่ width: 220px; รูปภาพจะย่อขนาดลงมาพอดีหน้าจออย่างสวยงามทันที!';
       } else {
         if (placeholder) placeholder.style.display = 'none';
         if (img) {
@@ -2413,10 +2285,6 @@
         }
         if (quote) quote.style.display = 'block';
         if (badge) badge.innerHTML = '🟢 ผลลัพธ์: ล็อคขนาดรูปภาพพอดีหน้าจอสมบูรณ์';
-        if (icon) icon.innerHTML = '✨';
-        if (title) title.innerHTML = 'ก้าวที่ 4: รวมโค้ดครบถ้วน พร้อมคำคมตัวละคร';
-        if (desc) desc.innerHTML = 'ครบทั้งชื่อฮีโร่, รูปภาพที่ถูกจัดขนาดอย่างสวยงาม, และคำคมตัวละคร พร้อมลุยภารกิจจับเวลาด้านล่างแล้ว!';
-        if (trap) trap.innerHTML = '🏆 <b>ท้าประลอง:</b> ลองเปลี่ยน width ใน CSS เป็น 180px หรือ 250px เพื่อดูขนาดที่เหมาะกับฮีโร่ของตนเอง!';
       }
     }
 
@@ -2433,10 +2301,6 @@
       const logo = document.getElementById('s9LogoImg');
       const placeholder = document.getElementById('s9UrlPlaceholder');
       const badge = document.getElementById('s9PreviewBadge');
-      const icon = document.getElementById('s9CalloutIcon');
-      const title = document.getElementById('s9CalloutTitle');
-      const desc = document.getElementById('s9CalloutDesc');
-      const trap = document.getElementById('s9CalloutTrap');
 
       lines.forEach(l => {
         l.classList.remove('code-dimmed', 'code-spotlight-step', 'code-spotlight-green', 'code-spotlight-purple');
@@ -2455,10 +2319,6 @@
         if (logo) logo.style.display = 'none';
         if (placeholder) placeholder.style.display = 'flex';
         if (badge) badge.innerHTML = '🌐 ก้าวที่ 1: ก๊อปปี้ลิงก์ที่อยู่รูปภาพจากเว็บ (Copy image address)';
-        if (icon) icon.innerHTML = '🌐';
-        if (title) title.innerHTML = 'ก้าวที่ 1: ค้นหารูปภาพ &amp; ก๊อปปี้ URL ที่ถูกต้อง';
-        if (desc) desc.innerHTML = 'ไปที่เว็บ ค้นหารูปโลโก้ RoV ➡️ คลิกขวาที่รูป ➡️ เลือก <b>"คัดลอกที่อยู่รูปภาพ (Copy image address)"</b>';
-        if (trap) trap.innerHTML = '⚠️ <b>อย่าเลือกผิด:</b> ต้องเลือก "คัดลอกที่อยู่รูปภาพ (Copy image address)" ไม่ใช่คัดลอกลิงก์เว็บนะ!';
       } else if (step === 2) {
         if (placeholder) placeholder.style.display = 'none';
         if (logo) {
@@ -2467,10 +2327,6 @@
           logo.style.maxHeight = 'none';
         }
         if (badge) badge.innerHTML = '🏷️ ก้าวที่ 2: แทรกรูป &lt;img class=\"logo-img\"&gt; (ยังไม่ล็อคขนาด)';
-        if (icon) icon.innerHTML = '🏷️';
-        if (title) title.innerHTML = 'ก้าวที่ 2: วางแท็กรูปใต้คำคม &amp; ใส่ class="logo-img"';
-        if (desc) desc.innerHTML = 'นำลิงก์มาวางใน <code>src=\"...\"</code> และใส่ <code>class=\"logo-img\"</code> เพื่อแยกโลโก้ออกจากรูปฮีโร่';
-        if (trap) trap.innerHTML = '⚠️ <b>ทำไมต้องมี class:</b> เพราะถ้าใช้คำสั่ง img เฉยๆ ขนาดจะไปกระทบรูปฮีโร่ด้านบน เราจึงตั้ง class เพื่อสั่งเฉพาะเจาะจง!';
       } else if (step === 3) {
         if (placeholder) placeholder.style.display = 'none';
         if (logo) {
@@ -2479,10 +2335,6 @@
           logo.style.maxHeight = '48px';
         }
         if (badge) badge.innerHTML = '🎨 ก้าวที่ 3: แต่งขนาดโลโก้ .logo-img { width: 120px; }';
-        if (icon) icon.innerHTML = '🎨';
-        if (title) title.innerHTML = 'ก้าวที่ 3: ตกแต่งขนาดโลโก้ด้วยคลาส .logo-img';
-        if (desc) desc.innerHTML = 'ในโซน &lt;style&gt; พิมพ์ <code>.logo-img { width: 120px; margin-top: 6px; }</code>';
-        if (trap) trap.innerHTML = '⚠️ <b>จุดที่เด็กชอบพิมพ์ผิดมากที่สุด:</b> ใน CSS ต้องใส่ <b>เครื่องหมายจุด (.)</b> นำหน้าชื่อคลาสเสมอ เช่น <code>.logo-img</code>';
       } else {
         if (placeholder) placeholder.style.display = 'none';
         if (logo) {
@@ -2491,10 +2343,6 @@
           logo.style.maxHeight = '48px';
         }
         if (badge) badge.innerHTML = '🟢 ผลลัพธ์: โค้ดรวมฮีโร่สมบูรณ์แบบ';
-        if (icon) icon.innerHTML = '✨';
-        if (title) title.innerHTML = 'ก้าวที่ 4: หน้าเว็บฮีโร่สมบูรณ์แบบระดับโปร!';
-        if (desc) desc.innerHTML = 'รวมครบทุกมิติ HTML + CSS + Local Image + External Image พร้อมสำหรับส่งผลงานขึ้นอินเทอร์เน็ต';
-        if (trap) trap.innerHTML = '🎉 <b>สุดยอดมาก:</b> หน้าเว็บพร้อมนำไปเซฟและอัปเดตขึ้น GitHub Pages ให้ทุกคนชมได้เลย!';
       }
     }
 
