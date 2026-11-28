@@ -866,6 +866,196 @@
       text-align: center;
     }
 
+    /* ===== STEP-BY-STEP PACING & SPOTLIGHT STYLES (SLIDES 8 - 10) ===== */
+    .step-pacing-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 6px 10px;
+      background: rgba(118, 118, 128, 0.08);
+      border-bottom: 0.5px solid var(--ios-separator);
+      flex-wrap: wrap;
+    }
+
+    .step-pacing-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ios-secondary);
+      user-select: none;
+    }
+
+    .step-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ios-blue);
+      box-shadow: 0 0 6px currentColor;
+      animation: pulseStepDot 1.8s infinite ease-in-out;
+    }
+
+    @keyframes pulseStepDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .step-pacing-buttons {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .step-pacing-btn {
+      background: transparent;
+      border: 0.5px solid transparent;
+      color: var(--ios-secondary);
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: inherit;
+      padding: 3.5px 9px;
+      border-radius: 7px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .step-pacing-btn:hover {
+      color: var(--ios-label);
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .step-pacing-btn.active {
+      background: #FFFFFF;
+      color: var(--ios-label);
+      font-weight: 700;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      transform: translateY(-0.5px);
+    }
+
+    /* Dimming & Spotlight for Code Lines */
+    .code-line {
+      transition: opacity 0.22s ease, background-color 0.22s ease, transform 0.22s ease;
+    }
+
+    .code-line.code-dimmed {
+      opacity: 0.22 !important;
+      filter: grayscale(40%);
+    }
+
+    .code-line.code-dimmed:hover {
+      opacity: 0.72 !important;
+      filter: none;
+    }
+
+    .code-line.code-spotlight-step {
+      opacity: 1 !important;
+      background: rgba(0, 122, 255, 0.14) !important;
+      border-left: 3.5px solid var(--ios-blue) !important;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .code-line.code-spotlight-green {
+      opacity: 1 !important;
+      background: rgba(52, 199, 89, 0.16) !important;
+      border-left: 3.5px solid var(--ios-green) !important;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .code-line.code-spotlight-purple {
+      opacity: 1 !important;
+      background: rgba(175, 82, 222, 0.16) !important;
+      border-left: 3.5px solid var(--ios-purple) !important;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    /* Teacher / Coach Callout Box */
+    .step-callout-card {
+      background: rgba(242, 242, 247, 0.9);
+      border-top: 0.5px solid var(--ios-separator);
+      padding: 8px 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.45;
+      min-height: 60px;
+    }
+
+    .step-callout-icon {
+      font-size: 20px;
+      line-height: 1;
+      padding-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .step-callout-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .step-callout-title {
+      font-weight: 700;
+      color: var(--ios-label);
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-callout-desc {
+      color: var(--ios-secondary);
+      font-size: 11.5px;
+    }
+
+    .step-callout-desc code,
+    .step-callout-trap code {
+      font-family: 'SF Mono', 'Cascadia Mono', 'Consolas', monospace;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 1px 4px;
+      border-radius: 4px;
+      color: #C81E1E;
+      font-weight: 600;
+    }
+
+    .step-callout-trap {
+      margin-top: 3px;
+      background: rgba(255, 149, 0, 0.1);
+      border-left: 2.5px solid var(--ios-orange);
+      padding: 3px 7px;
+      border-radius: 4px;
+      color: #9A3B00;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .preview-step-badge {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.06);
+      border: 0.5px solid rgba(0, 0, 0, 0.08);
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      color: var(--ios-secondary);
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+      z-index: 5;
+    }
+
     /* ===== BottomFrosted Bar ===== */
     .bottombar {
       height: 58px;
@@ -1511,27 +1701,50 @@
               </div>
             </div>
 
+            <!-- แถบเลือกสเต็ปการเขียนทีละขั้น (Step-by-Step Pacing) -->
+            <div class="step-pacing-bar">
+              <div class="step-pacing-title">
+                <span class="step-pulse-dot" style="background:#8b5cf6;"></span> <b>สอนสดทีละก้าว:</b>
+              </div>
+              <div class="step-pacing-buttons" id="s7PacingBtns">
+                <button class="step-pacing-btn" data-step="1" onclick="setS7PacingStep(1)">1️⃣ เปิด &lt;style&gt;</button>
+                <button class="step-pacing-btn" data-step="2" onclick="setS7PacingStep(2)">2️⃣ เสกชื่อสีแดง</button>
+                <button class="step-pacing-btn" data-step="3" onclick="setS7PacingStep(3)">3️⃣ ดึงตรงกลาง</button>
+                <button class="step-pacing-btn active" data-step="4" onclick="setS7PacingStep(4)">✨ รวมทั้งหมด</button>
+              </div>
+            </div>
+
             <div class="s7-code-content" id="s7CodeContent">
-              <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
-              <div class="code-line s7-part-css"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
-              <div class="code-line s7-part-css"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
-              <div class="code-line s7-part-css"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
-              <div class="code-line s7-part-css glow-blue" style="font-weight:bold;"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 1. จัดให้อยู่กึ่งกลางหน้าจอ */</span></span></div>
-              <div class="code-line s7-part-css"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s7-part-css"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
-              <div class="code-line s7-part-css glow-green" style="font-weight:bold;"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 2. สั่งให้ชื่อตัวละครเป็นสีแดง */</span></span></div>
-              <div class="code-line s7-part-css"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">48px</span>;</span></div>
-              <div class="code-line s7-part-css"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s7-part-css"><span class="line-num">15</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">16</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
-              <div class="code-line s7-part-html"><span class="line-num">17</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
-              <div class="code-line s7-part-html glow-green" style="font-weight:bold;"><span class="line-num">18</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span> <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 ใส่หัวข้อตัวละคร */</span></span></div>
-              <div class="code-line s7-part-html"><span class="line-num">19</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">20</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+              <div class="code-line" data-s7-step="0"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+              <div class="code-line" data-s7-step="0"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
+              <div class="code-line" data-s7-step="0"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+              <div class="code-line" data-s7-step="0"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+              <div class="code-line" data-s7-step="0"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
+              <div class="code-line s7-part-css" data-s7-step="1"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
+              <div class="code-line s7-part-css" data-s7-step="3"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
+              <div class="code-line s7-part-css" data-s7-step="3"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
+              <div class="code-line s7-part-css glow-blue" data-s7-step="3" style="font-weight:bold;"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 3. จัดให้อยู่กึ่งกลางหน้าจอ */</span></span></div>
+              <div class="code-line s7-part-css" data-s7-step="3"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s7-part-css" data-s7-step="2"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
+              <div class="code-line s7-part-css glow-green" data-s7-step="2" style="font-weight:bold;"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 2. สั่งให้ชื่อตัวละครเป็นสีแดง */</span></span></div>
+              <div class="code-line s7-part-css" data-s7-step="2"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">48px</span>;</span></div>
+              <div class="code-line s7-part-css" data-s7-step="2"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s7-part-css" data-s7-step="1"><span class="line-num">15</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
+              <div class="code-line" data-s7-step="0"><span class="line-num">16</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+              <div class="code-line s7-part-html" data-s7-step="0"><span class="line-num">17</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+              <div class="code-line s7-part-html glow-green" data-s7-step="0" style="font-weight:bold;"><span class="line-num">18</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span> <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 ใส่หัวข้อตัวละคร */</span></span></div>
+              <div class="code-line s7-part-html" data-s7-step="0"><span class="line-num">19</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
+              <div class="code-line" data-s7-step="0"><span class="line-num">20</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+            </div>
+
+            <!-- กล่องคำแนะนำก้าวนี้ & จุดที่เด็กชอบพิมพ์ผิด (Teacher Callout Card) -->
+            <div class="step-callout-card" id="s7CalloutCard">
+              <div class="step-callout-icon" id="s7CalloutIcon">✨</div>
+              <div class="step-callout-body">
+                <div class="step-callout-title" id="s7CalloutTitle">ดูโค้ดรวมทั้งหมด (Complete View)</div>
+                <div class="step-callout-desc" id="s7CalloutDesc">โค้ดประสานงานระหว่าง HTML &amp; CSS อย่างลงตัว กดปุ่มก้าวที่ 1 - 3 ด้านบนเพื่อดูการเขียนทีละขั้นอย่างช้าๆ</div>
+                <div class="step-callout-trap" id="s7CalloutTrap">💡 <b>เคล็ดลับ:</b> วงเล็บปีกกา { } กดปุ่ม บ และ ล (กด Shift ค้างไว้) และปิดท้ายคำสั่งด้วยเซมิโคลอน ; เสมอ</div>
+              </div>
             </div>
           </div>
 
@@ -1548,9 +1761,10 @@
                 </div>
                 <div class="s7-browser-url">https://user.github.io/rov</div>
               </div>
-              <div class="s7-browser-canvas" id="s7BrowserCanvas" style="background:#ffffff; padding: 22px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 130px;">
-                <h1 style="color: red; font-size: 50px; font-weight: 900; margin: 0; font-family: Tahoma, 'Segoe UI', Arial, sans-serif; letter-spacing: -0.5px; text-align: center;">valhein</h1>
-                <p id="s7CanvasQuote" style="color: #4b0082; font-size: 16px; margin: 10px 0 0 0; text-align: center; font-family: Tahoma, sans-serif; max-width: 420px; line-height: 1.5;">ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ</p>
+              <div class="s7-browser-canvas" id="s7BrowserCanvas" style="position: relative; background:#ffffff; padding: 22px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 140px; transition: all 0.35s ease;">
+                <div class="preview-step-badge" id="s7PreviewBadge">🟢 ผลลัพธ์: โค้ดรวมสมบูรณ์</div>
+                <h1 id="s7CanvasHeading" style="color: red; font-size: 48px; font-weight: 900; margin: 0; font-family: Tahoma, 'Segoe UI', Arial, sans-serif; letter-spacing: -0.5px; text-align: center; transition: all 0.35s ease;">valhein</h1>
+                <p id="s7CanvasQuote" style="color: #4b0082; font-size: 15px; margin: 10px 0 0 0; text-align: center; font-family: Tahoma, sans-serif; max-width: 420px; line-height: 1.5; transition: all 0.35s ease;">ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ</p>
               </div>
             </div>
 
@@ -1624,36 +1838,59 @@
               </div>
             </div>
 
+            <!-- แถบเลือกสเต็ปการเขียนทีละขั้น (Step-by-Step Pacing) -->
+            <div class="step-pacing-bar">
+              <div class="step-pacing-title">
+                <span class="step-pulse-dot" style="background:#10b981;"></span> <b>สอนสดทีละก้าว:</b>
+              </div>
+              <div class="step-pacing-buttons" id="s8PacingBtns">
+                <button class="step-pacing-btn" data-step="1" onclick="setS8PacingStep(1)">1️⃣ โฟลเดอร์ images</button>
+                <button class="step-pacing-btn" data-step="2" onclick="setS8PacingStep(2)">2️⃣ แทรกแท็ก &lt;img&gt;</button>
+                <button class="step-pacing-btn" data-step="3" onclick="setS8PacingStep(3)">3️⃣ ปรับขนาด width</button>
+                <button class="step-pacing-btn active" data-step="4" onclick="setS8PacingStep(4)">✨ รวมทั้งหมด</button>
+              </div>
+            </div>
+
             <div class="s7-code-content" id="s8CodeContent">
-              <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
-              <div class="code-line s8-part-css"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
-              <div class="code-line s8-part-css"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
-              <div class="code-line s8-part-css"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
-              <div class="code-line s8-part-css"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 จัดให้อยู่กึ่งกลาง */</span></span></div>
-              <div class="code-line s8-part-css"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s8-part-css"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
-              <div class="code-line s8-part-css"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 ชื่อตัวละครสีแดง */</span></span></div>
-              <div class="code-line s8-part-css"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">44px</span>;</span></div>
-              <div class="code-line s8-part-css"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s8-part-css glow-green" style="font-weight:bold;"><span class="line-num">15</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">img</span> {</span></div>
-              <div class="code-line s8-part-css glow-green" style="font-weight:bold;"><span class="line-num">16</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">width</span>: <span class="c-val">220px</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 ปรับขนาดความกว้างรูป */</span></span></div>
-              <div class="code-line s8-part-css glow-green" style="font-weight:bold;"><span class="line-num">17</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s8-part-css"><span class="line-num">18</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">p</span> {</span></div>
-              <div class="code-line s8-part-css"><span class="line-num">19</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">#4b0082</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🟣 สีคำคม */</span></span></div>
-              <div class="code-line s8-part-css"><span class="line-num">20</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">16px</span>;</span></div>
-              <div class="code-line s8-part-css"><span class="line-num">21</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s8-part-css"><span class="line-num">22</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">23</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
-              <div class="code-line s8-part-html"><span class="line-num">24</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
-              <div class="code-line s8-part-html"><span class="line-num">25</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span></span></div>
-              <div class="code-line s8-part-html glow-green" style="font-weight:bold;"><span class="line-num">26</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;img <span class="c-attr">src</span>=<span class="c-str">"images/valhein.png"</span> <span class="c-attr">alt</span>=<span class="c-str">"Valhein"</span>&gt;</span> <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 แทรกรูปจากโฟลเดอร์ images */</span></span></div>
-              <div class="code-line s8-part-html"><span class="line-num">27</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;p&gt;</span>ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ<span class="c-tag">&lt;/p&gt;</span></span></div>
-              <div class="code-line s8-part-html"><span class="line-num">28</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">29</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+              <div class="code-line" data-s8-step="0"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+              <div class="code-line" data-s8-step="0"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
+              <div class="code-line" data-s8-step="0"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+              <div class="code-line" data-s8-step="0"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+              <div class="code-line" data-s8-step="0"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
+              <div class="code-line s8-part-css" data-s8-step="0"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
+              <div class="code-line s8-part-css" data-s8-step="0"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
+              <div class="code-line s8-part-css" data-s8-step="0"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
+              <div class="code-line s8-part-css" data-s8-step="0"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 จัดให้อยู่กึ่งกลาง */</span></span></div>
+              <div class="code-line s8-part-css" data-s8-step="0"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s8-part-css" data-s8-step="0"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
+              <div class="code-line s8-part-css" data-s8-step="0"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 ชื่อตัวละครสีแดง */</span></span></div>
+              <div class="code-line s8-part-css" data-s8-step="0"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">44px</span>;</span></div>
+              <div class="code-line s8-part-css" data-s8-step="0"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s8-part-css glow-green" data-s8-step="3" style="font-weight:bold;"><span class="line-num">15</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">img</span> {</span></div>
+              <div class="code-line s8-part-css glow-green" data-s8-step="3" style="font-weight:bold;"><span class="line-num">16</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">width</span>: <span class="c-val">220px</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 3. ปรับขนาดความกว้างรูป */</span></span></div>
+              <div class="code-line s8-part-css glow-green" data-s8-step="3" style="font-weight:bold;"><span class="line-num">17</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s8-part-css" data-s8-step="4"><span class="line-num">18</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">p</span> {</span></div>
+              <div class="code-line s8-part-css" data-s8-step="4"><span class="line-num">19</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">#4b0082</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🟣 สีคำคม */</span></span></div>
+              <div class="code-line s8-part-css" data-s8-step="4"><span class="line-num">20</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">16px</span>;</span></div>
+              <div class="code-line s8-part-css" data-s8-step="4"><span class="line-num">21</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s8-part-css" data-s8-step="0"><span class="line-num">22</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
+              <div class="code-line" data-s8-step="0"><span class="line-num">23</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+              <div class="code-line s8-part-html" data-s8-step="0"><span class="line-num">24</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+              <div class="code-line s8-part-html" data-s8-step="0"><span class="line-num">25</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span></span></div>
+              <div class="code-line s8-part-html glow-green" data-s8-step="2" style="font-weight:bold;"><span class="line-num">26</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;img <span class="c-attr">src</span>=<span class="c-str">"images/valhein.png"</span> <span class="c-attr">alt</span>=<span class="c-str">"Valhein"</span>&gt;</span> <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 2. แทรกรูปจากโฟลเดอร์ images */</span></span></div>
+              <div class="code-line s8-part-html" data-s8-step="4"><span class="line-num">27</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;p&gt;</span>ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ<span class="c-tag">&lt;/p&gt;</span></span></div>
+              <div class="code-line s8-part-html" data-s8-step="0"><span class="line-num">28</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
+              <div class="code-line" data-s8-step="0"><span class="line-num">29</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+            </div>
+
+            <!-- กล่องคำแนะนำก้าวนี้ & จุดที่เด็กชอบพิมพ์ผิด (Teacher Callout Card) -->
+            <div class="step-callout-card" id="s8CalloutCard">
+              <div class="step-callout-icon" id="s8CalloutIcon">✨</div>
+              <div class="step-callout-body">
+                <div class="step-callout-title" id="s8CalloutTitle">ดูโค้ดรวมทั้งหมด (Complete View)</div>
+                <div class="step-callout-desc" id="s8CalloutDesc">ครบทั้งการแทรกรูป &lt;img&gt; และการปรับขนาดความกว้างด้วย CSS img { width } กดปุ่ม 1 - 3 ด้านบนเพื่อดูทีละขั้น</div>
+                <div class="step-callout-trap" id="s8CalloutTrap">💡 <b>เคล็ดลับ:</b> แท็ก &lt;img&gt; ไม่มีแท็กปิด &lt;/img&gt; และให้สะกดชื่อโฟลเดอร์ images/ ให้ถูกต้อง</div>
+              </div>
             </div>
           </div>
 
@@ -1670,10 +1907,19 @@
                 </div>
                 <div class="s7-browser-url">https://user.github.io/rov</div>
               </div>
-              <div class="s7-browser-canvas" id="s8BrowserCanvas" style="background:#ffffff; padding: 14px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 190px;">
+              <div class="s7-browser-canvas" id="s8BrowserCanvas" style="position: relative; background:#ffffff; padding: 14px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 190px; transition: all 0.35s ease;">
+                <div class="preview-step-badge" id="s8PreviewBadge">🟢 ผลลัพธ์: ล็อคขนาดรูปภาพพอดีหน้าจอ</div>
                 <h1 style="color: red; font-size: 38px; font-weight: 900; margin: 0; font-family: Tahoma, 'Segoe UI', Arial, sans-serif; letter-spacing: -0.5px; text-align: center;">valhein</h1>
-                <img id="s8HeroImg" src="images/valhein.png" alt="Valhein" style="width: 175px; max-height: 140px; object-fit: contain; margin: 6px 0; ">
-                <p style="color: #4b0082; font-size: 13.5px; margin: 2px 0 0 0; text-align: center; font-family: Tahoma, sans-serif;">ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ</p>
+                
+                <!-- โฟลเดอร์ Placeholder เมื่ออยู่ก้าวที่ 1 -->
+                <div id="s8FolderPlaceholder" style="display: none; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.03); border: 1.5px dashed #059669; border-radius: 12px; padding: 16px 24px; margin: 10px 0; gap: 6px;">
+                  <span style="font-size: 32px;">📁</span>
+                  <span style="font-size: 13px; font-weight: 700; color: #059669;">โฟลเดอร์ images/valhein.png</span>
+                  <span style="font-size: 11px; color: var(--ios-secondary);">(วางไฟล์รูปไว้ในโฟลเดอร์แล้ว พร้อมใส่แท็ก &lt;img&gt; ในก้าวต่อไป)</span>
+                </div>
+
+                <img id="s8HeroImg" src="images/valhein.png" alt="Valhein" style="width: 175px; max-height: 140px; object-fit: contain; margin: 6px 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+                <p id="s8CanvasQuote" style="color: #4b0082; font-size: 13.5px; margin: 2px 0 0 0; text-align: center; font-family: Tahoma, sans-serif;">ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ</p>
               </div>
             </div>
 
@@ -1749,42 +1995,65 @@
               </div>
             </div>
 
+            <!-- แถบเลือกสเต็ปการเขียนทีละขั้น (Step-by-Step Pacing) -->
+            <div class="step-pacing-bar">
+              <div class="step-pacing-title">
+                <span class="step-pulse-dot" style="background:#0284c7;"></span> <b>สอนสดทีละก้าว:</b>
+              </div>
+              <div class="step-pacing-buttons" id="s9PacingBtns">
+                <button class="step-pacing-btn" data-step="1" onclick="setS9PacingStep(1)">1️⃣ ก๊อปปี้ URL รูป</button>
+                <button class="step-pacing-btn" data-step="2" onclick="setS9PacingStep(2)">2️⃣ แทรก &lt;img class&gt;</button>
+                <button class="step-pacing-btn" data-step="3" onclick="setS9PacingStep(3)">3️⃣ แต่งขนาด .logo-img</button>
+                <button class="step-pacing-btn active" data-step="4" onclick="setS9PacingStep(4)">✨ รวมทั้งหมด</button>
+              </div>
+            </div>
+
             <div class="s7-code-content" id="s9CodeContent">
-              <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
-              <div class="code-line s9-part-css"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
-              <div class="code-line s9-part-css"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 จัดกึ่งกลาง */</span></span></div>
-              <div class="code-line s9-part-css"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 สีชื่อตัวละคร */</span></span></div>
-              <div class="code-line s9-part-css"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">42px</span>;</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">15</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">.hero-img</span> {</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">16</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">width</span>: <span class="c-val">200px</span>; <span style="color:#5C6B57; font-size:11.5px; font-weight:normal;">/* รูปฮีโร่ */</span></span></div>
-              <div class="code-line s9-part-css"><span class="line-num">17</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">18</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">p</span> {</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">19</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">#4b0082</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🟣 สีคำคม */</span></span></div>
-              <div class="code-line s9-part-css"><span class="line-num">20</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">15px</span>;</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">21</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s9-part-css glow-green" style="font-weight:bold;"><span class="line-num">22</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">.logo-img</span> {</span></div>
-              <div class="code-line s9-part-css glow-green" style="font-weight:bold;"><span class="line-num">23</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">width</span>: <span class="c-val">120px</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 ปรับขนาดโลโก้ RoV */</span></span></div>
-              <div class="code-line s9-part-css glow-green" style="font-weight:bold;"><span class="line-num">24</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">margin-top</span>: <span class="c-val">6px</span>;</span></div>
-              <div class="code-line s9-part-css glow-green" style="font-weight:bold;"><span class="line-num">25</span><span class="line-code" style="padding-left:24px;">}</span></div>
-              <div class="code-line s9-part-css"><span class="line-num">26</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">27</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
-              <div class="code-line s9-part-html"><span class="line-num">28</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
-              <div class="code-line s9-part-html"><span class="line-num">29</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span></span></div>
-              <div class="code-line s9-part-html"><span class="line-num">30</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;img <span class="c-attr">class</span>=<span class="c-str">"hero-img"</span> <span class="c-attr">src</span>=<span class="c-str">"images/valhein.png"</span> <span class="c-attr">alt</span>=<span class="c-str">"Valhein"</span>&gt;</span></span></div>
-              <div class="code-line s9-part-html"><span class="line-num">31</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;p&gt;</span>ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ<span class="c-tag">&lt;/p&gt;</span></span></div>
-              <div class="code-line s9-part-html glow-green" style="font-weight:bold;"><span class="line-num">32</span><span class="line-code" style="padding-left:14px;"><span class="c-comm">&lt;!-- 🌐 แทรกรูปโลโก้จากลิงก์เว็บ URL --&gt;</span></span></div>
-              <div class="code-line s9-part-html glow-green" style="font-weight:bold;"><span class="line-num">33</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;img <span class="c-attr">class</span>=<span class="c-str">"logo-img"</span> <span class="c-attr">src</span>=<span class="c-str">"https://cdn-webth.garenanow.com/webth/rov/mainsite/v2/logo_rov.png"</span> <span class="c-attr">alt</span>=<span class="c-str">"RoV Logo"</span>&gt;</span></span></div>
-              <div class="code-line s9-part-html"><span class="line-num">34</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/body&gt;</span></span></div>
-              <div class="code-line"><span class="line-num">35</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+              <div class="code-line" data-s9-step="0"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+              <div class="code-line" data-s9-step="0"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
+              <div class="code-line" data-s9-step="0"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+              <div class="code-line" data-s9-step="0"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+              <div class="code-line" data-s9-step="0"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 จัดกึ่งกลาง */</span></span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 สีชื่อตัวละคร */</span></span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">42px</span>;</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">15</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">.hero-img</span> {</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">16</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">width</span>: <span class="c-val">200px</span>; <span style="color:#5C6B57; font-size:11.5px; font-weight:normal;">/* รูปฮีโร่ */</span></span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">17</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">18</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">p</span> {</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">19</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">#4b0082</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🟣 สีคำคม */</span></span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">20</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">15px</span>;</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">21</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s9-part-css glow-green" data-s9-step="3" style="font-weight:bold;"><span class="line-num">22</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">.logo-img</span> {</span></div>
+              <div class="code-line s9-part-css glow-green" data-s9-step="3" style="font-weight:bold;"><span class="line-num">23</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">width</span>: <span class="c-val">120px</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 3. ปรับขนาดโลโก้ RoV */</span></span></div>
+              <div class="code-line s9-part-css glow-green" data-s9-step="3" style="font-weight:bold;"><span class="line-num">24</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">margin-top</span>: <span class="c-val">6px</span>;</span></div>
+              <div class="code-line s9-part-css glow-green" data-s9-step="3" style="font-weight:bold;"><span class="line-num">25</span><span class="line-code" style="padding-left:24px;">}</span></div>
+              <div class="code-line s9-part-css" data-s9-step="0"><span class="line-num">26</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
+              <div class="code-line" data-s9-step="0"><span class="line-num">27</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+              <div class="code-line s9-part-html" data-s9-step="0"><span class="line-num">28</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+              <div class="code-line s9-part-html" data-s9-step="0"><span class="line-num">29</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span></span></div>
+              <div class="code-line s9-part-html" data-s9-step="0"><span class="line-num">30</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;img <span class="c-attr">class</span>=<span class="c-str">"hero-img"</span> <span class="c-attr">src</span>=<span class="c-str">"images/valhein.png"</span> <span class="c-attr">alt</span>=<span class="c-str">"Valhein"</span>&gt;</span></span></div>
+              <div class="code-line s9-part-html" data-s9-step="0"><span class="line-num">31</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;p&gt;</span>ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ<span class="c-tag">&lt;/p&gt;</span></span></div>
+              <div class="code-line s9-part-html glow-green" data-s9-step="2" style="font-weight:bold;"><span class="line-num">32</span><span class="line-code" style="padding-left:14px;"><span class="c-comm">&lt;!-- 🌐 2. แทรกรูปโลโก้จากลิงก์เว็บ URL --&gt;</span></span></div>
+              <div class="code-line s9-part-html glow-green" data-s9-step="2" style="font-weight:bold;"><span class="line-num">33</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;img <span class="c-attr">class</span>=<span class="c-str">"logo-img"</span> <span class="c-attr">src</span>=<span class="c-str">"https://cdn-webth.garenanow.com/webth/rov/mainsite/v2/logo_rov.png"</span> <span class="c-attr">alt</span>=<span class="c-str">"RoV Logo"</span>&gt;</span></span></div>
+              <div class="code-line s9-part-html" data-s9-step="0"><span class="line-num">34</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/body&gt;</span></span></div>
+              <div class="code-line" data-s9-step="0"><span class="line-num">35</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+            </div>
+
+            <!-- กล่องคำแนะนำก้าวนี้ & จุดที่เด็กชอบพิมพ์ผิด (Teacher Callout Card) -->
+            <div class="step-callout-card" id="s9CalloutCard">
+              <div class="step-callout-icon" id="s9CalloutIcon">✨</div>
+              <div class="step-callout-body">
+                <div class="step-callout-title" id="s9CalloutTitle">ดูโค้ดรวมทั้งหมด (Complete View)</div>
+                <div class="step-callout-desc" id="s9CalloutDesc">ดึงรูปภาพจากอินเทอร์เน็ตด้วยลิงก์ URL พร้อมแต่งขนาดด้วย .logo-img กดปุ่ม 1 - 3 ด้านบนเพื่อดูทีละขั้น</div>
+                <div class="step-callout-trap" id="s9CalloutTrap">💡 <b>เคล็ดลับ:</b> ใน CSS ต้องใส่เครื่องหมายจุด (.) หน้าชื่อคลาสเสมอ เช่น .logo-img ห้ามลืมเด็ดขาด!</div>
+              </div>
             </div>
           </div>
 
@@ -1801,11 +2070,20 @@
                 </div>
                 <div class="s7-browser-url">https://user.github.io/rov</div>
               </div>
-              <div class="s7-browser-canvas" id="s9BrowserCanvas" style="background:#ffffff; padding: 12px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 220px;">
+              <div class="s7-browser-canvas" id="s9BrowserCanvas" style="position: relative; background:#ffffff; padding: 12px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 220px; transition: all 0.35s ease;">
+                <div class="preview-step-badge" id="s9PreviewBadge">🟢 ผลลัพธ์: โค้ดรวมฮีโร่สมบูรณ์แบบ</div>
                 <h1 style="color: red; font-size: 34px; font-weight: 900; margin: 0; font-family: Tahoma, 'Segoe UI', Arial, sans-serif; letter-spacing: -0.5px; text-align: center;">valhein</h1>
                 <img src="images/valhein.png" alt="Valhein" style="width: 155px; max-height: 110px; object-fit: contain; margin: 4px 0; ">
                 <p style="color: #4b0082; font-size: 13px; margin: 2px 0 4px 0; text-align: center; font-family: Tahoma, sans-serif;">ข้าเคยเป็นความหวังเพียงหนึ่งเดียวของมนุษยชาติในสงครามแวมไพร์ที่ยาวนานร่วมศตวรรษ</p>
-                <img src="https://cdn-webth.garenanow.com/webth/rov/mainsite/v2/logo_rov.png" onerror="this.onerror=null; this.src='images/rov-logo.png';" alt="RoV Logo" style="width: 115px; height: auto; max-height: 48px; object-fit: contain; margin-top: 4px;">
+                
+                <!-- URL Image Search Placeholder เมื่ออยู่ก้าวที่ 1 -->
+                <div id="s9UrlPlaceholder" style="display: none; flex-direction: column; align-items: center; justify-content: center; background: rgba(2, 132, 199, 0.05); border: 1.5px dashed #0284c7; border-radius: 12px; padding: 12px 20px; margin-top: 6px; gap: 4px;">
+                  <span style="font-size: 26px;">🌐 🖱️</span>
+                  <span style="font-size: 12.5px; font-weight: 700; color: #0284c7;">คลิกขวาที่รูป ➡️ คัดลอกที่อยู่รูปภาพ (Copy image address)</span>
+                  <span style="font-size: 11px; color: var(--ios-secondary);">(ได้ลิงก์ https://... แล้วนำมาใส่ใน src ของก้าวที่ 2)</span>
+                </div>
+
+                <img id="s9LogoImg" src="https://cdn-webth.garenanow.com/webth/rov/mainsite/v2/logo_rov.png" onerror="this.onerror=null; this.src='images/rov-logo.png';" alt="RoV Logo" style="width: 115px; height: auto; max-height: 48px; object-fit: contain; margin-top: 4px; transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);">
               </div>
             </div>
 
@@ -1947,6 +2225,277 @@
           else changeSlide(-1);
         }
       }, { passive: true });
+    }
+
+    // ===== ระบบโค้ชสเต็ปการเขียนทีละขั้น (Step-by-Step Pacing) สำหรับสไลด์ 8, 9, 10 =====
+    function playStepPopSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880.00, ctx.currentTime + 0.08); // A5
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.13);
+      } catch(e) {}
+    }
+
+    // ===== สไลด์ที่ 8 (CSS Styling) =====
+    function setS7PacingStep(step) {
+      playStepPopSound();
+      const btns = document.querySelectorAll('#s7PacingBtns .step-pacing-btn');
+      btns.forEach(b => b.classList.toggle('active', parseInt(b.getAttribute('data-step')) === step));
+
+      const codeContent = document.getElementById('s7CodeContent');
+      if (!codeContent) return;
+
+      const lines = codeContent.querySelectorAll('.code-line');
+      const heading = document.getElementById('s7CanvasHeading');
+      const quote = document.getElementById('s7CanvasQuote');
+      const badge = document.getElementById('s7PreviewBadge');
+      const icon = document.getElementById('s7CalloutIcon');
+      const title = document.getElementById('s7CalloutTitle');
+      const desc = document.getElementById('s7CalloutDesc');
+      const trap = document.getElementById('s7CalloutTrap');
+
+      lines.forEach(l => {
+        l.classList.remove('code-dimmed', 'code-spotlight-step', 'code-spotlight-green', 'code-spotlight-purple');
+        const s = parseInt(l.getAttribute('data-s7-step') || '0');
+        if (step === 1) {
+          if (s === 1) l.classList.add('code-spotlight-step');
+          else if (s === 2 || s === 3) l.classList.add('code-dimmed');
+        } else if (step === 2) {
+          if (s === 2) l.classList.add('code-spotlight-green');
+          else if (s === 3) l.classList.add('code-dimmed');
+        } else if (step === 3) {
+          if (s === 3) l.classList.add('code-spotlight-purple');
+        }
+      });
+
+      if (step === 1) {
+        if (heading) {
+          heading.style.color = '#1C1C1E';
+          heading.style.fontSize = '34px';
+          heading.style.textAlign = 'left';
+        }
+        if (quote) quote.style.display = 'none';
+        if (badge) badge.innerHTML = '🟡 ก้าวที่ 1: เตรียมพื้นที่ &lt;style&gt; (ยังไม่ได้ใส่คำสั่ง สี/ตำแหน่งยังไม่เปลี่ยน)';
+        if (icon) icon.innerHTML = '📝';
+        if (title) title.innerHTML = 'ก้าวที่ 1: เปิดพื้นที่เขียน CSS ใน &lt;head&gt;';
+        if (desc) desc.innerHTML = 'ก่อนจะแต่งสีหรือจัดตำแหน่ง เราต้องสร้างกล่อง <code>&lt;style&gt;...&lt;/style&gt;</code> ให้อยู่ข้างในโซน <code>&lt;head&gt;</code> ก่อนเสมอ';
+        if (trap) trap.innerHTML = '⚠️ <b>ข้อควรระวัง:</b> ห้ามเอาแท็ก &lt;style&gt; ไปวางใน &lt;body&gt; หรือวางนอก &lt;html&gt; เด็ดขาดนะครับ!';
+      } else if (step === 2) {
+        if (heading) {
+          heading.style.color = 'red';
+          heading.style.fontSize = '48px';
+          heading.style.textAlign = 'left';
+        }
+        if (quote) quote.style.display = 'none';
+        if (badge) badge.innerHTML = '🔴 ก้าวที่ 2: สั่งชื่อสีแดง color: red; (ยังชิดซ้ายอยู่)';
+        if (icon) icon.innerHTML = '🔴';
+        if (title) title.innerHTML = 'ก้าวที่ 2: สั่งให้ชื่อฮีโร่กลายเป็นสีแดงด้วย h1';
+        if (desc) desc.innerHTML = 'พิมพ์ <code>h1 { color: red; font-size: 48px; }</code> ใน &lt;style&gt; เพื่อสั่งหัวข้อเป็นสีแดงสดและตัวใหญ่ขึ้น';
+        if (trap) trap.innerHTML = '⚠️ <b>ระวังจุดนี้:</b> ใช้ปีกกา <code>{ }</code> (Shift + บ, ล) และห้ามลืมปิดท้ายคำสั่งด้วยเซมิโคลอน <code>;</code> เสมอ!';
+      } else if (step === 3) {
+        if (heading) {
+          heading.style.color = 'red';
+          heading.style.fontSize = '48px';
+          heading.style.textAlign = 'center';
+        }
+        if (quote) quote.style.display = 'none';
+        if (badge) badge.innerHTML = '🎯 ก้าวที่ 3: สั่งย้ายมาตรงกลางจอด้วย text-align: center;';
+        if (icon) icon.innerHTML = '🎯';
+        if (title) title.innerHTML = 'ก้าวที่ 3: สั่งให้ทุกอย่างมาอยู่ตรงกลางจอด้วย body';
+        if (desc) desc.innerHTML = 'พิมพ์ <code>body { text-align: center; }</code> คำสั่งนี้จะดึงทั้งชื่อและเนื้อหาทั้งหมดในหน้าเว็บมาอยู่ตรงกลางจอทันที';
+        if (trap) trap.innerHTML = '💡 <b>สังเกตที่จอขวา:</b> จากเดิมที่ชื่อชิดซ้าย พอเพิ่มคำสั่งนี้ปุ๊บ ข้อความจะขยับมาตรงกลางทันที!';
+      } else {
+        if (heading) {
+          heading.style.color = 'red';
+          heading.style.fontSize = '48px';
+          heading.style.textAlign = 'center';
+        }
+        if (quote) {
+          quote.style.display = 'block';
+          quote.style.color = '#4b0082';
+          quote.style.fontSize = '15px';
+          quote.style.textAlign = 'center';
+        }
+        if (badge) badge.innerHTML = '✨ ผลลัพธ์: โค้ดรวม HTML &amp; CSS สมบูรณ์แบบ';
+        if (icon) icon.innerHTML = '✨';
+        if (title) title.innerHTML = 'ก้าวที่ 4: รวมโค้ด CSS &amp; HTML สมบูรณ์แบบ';
+        if (desc) desc.innerHTML = 'ยอดเยี่ยมมาก! โค้ด HTML และ CSS ประสานงานกันอย่างลงตัว ตอนนี้พร้อมลุยภารกิจท้าประลองด้านล่างแล้วครับ';
+        if (trap) trap.innerHTML = '🏆 <b>ภารกิจท้าประลอง:</b> ลองเพิ่มแท็ก <code>&lt;p&gt;</code> ใต้ <code>&lt;h1&gt;</code> แล้วเปลี่ยนสีเป็นสีอื่นดูนะ!';
+      }
+    }
+
+    // ===== สไลด์ที่ 9 (Local Image) =====
+    function setS8PacingStep(step) {
+      playStepPopSound();
+      const btns = document.querySelectorAll('#s8PacingBtns .step-pacing-btn');
+      btns.forEach(b => b.classList.toggle('active', parseInt(b.getAttribute('data-step')) === step));
+
+      const codeContent = document.getElementById('s8CodeContent');
+      if (!codeContent) return;
+
+      const lines = codeContent.querySelectorAll('.code-line');
+      const img = document.getElementById('s8HeroImg');
+      const placeholder = document.getElementById('s8FolderPlaceholder');
+      const quote = document.getElementById('s8CanvasQuote');
+      const badge = document.getElementById('s8PreviewBadge');
+      const icon = document.getElementById('s8CalloutIcon');
+      const title = document.getElementById('s8CalloutTitle');
+      const desc = document.getElementById('s8CalloutDesc');
+      const trap = document.getElementById('s8CalloutTrap');
+
+      lines.forEach(l => {
+        l.classList.remove('code-dimmed', 'code-spotlight-step', 'code-spotlight-green', 'code-spotlight-purple');
+        const s = parseInt(l.getAttribute('data-s8-step') || '0');
+        if (step === 1) {
+          if (s === 2 || s === 3 || s === 4) l.classList.add('code-dimmed');
+        } else if (step === 2) {
+          if (s === 2) l.classList.add('code-spotlight-green');
+          else if (s === 3 || s === 4) l.classList.add('code-dimmed');
+        } else if (step === 3) {
+          if (s === 3) l.classList.add('code-spotlight-purple');
+          else if (s === 4) l.classList.add('code-dimmed');
+        }
+      });
+
+      if (step === 1) {
+        if (img) img.style.display = 'none';
+        if (placeholder) placeholder.style.display = 'flex';
+        if (quote) quote.style.display = 'none';
+        if (badge) badge.innerHTML = '📁 ก้าวที่ 1: วางไฟล์รูปใน images/ (ยังไม่แทรกโค้ด)';
+        if (icon) icon.innerHTML = '📁';
+        if (title) title.innerHTML = 'ก้าวที่ 1: เตรียมไฟล์รูปในโฟลเดอร์ images/';
+        if (desc) desc.innerHTML = 'สร้างโฟลเดอร์ชื่อ <code>images</code> ไว้ข้างๆ ไฟล์ HTML แล้วนำรูปภาพฮีโร่ เช่น <code>valhein.png</code> ไปวางข้างใน';
+        if (trap) trap.innerHTML = '⚠️ <b>ข้อควรระวัง:</b> ตรวจสอบการสะกดชื่อโฟลเดอร์ <code>images</code> ให้ถูกต้อง และจำชื่อไฟล์พร้อมนามสกุล (.png / .jpg)';
+      } else if (step === 2) {
+        if (placeholder) placeholder.style.display = 'none';
+        if (img) {
+          img.style.display = 'block';
+          img.style.width = '240px';
+          img.style.maxHeight = 'none';
+        }
+        if (quote) quote.style.display = 'none';
+        if (badge) badge.innerHTML = '🖼️ ก้าวที่ 2: แทรกแท็ก &lt;img&gt; (รูปขนาดใหญ่ล้นจอ)';
+        if (icon) icon.innerHTML = '🖼️';
+        if (title) title.innerHTML = 'ก้าวที่ 2: แทรกรูปภาพด้วยแท็ก &lt;img&gt; ใน &lt;body&gt;';
+        if (desc) desc.innerHTML = 'พิมพ์ <code>&lt;img src=\"images/valhein.png\" alt=\"Valhein\"&gt;</code> ใน &lt;body&gt; รูปจะปรากฏขึ้นมาทันที!';
+        if (trap) trap.innerHTML = '⚠️ <b>ระวังจำสับสน:</b> แท็ก <code>&lt;img&gt;</code> ไม่มีแท็กปิด <code>&lt;/img&gt;</code> นะครับ! สังเกตรูปจะใหญ่ล้นจอเพราะยังไม่มี CSS';
+      } else if (step === 3) {
+        if (placeholder) placeholder.style.display = 'none';
+        if (img) {
+          img.style.display = 'block';
+          img.style.width = '175px';
+          img.style.maxHeight = '140px';
+        }
+        if (quote) quote.style.display = 'none';
+        if (badge) badge.innerHTML = '📏 ก้าวที่ 3: ล็อคขนาดรูปด้วย CSS img { width: 220px; }';
+        if (icon) icon.innerHTML = '📏';
+        if (title) title.innerHTML = 'ก้าวที่ 3: ล็อคขนาดรูปภาพให้พอดีหน้าจอด้วย CSS';
+        if (desc) desc.innerHTML = 'ขึ้นไปที่โซน &lt;style&gt; แล้วพิมพ์ <code>img { width: 220px; }</code> เพื่อควบคุมขนาดความกว้าง';
+        if (trap) trap.innerHTML = '💡 <b>สังเกตที่จอขวา:</b> พอใส่ width: 220px; รูปภาพจะย่อขนาดลงมาพอดีหน้าจออย่างสวยงามทันที!';
+      } else {
+        if (placeholder) placeholder.style.display = 'none';
+        if (img) {
+          img.style.display = 'block';
+          img.style.width = '175px';
+          img.style.maxHeight = '140px';
+        }
+        if (quote) quote.style.display = 'block';
+        if (badge) badge.innerHTML = '🟢 ผลลัพธ์: ล็อคขนาดรูปภาพพอดีหน้าจอสมบูรณ์';
+        if (icon) icon.innerHTML = '✨';
+        if (title) title.innerHTML = 'ก้าวที่ 4: รวมโค้ดครบถ้วน พร้อมคำคมตัวละคร';
+        if (desc) desc.innerHTML = 'ครบทั้งชื่อฮีโร่, รูปภาพที่ถูกจัดขนาดอย่างสวยงาม, และคำคมตัวละคร พร้อมลุยภารกิจจับเวลาด้านล่างแล้ว!';
+        if (trap) trap.innerHTML = '🏆 <b>ท้าประลอง:</b> ลองเปลี่ยน width ใน CSS เป็น 180px หรือ 250px เพื่อดูขนาดที่เหมาะกับฮีโร่ของตนเอง!';
+      }
+    }
+
+    // ===== สไลด์ที่ 10 (External URL) =====
+    function setS9PacingStep(step) {
+      playStepPopSound();
+      const btns = document.querySelectorAll('#s9PacingBtns .step-pacing-btn');
+      btns.forEach(b => b.classList.toggle('active', parseInt(b.getAttribute('data-step')) === step));
+
+      const codeContent = document.getElementById('s9CodeContent');
+      if (!codeContent) return;
+
+      const lines = codeContent.querySelectorAll('.code-line');
+      const logo = document.getElementById('s9LogoImg');
+      const placeholder = document.getElementById('s9UrlPlaceholder');
+      const badge = document.getElementById('s9PreviewBadge');
+      const icon = document.getElementById('s9CalloutIcon');
+      const title = document.getElementById('s9CalloutTitle');
+      const desc = document.getElementById('s9CalloutDesc');
+      const trap = document.getElementById('s9CalloutTrap');
+
+      lines.forEach(l => {
+        l.classList.remove('code-dimmed', 'code-spotlight-step', 'code-spotlight-green', 'code-spotlight-purple');
+        const s = parseInt(l.getAttribute('data-s9-step') || '0');
+        if (step === 1) {
+          if (s === 2 || s === 3) l.classList.add('code-dimmed');
+        } else if (step === 2) {
+          if (s === 2) l.classList.add('code-spotlight-green');
+          else if (s === 3) l.classList.add('code-dimmed');
+        } else if (step === 3) {
+          if (s === 3) l.classList.add('code-spotlight-purple');
+        }
+      });
+
+      if (step === 1) {
+        if (logo) logo.style.display = 'none';
+        if (placeholder) placeholder.style.display = 'flex';
+        if (badge) badge.innerHTML = '🌐 ก้าวที่ 1: ก๊อปปี้ลิงก์ที่อยู่รูปภาพจากเว็บ (Copy image address)';
+        if (icon) icon.innerHTML = '🌐';
+        if (title) title.innerHTML = 'ก้าวที่ 1: ค้นหารูปภาพ &amp; ก๊อปปี้ URL ที่ถูกต้อง';
+        if (desc) desc.innerHTML = 'ไปที่เว็บ ค้นหารูปโลโก้ RoV ➡️ คลิกขวาที่รูป ➡️ เลือก <b>"คัดลอกที่อยู่รูปภาพ (Copy image address)"</b>';
+        if (trap) trap.innerHTML = '⚠️ <b>อย่าเลือกผิด:</b> ต้องเลือก "คัดลอกที่อยู่รูปภาพ (Copy image address)" ไม่ใช่คัดลอกลิงก์เว็บนะ!';
+      } else if (step === 2) {
+        if (placeholder) placeholder.style.display = 'none';
+        if (logo) {
+          logo.style.display = 'block';
+          logo.style.width = '170px';
+          logo.style.maxHeight = 'none';
+        }
+        if (badge) badge.innerHTML = '🏷️ ก้าวที่ 2: แทรกรูป &lt;img class=\"logo-img\"&gt; (ยังไม่ล็อคขนาด)';
+        if (icon) icon.innerHTML = '🏷️';
+        if (title) title.innerHTML = 'ก้าวที่ 2: วางแท็กรูปใต้คำคม &amp; ใส่ class="logo-img"';
+        if (desc) desc.innerHTML = 'นำลิงก์มาวางใน <code>src=\"...\"</code> และใส่ <code>class=\"logo-img\"</code> เพื่อแยกโลโก้ออกจากรูปฮีโร่';
+        if (trap) trap.innerHTML = '⚠️ <b>ทำไมต้องมี class:</b> เพราะถ้าใช้คำสั่ง img เฉยๆ ขนาดจะไปกระทบรูปฮีโร่ด้านบน เราจึงตั้ง class เพื่อสั่งเฉพาะเจาะจง!';
+      } else if (step === 3) {
+        if (placeholder) placeholder.style.display = 'none';
+        if (logo) {
+          logo.style.display = 'block';
+          logo.style.width = '115px';
+          logo.style.maxHeight = '48px';
+        }
+        if (badge) badge.innerHTML = '🎨 ก้าวที่ 3: แต่งขนาดโลโก้ .logo-img { width: 120px; }';
+        if (icon) icon.innerHTML = '🎨';
+        if (title) title.innerHTML = 'ก้าวที่ 3: ตกแต่งขนาดโลโก้ด้วยคลาส .logo-img';
+        if (desc) desc.innerHTML = 'ในโซน &lt;style&gt; พิมพ์ <code>.logo-img { width: 120px; margin-top: 6px; }</code>';
+        if (trap) trap.innerHTML = '⚠️ <b>จุดที่เด็กชอบพิมพ์ผิดมากที่สุด:</b> ใน CSS ต้องใส่ <b>เครื่องหมายจุด (.)</b> นำหน้าชื่อคลาสเสมอ เช่น <code>.logo-img</code>';
+      } else {
+        if (placeholder) placeholder.style.display = 'none';
+        if (logo) {
+          logo.style.display = 'block';
+          logo.style.width = '115px';
+          logo.style.maxHeight = '48px';
+        }
+        if (badge) badge.innerHTML = '🟢 ผลลัพธ์: โค้ดรวมฮีโร่สมบูรณ์แบบ';
+        if (icon) icon.innerHTML = '✨';
+        if (title) title.innerHTML = 'ก้าวที่ 4: หน้าเว็บฮีโร่สมบูรณ์แบบระดับโปร!';
+        if (desc) desc.innerHTML = 'รวมครบทุกมิติ HTML + CSS + Local Image + External Image พร้อมสำหรับส่งผลงานขึ้นอินเทอร์เน็ต';
+        if (trap) trap.innerHTML = '🎉 <b>สุดยอดมาก:</b> หน้าเว็บพร้อมนำไปเซฟและอัปเดตขึ้น GitHub Pages ให้ทุกคนชมได้เลย!';
+      }
     }
 
     // ===== ฟังก์ชันควบคุมโค้ดในสไลด์ที่ 7 =====
@@ -2376,26 +2925,26 @@
         btn.innerHTML = 'ดูโค้ดเฉลย';
 
         codeContent.innerHTML = `
-          <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
-          <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
-          <div class="code-line"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
-          <div class="code-line"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
-          <div class="code-line"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
-          <div class="code-line s7-part-css"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
-          <div class="code-line s7-part-css"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
-          <div class="code-line s7-part-css"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
-          <div class="code-line s7-part-css glow-blue" style="font-weight:bold;"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 1. จัดให้อยู่กึ่งกลางหน้าจอ */</span></span></div>
-          <div class="code-line s7-part-css"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
-          <div class="code-line s7-part-css"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
-          <div class="code-line s7-part-css glow-green" style="font-weight:bold;"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 2. สั่งให้ชื่อตัวละครเป็นสีแดง */</span></span></div>
-          <div class="code-line s7-part-css"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">48px</span>;</span></div>
-          <div class="code-line s7-part-css"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
-          <div class="code-line s7-part-css"><span class="line-num">15</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
-          <div class="code-line"><span class="line-num">16</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
-          <div class="code-line s7-part-html"><span class="line-num">17</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
-          <div class="code-line s7-part-html glow-green" style="font-weight:bold;"><span class="line-num">18</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span> <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 ใส่หัวข้อตัวละคร */</span></span></div>
-          <div class="code-line s7-part-html"><span class="line-num">19</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
-          <div class="code-line"><span class="line-num">20</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
+          <div class="code-line" data-s7-step="0"><span class="line-num">1</span><span class="line-code"><span class="c-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+          <div class="code-line" data-s7-step="0"><span class="line-num">2</span><span class="line-code"><span class="c-tag">&lt;html <span class="c-attr">lang</span>=<span class="c-str">"th"</span>&gt;</span></span></div>
+          <div class="code-line" data-s7-step="0"><span class="line-num">3</span><span class="line-code"><span class="c-tag">&lt;head&gt;</span></span></div>
+          <div class="code-line" data-s7-step="0"><span class="line-num">4</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;meta <span class="c-attr">charset</span>=<span class="c-str">"UTF-8"</span>&gt;</span></span></div>
+          <div class="code-line" data-s7-step="0"><span class="line-num">5</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;title&gt;</span>Valhein<span class="c-tag">&lt;/title&gt;</span></span></div>
+          <div class="code-line s7-part-css" data-s7-step="1"><span class="line-num">6</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;style&gt;</span></span></div>
+          <div class="code-line s7-part-css" data-s7-step="3"><span class="line-num">7</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">body</span> {</span></div>
+          <div class="code-line s7-part-css" data-s7-step="3"><span class="line-num">8</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-family</span>: <span class="c-val">Tahoma, sans-serif</span>;</span></div>
+          <div class="code-line s7-part-css glow-blue" data-s7-step="3" style="font-weight:bold;"><span class="line-num">9</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">text-align</span>: <span class="c-val">center</span>; <span style="color:#0F52BA; font-size:11.5px; font-weight:normal;">/* 🎯 3. จัดให้อยู่กึ่งกลางหน้าจอ */</span></span></div>
+          <div class="code-line s7-part-css" data-s7-step="3"><span class="line-num">10</span><span class="line-code" style="padding-left:24px;">}</span></div>
+          <div class="code-line s7-part-css" data-s7-step="2"><span class="line-num">11</span><span class="line-code" style="padding-left:24px;"><span class="c-sel">h1</span> {</span></div>
+          <div class="code-line s7-part-css glow-green" data-s7-step="2" style="font-weight:bold;"><span class="line-num">12</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">color</span>: <span class="c-val">red</span>; <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 🔴 2. สั่งให้ชื่อตัวละครเป็นสีแดง */</span></span></div>
+          <div class="code-line s7-part-css" data-s7-step="2"><span class="line-num">13</span><span class="line-code" style="padding-left:36px;"><span class="c-prop">font-size</span>: <span class="c-val">48px</span>;</span></div>
+          <div class="code-line s7-part-css" data-s7-step="2"><span class="line-num">14</span><span class="line-code" style="padding-left:24px;">}</span></div>
+          <div class="code-line s7-part-css" data-s7-step="1"><span class="line-num">15</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;/style&gt;</span></span></div>
+          <div class="code-line" data-s7-step="0"><span class="line-num">16</span><span class="line-code"><span class="c-tag">&lt;/head&gt;</span></span></div>
+          <div class="code-line s7-part-html" data-s7-step="0"><span class="line-num">17</span><span class="line-code"><span class="c-tag">&lt;body&gt;</span></span></div>
+          <div class="code-line s7-part-html glow-green" data-s7-step="0" style="font-weight:bold;"><span class="line-num">18</span><span class="line-code" style="padding-left:14px;"><span class="c-tag">&lt;h1&gt;</span>valhein<span class="c-tag">&lt;/h1&gt;</span> <span style="color:#1F6E43; font-size:11.5px; font-weight:normal;">/* 👈 ใส่หัวข้อตัวละคร */</span></span></div>
+          <div class="code-line s7-part-html" data-s7-step="0"><span class="line-num">19</span><span class="line-code"><span class="c-tag">&lt;/body&gt;</span></span></div>
+          <div class="code-line" data-s7-step="0"><span class="line-num">20</span><span class="line-code"><span class="c-tag">&lt;/html&gt;</span></span></div>
         `;
       }
     }
